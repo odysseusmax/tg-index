@@ -34,6 +34,7 @@ $ pip3 install -U -r requirements.txt
 * Environment Variables.
 
 | **Variable Name** | **Value**
+|------------- | -------------
 | `API_ID` (required) | Telegram api_id obtained from https://my.telegram.org/apps.
 | `API_HASH` (required) | Telegram api_hash obtained from https://my.telegram.org/apps.
 | `CHAT_ID` (required) | Id of the telegram channel (or chat) to be indexed.
