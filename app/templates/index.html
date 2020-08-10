@@ -1,0 +1,46 @@
+{% include 'header.html' %}
+            <form class="p-4" action="/">
+                <input class="border rounded p-2 border-indigo-500 placeholder-indigo-500 text-indigo-500" type="text" name="search" value="{% if search %}{{search}}{% endif %}" placeholder="search...">    
+                <button class="border rounded p-2 border-indigo-500 bg-indigo-500 text-white hover:text-indigo-500 hover:bg-white" type="submit">Search</button>
+            </form>
+
+            <div class="mx-auto my-2 w-full overflow-x-auto px-4 text-xs">
+            
+                <table class="m-auto rounded text-left shadow-md w-full">
+                    <tr class="border-t border-b bg-gray-200 border-gray-300 my-2 p-4">
+                        <th class="my-2 p-2">FileId</th>
+                        <th class="my-2 p-2">Media</th> 
+                        <th class="my-2 p-2">Type</th>
+                        <th class="my-2 p-2">Description</th>
+                        <th class="my-2 p-2">Date</th>
+                        <th class="my-2 p-2">Size</th>
+                    </tr>
+
+                    {% for item in item_list %}
+                        <tr class="border-t border-b border-gray-300 my-2 p-4 rounded hover:bg-blue-100">
+                            <th class="my-2 p-2">{{item.file_id}}</th>
+                            <th class="my-2 p-2">{{item.media}}</th> 
+                            <th class="my-2 p-2">{{item.mime_type}}</th>
+                            <th class="my-2 p-2 rounded hover:text-blue-600"><a href="/{{item.file_id}}/view">{{item.insight}}</a></th>
+                            <th class="my-2 p-2">{{item.date}}</th>
+                            <th class="my-2 p-2">{{item.size}}</th>
+                        </tr>
+                    {% endfor %}
+                    
+                </table>
+            
+            </div>
+
+            
+            
+            <div class="mx-auto my-2 text-center flex text-white content-center justify-center">
+                {% if prev_page %}
+                    <a class="mx-2 p-2 border rounded bg-green-500 hover:border-green-500 hover:text-green-500 hover:bg-white" href="{{prev_page.url}}">Page {{prev_page.no}}</a>
+                {% endif %}
+                <p class="mx-2 p-2 border rounded border-green-500 text-green-500 hover:border-green-500 hover:text-green-500 hover:bg-white">Page {{cur_page}}</p>
+                {% if next_page %}
+                    <a class="mx-2 p-2 border rounded bg-green-500 hover:border-green-500 hover:text-green-500 hover:bg-white" href="{{next_page.url}}">Page {{next_page.no}}</a>
+                {% endif %}
+            </div>
+
+{% include 'footer.html' %}
