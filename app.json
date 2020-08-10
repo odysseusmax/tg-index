@@ -1,0 +1,29 @@
+{
+  "name": "Telegram Index",
+  "description": "Telegram index",
+  "repository": "https://github.com/odysseusmax/tg-index",
+  "keywords": ["telegram", "index"],
+  "env": {
+        "CHAT_ID": {
+            "description": "Id of the telegram channel (or chat) to be indexed.",
+            "value": ""
+        },
+        "SESSION_STRING": {
+            "description": "Your session string",
+            "value": "",
+        },
+        "API_ID": {
+            "description": "Your API_ID.  Refer project docs.",
+            "value": ""
+        },
+        "API_HASH": {
+            "description": "Your API_ID. Refer project docs.",
+            "value": ""
+        }
+   },
+   "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

@@ -48,6 +48,10 @@ $ pip3 install -U -r requirements.txt
 $ python3 -m app
 ```
 
+* Deploy to heroku.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index)
+
 ## Contributions
 
 Contributions are welcome.
