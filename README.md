@@ -44,7 +44,9 @@ $ pip3 install -U -r requirements.txt
 
 * Run app.
 
-`$ python3 -m app`
+```bash
+$ python3 -m app
+```
 
 ## Contributions
 
