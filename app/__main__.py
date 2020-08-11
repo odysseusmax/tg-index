@@ -11,6 +11,7 @@ from .routes import setup_routes
 from .views import Views
 from .config import host, port, session_string, api_id, api_hash, debug
 
+
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 client = Client(session_string, api_id, api_hash)
 logging.basicConfig(level=logging.DEBUG if debug else logging.INFO)
