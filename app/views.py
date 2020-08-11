@@ -19,8 +19,16 @@ class Views:
         self.client = client
     
 
+    @aiohttp_jinja2.template('new_index.html')
+    async def new_index(self, req):
+        return {
+            'chat_id': chat_id
+        }
+
+
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
+        chat_id = int(req.match_info["chat_id"])
         log_msg = ''
         try:
             offset_val = int(req.query.get('page', '1'))
@@ -96,6 +104,7 @@ class Views:
     @aiohttp_jinja2.template('info.html')
     async def info(self, req):
         file_id = int(req.match_info["id"])
+        chat_id = int(req.match_info["chat_id"])
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
@@ -168,6 +177,7 @@ class Views:
 
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
+        chat_id = int(req.match_info["chat_id"])
         
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:

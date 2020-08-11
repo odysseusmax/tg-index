@@ -19,7 +19,12 @@ except (KeyError, ValueError):
     sys.exit(1)
 
 try:
-    chat_id = int(os.environ["CHAT_ID"])
+    # array to store the channel ID who are authorized to use the bot
+    chat_id = list(set(
+        int(x) for x in os.environ[
+            "CHAT_ID"
+        ].split()
+    ))
 except (KeyError, ValueError):
     print("Please set the CHAT_ID environment variable correctly")
     sys.exit(1)

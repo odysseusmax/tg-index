@@ -1,0 +1,11 @@
+{% include 'header.html' %}
+            <div class="mx-auto my-2 w-full overflow-x-auto px-4 text-xs">
+                <table class="m-auto rounded text-left shadow-md w-full">
+                    {% for item in chat_id %}
+                        <tr class="border-t border-b border-gray-300 my-2 p-4 rounded hover:bg-blue-100">
+                            <th class="my-2 p-2 rounded hover:text-blue-600"><a href="/{{item}}/">{{item}}</a></th>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+{% include 'footer.html' %}
