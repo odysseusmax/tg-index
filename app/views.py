@@ -6,8 +6,8 @@ from jinja2 import Markup
 from telethon.tl import types
 from telethon.tl.custom import Message
 
-from util import get_file_name, get_human_size
-from config import chat_id
+from .util import get_file_name, get_human_size
+from .config import chat_id
 
 
 log = logging.getLogger(__name__)
