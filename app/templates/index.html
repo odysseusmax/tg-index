@@ -1,5 +1,5 @@
 {% include 'header.html' %}
-            <form class="p-4" action="/">
+            <form class="p-4" action="/{{chat_id}}/">
                 <input class="border rounded p-2 border-indigo-500 placeholder-indigo-500 text-indigo-500" type="text" name="search" value="{% if search %}{{search}}{% endif %}" placeholder="search...">    
                 <button class="border rounded p-2 border-indigo-500 bg-indigo-500 text-white hover:text-indigo-500 hover:bg-white" type="submit">Search</button>
             </form>
@@ -21,7 +21,7 @@
                             <th class="my-2 p-2">{{item.file_id}}</th>
                             <th class="my-2 p-2">{{item.media}}</th> 
                             <th class="my-2 p-2">{{item.mime_type}}</th>
-                            <th class="my-2 p-2 rounded hover:text-blue-600"><a href="/{{item.file_id}}/view">{{item.insight}}</a></th>
+                            <th class="my-2 p-2 rounded hover:text-blue-600"><a href="/{{chat_id}}/{{item.file_id}}/view">{{item.insight}}</a></th>
                             <th class="my-2 p-2">{{item.date}}</th>
                             <th class="my-2 p-2">{{item.size}}</th>
                         </tr>

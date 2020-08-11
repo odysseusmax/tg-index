@@ -105,6 +105,7 @@ class Views:
             'cur_page': offset_val + 1,
             'next_page': next_page,
             'search': search_query,
+            'chat_id': chat_id
         }
 
     @aiohttp_jinja2.template('info.html')
@@ -151,7 +152,8 @@ class Views:
                 'size': file_size,
                 'media': media,
                 'caption': caption,
-                'title': f"Download | {file_name} | {file_size}"
+                'title': f"Download | {file_name} | {file_size}",
+                'chat_id': chat_id
             }
         elif message.message:
             text = Markup.escape(
@@ -161,6 +163,7 @@ class Views:
                 'found': True,
                 'media': False,
                 'text': text,
+                'chat_id': chat_id
             }
         else:
             return_val = {
