@@ -7,7 +7,7 @@
         <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
         
         <title>
-            {{title}}
+            {% if title %} {{title}} {% else %} Telegram Index {% endif %}
         </title>
         
     </head>

@@ -1,11 +1,16 @@
+import logging
+
 from aiohttp import web
 import aiohttp_jinja2
 from jinja2 import Markup
 from telethon.tl import types
 from telethon.tl.custom import Message
 
-from .util import get_file_name, get_human_size
-from .config import chat_id
+from util import get_file_name, get_human_size
+from config import chat_id
+
+
+log = logging.getLogger(__name__)
 
 
 class Views:
@@ -16,14 +21,17 @@ class Views:
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
+        log_msg = ''
         try:
             offset_val = int(req.query.get('page', '1'))
         except:
             offset_val = 1
+        log_msg += f"page: {offset_val} | "
         try:
             search_query = req.query.get('search', '')
         except:
             search_query = ''
+        log_msg += f"search query: {search_query} | "
         offset_val = 0 if offset_val <=1 else offset_val-1
         try:
             if search_query:
@@ -31,7 +39,10 @@ class Views:
             else:
                 messages = (await self.client.get_messages(chat_id, limit=20, add_offset=20*offset_val)) or []
         except:
+            log.debug("failed to get messages", exc_info=True)
             messages = []
+        log_msg += f"found {len(messages)} results"
+        log.debug(log_msg)
         results = []
         for m in messages:
             if m.file and not isinstance(m.media, types.MessageMediaWebPage):
@@ -79,7 +90,6 @@ class Views:
             'cur_page' : offset_val+1,
             'next_page': next_page,
             'search': search_query,
-            'title': "Telegram Index"
         }
 
 
@@ -88,12 +98,12 @@ class Views:
         file_id = int(req.match_info["id"])
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not isinstance(message, Message):
-            print(type(message))
+            log.debug(f"no valid entry for {file_id} in {chat_id}")
             return {
                 'found':False,
                 'reason' : "Entry you are looking for cannot be retrived!",
-                'title': "Telegram Index"
             }
+        return_val = {}
         if message.file and not isinstance(message.media, types.MessageMediaWebPage):
             file_name = get_file_name(message)
             file_size = get_human_size(message.file.size)
@@ -114,7 +124,7 @@ class Views:
                 
             else:
                 caption = False
-            return {
+            return_val = {
                 'found': True,
                 'name': file_name,
                 'id': file_id,
@@ -125,18 +135,19 @@ class Views:
             }
         elif message.message:
             text = Markup.escape(message.raw_text).__str__().replace('\n', '<br>')
-            return {
+            return_val = {
                 'found': True,
                 'media': False,
                 'text': text,
-                'title': "Telegram Index"
             }
         else:
-            return {
+            return_val = {
                 'found':False,
                 'reason' : "Some kind of entry that I cannot display",
-                'title': "Telegram Index"
             }
+        
+        log.debug(f"data for {file_id} in {chat_id} returned as {return_val}")
+        return return_val
         
     
     async def download_get(self, req):
@@ -160,11 +171,13 @@ class Views:
         
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
+            log.info(f"no result for {file_id} in {chat_id}")
             return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
         
         if thumb and message.document:
             thumbnail = message.document.thumbs
             if not thumbnail:
+                log.info(f"no thumbnail for {file_id} in {chat_id}")
                 return web.Response(status=404, text="404: Not Found")
             thumbnail = thumbnail[-1]
             mime_type = 'image/jpeg'
@@ -188,6 +201,7 @@ class Views:
             if (limit > size) or (offset < 0) or (limit < offset):
                 raise ValueError("range not in acceptable format")
         except ValueError:
+            log.info("Range Not Satisfiable", exc_info=True)
             return web.Response(
                 status=416,
                 text="416: Range Not Satisfiable",
@@ -198,6 +212,7 @@ class Views:
         
         if not head:
             body = self.client.download(media, size, offset, limit)
+            log.info(f"Serving file {message.id} in {chat_id} ; Range: {offset} - {limit}")
         else:
             body = None
         

@@ -31,3 +31,4 @@ except (KeyError, ValueError):
     sys.exit(1)
 
 host = os.environ.get("HOST", "0.0.0.0")
+debug = bool(os.environ.get("DEBUG"))
