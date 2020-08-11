@@ -41,6 +41,7 @@ $ pip3 install -U -r requirements.txt
 | `SESSION_STRING` (required) | String obtained by running `$ python3 app/generate_session_string.py`. (Login with the telegram account which is a participant of the given channel (or chat).
 | `PORT` (optional) | Port on which app should listen to, defaults to 8080.
 | `HOST` (optional) | Host name on which app should listen to, defaults to 0.0.0.0.
+| `DEBUG` (optional) | Give some value to set logging level to debug, info by default.
 
 * Run app.
 
@@ -51,6 +52,11 @@ $ python3 -m app
 * Deploy to heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index/tree/master)
+
+* Run on repl.it
+
+[![Run on Repl.it](https://repl.it/badge/github/odysseusmax/tg-index)](https://repl.it/github/odysseusmax/tg-index)
+
 
 ## Contributions
 

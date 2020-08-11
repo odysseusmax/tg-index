@@ -19,6 +19,11 @@
         "SESSION_STRING":{
             "description":"Your session string.",
             "value":""
+        },
+        "DEBUG":{
+            "description":"Give some value to set logging level to debug.",
+            "value":"",
+            "required": false
         }
     },
     "buildpacks":[
