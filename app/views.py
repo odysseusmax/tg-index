@@ -7,7 +7,7 @@ from telethon.tl import types
 from telethon.tl.custom import Message
 
 from .util import get_file_name, get_human_size
-from .config import chat_id
+from .config import chat_id as chat_id_s
 
 
 log = logging.getLogger(__name__)
@@ -21,12 +21,13 @@ class Views:
     @aiohttp_jinja2.template('new_index.html')
     async def new_index(self, req):
         return {
-            'chat_id': chat_id
+            'chat_id': chat_id_s
         }
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
         chat_id = int(req.match_info["chat_id"])
+
         log_msg = ''
         try:
             offset_val = int(req.query.get('page', '1'))
@@ -37,6 +38,17 @@ class Views:
             search_query = req.query.get('search', '')
         except:
             search_query = ''
+
+        if chat_id not in chat_id_s:
+            return {
+                'item_list': [],
+                'prev_page': False,
+                'cur_page': offset_val + 1,
+                'next_page': False,
+                'search': search_query,
+                'chat_id': chat_id
+            }
+
         log_msg += f"search query: {search_query} | "
         offset_val = 0 if offset_val <= 1 else offset_val - 1
         try:
@@ -112,6 +124,13 @@ class Views:
     async def info(self, req):
         file_id = int(req.match_info["id"])
         chat_id = int(req.match_info["chat_id"])
+
+        if chat_id not in chat_id_s:
+            return {
+                'found': False,
+                'reason': "do not have access to this CHAT",
+            }
+
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
@@ -189,6 +208,15 @@ class Views:
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
         chat_id = int(req.match_info["chat_id"])
+
+        if chat_id not in chat_id_s:
+            log.info(f"{chat_id} not in allowed values")
+            return web.Response(
+                status=403,
+                text=(
+                    "403: Forbidden. "
+                )
+            )
 
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
