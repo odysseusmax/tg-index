@@ -4,7 +4,12 @@ from sys import exit
 import os
 
 
-def get_config(name: str, default_value=None, should_prompt=False, error_message=None):
+def get_config(
+    name: str,
+    default_value=None,
+    should_prompt=False,
+    error_message=None
+):
     val = os.environ.get(name, default_value)
     if not val and should_prompt:
         try:

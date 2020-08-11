@@ -14,17 +14,15 @@ log = logging.getLogger(__name__)
 
 
 class Views:
-    
+
     def __init__(self, client):
         self.client = client
-    
 
     @aiohttp_jinja2.template('new_index.html')
     async def new_index(self, req):
         return {
             'chat_id': chat_id
         }
-
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
@@ -40,12 +38,21 @@ class Views:
         except:
             search_query = ''
         log_msg += f"search query: {search_query} | "
-        offset_val = 0 if offset_val <=1 else offset_val-1
+        offset_val = 0 if offset_val <= 1 else offset_val - 1
         try:
             if search_query:
-                messages = (await self.client.get_messages(chat_id, search=search_query, limit=20, add_offset=20*offset_val)) or []
+                messages = (await self.client.get_messages(
+                    entity=chat_id,
+                    search=search_query,
+                    limit=20,
+                    add_offset=20*offset_val
+                )) or []
             else:
-                messages = (await self.client.get_messages(chat_id, limit=20, add_offset=20*offset_val)) or []
+                messages = (await self.client.get_messages(
+                    entity=chat_id,
+                    limit=20,
+                    add_offset=20*offset_val
+                )) or []
         except:
             log.debug("failed to get messages", exc_info=True)
             messages = []
@@ -58,8 +65,8 @@ class Views:
                     file_id=m.id,
                     media=True,
                     mime_type=m.file.mime_type,
-                    insight = get_file_name(m)[:55],
-                    date = m.date.isoformat(),
+                    insight=get_file_name(m)[:55],
+                    date=m.date.isoformat(),
                     size=get_human_size(m.file.size)
                 )
             elif m.message:
@@ -67,39 +74,38 @@ class Views:
                     file_id=m.id,
                     media=False,
                     mime_type='text/plain',
-                    insight = m.raw_text[:55],
-                    date = m.date.isoformat(),
+                    insight=m.raw_text[:55],
+                    date=m.date.isoformat(),
                     size=get_human_size(len(m.raw_text))
                 )
             results.append(entry)
         prev_page = False
         next_page = False
         if offset_val:
-            query = {'page':offset_val}
+            query = {'page': offset_val}
             if search_query:
-                query.update({'search':search_query})
-            prev_page =  {
+                query.update({'search': search_query})
+            prev_page = {
                 'url': req.rel_url.with_query(query),
                 'no': offset_val
             }
-        
-        if len(messages)==20:
-            query = {'page':offset_val+2}
+
+        if len(messages) == 20:
+            query = {'page': offset_val + 2}
             if search_query:
-                query.update({'search':search_query})
-            next_page =  {
+                query.update({'search': search_query})
+            next_page = {
                 'url': req.rel_url.with_query(query),
-                'no': offset_val+2
+                'no': offset_val + 2
             }
 
         return {
-            'item_list':results, 
+            'item_list': results,
             'prev_page': prev_page,
-            'cur_page' : offset_val+1,
+            'cur_page': offset_val + 1,
             'next_page': next_page,
             'search': search_query,
         }
-
 
     @aiohttp_jinja2.template('info.html')
     async def info(self, req):
@@ -109,28 +115,33 @@ class Views:
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
             return {
-                'found':False,
-                'reason' : "Entry you are looking for cannot be retrived!",
+                'found': False,
+                'reason': "Entry you are looking for cannot be retrived!",
             }
         return_val = {}
-        if message.file and not isinstance(message.media, types.MessageMediaWebPage):
+        if message.file and not isinstance(
+            message.media,
+            types.MessageMediaWebPage
+        ):
             file_name = get_file_name(message)
             file_size = get_human_size(message.file.size)
             media = {
-                'type':message.file.mime_type
+                'type': message.file.mime_type
             }
             if 'video/' in message.file.mime_type:
                 media.update({
-                    'video' : True
+                    'video': True
                 })
             elif 'audio/' in message.file.mime_type:
                 media['audio'] = True
             elif 'image/' in message.file.mime_type:
                 media['image'] = True
-                
+
             if message.text:
-                caption = Markup.escape(message.raw_text).__str__().replace('\n', '<br>')
-                
+                caption = Markup.escape(
+                    message.raw_text
+                ).__str__().replace('\n', '<br>')
+
             else:
                 caption = False
             return_val = {
@@ -140,10 +151,12 @@ class Views:
                 'size': file_size,
                 'media': media,
                 'caption': caption,
-                'title': f"Download | {file_name} | {file_size}" 
+                'title': f"Download | {file_name} | {file_size}"
             }
         elif message.message:
-            text = Markup.escape(message.raw_text).__str__().replace('\n', '<br>')
+            text = Markup.escape(
+                message.raw_text
+            ).__str__().replace('\n', '<br>')
             return_val = {
                 'found': True,
                 'media': False,
@@ -151,39 +164,40 @@ class Views:
             }
         else:
             return_val = {
-                'found':False,
-                'reason' : "Some kind of entry that I cannot display",
+                'found': False,
+                'reason': "Some kind of entry that I cannot display",
             }
-        
+
         log.debug(f"data for {file_id} in {chat_id} returned as {return_val}")
         return return_val
-        
-    
+
     async def download_get(self, req):
         return await self.handle_request(req)
-    
-    
+
     async def download_head(self, req):
         return await self.handle_request(req, head=True)
-    
-    
+
     async def thumbnail_get(self, req):
         return await self.handle_request(req, thumb=True)
-    
 
     async def thumbnail_head(self, req):
         return await self.handle_request(req, head=True, thumb=True)
 
-
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
         chat_id = int(req.match_info["chat_id"])
-        
+
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
             log.info(f"no result for {file_id} in {chat_id}")
-            return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
-        
+            return web.Response(
+                status=410,
+                text=(
+                    "410: Gone. "
+                    "Access to the target resource is no longer available!"
+                )
+            )
+
         if thumb and message.document:
             thumbnail = message.document.thumbs
             if not thumbnail:
@@ -204,7 +218,7 @@ class Views:
             size = message.file.size
             file_name = get_file_name(message)
             mime_type = message.file.mime_type
-        
+
         try:
             offset = req.http_range.start or 0
             limit = req.http_range.stop or size
@@ -215,17 +229,20 @@ class Views:
             return web.Response(
                 status=416,
                 text="416: Range Not Satisfiable",
-                headers = {
+                headers={
                     "Content-Range": f"bytes */{size}"
                 }
             )
-        
+
         if not head:
             body = self.client.download(media, size, offset, limit)
-            log.info(f"Serving file {message.id} in {chat_id} ; Range: {offset} - {limit}")
+            log.info(
+                f"Serving file {message.id} in "
+                f"{chat_id} ; Range: {offset} - {limit}"
+            )
         else:
             body = None
-        
+
         headers = {
             "Content-Type": mime_type,
             "Content-Range": f"bytes {offset}-{limit}/{size}",
