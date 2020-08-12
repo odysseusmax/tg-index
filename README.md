@@ -54,6 +54,10 @@ $ python3 -m app
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index/tree/master) [![Run on Repl.it](https://repl.it/badge/github/odysseusmax/tg-index)](https://repl.it/github/odysseusmax/tg-index)
 
 
+## Video Tutorial
+
+Here's a YouTube tutorial video for deploying to [Heroku](https://heroku.com/ "Heroku"). [Video Link](https://youtu.be/V8MKM6yzydw "Tutorial video for deploying to Heroku")
+
 ## Contributions
 
 Contributions are welcome.
