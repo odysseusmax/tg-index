@@ -1,6 +1,6 @@
 from aiohttp import web
 
-from config import chat_ids
+from .config import chat_ids
 
 
 def setup_routes(app, handler):
