@@ -19,7 +19,8 @@ except (KeyError, ValueError):
     sys.exit(1)
 
 try:
-    chat_id = int(os.environ["CHAT_ID"])
+    chat_id_raw = os.environ["CHAT_ID"]
+    chat_ids = [int(chat_id) for chat_id in chat_id_raw.split(' ')]
 except (KeyError, ValueError):
     print("Please set the CHAT_ID environment variable correctly")
     sys.exit(1)

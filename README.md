@@ -37,7 +37,7 @@ $ pip3 install -U -r requirements.txt
 |------------- | -------------
 | `API_ID` (required) | Telegram api_id obtained from https://my.telegram.org/apps.
 | `API_HASH` (required) | Telegram api_hash obtained from https://my.telegram.org/apps.
-| `CHAT_ID` (required) | Id of the telegram channel (or chat) to be indexed.
+| `CHAT_ID` (required) | Id of the telegram channel (or chat) to be indexed. Separate id's with space if you want to index more than one channel.
 | `SESSION_STRING` (required) | String obtained by running `$ python3 app/generate_session_string.py`. (Login with the telegram account which is a participant of the given channel (or chat).
 | `PORT` (optional) | Port on which app should listen to, defaults to 8080.
 | `HOST` (optional) | Host name on which app should listen to, defaults to 0.0.0.0.

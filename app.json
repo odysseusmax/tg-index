@@ -13,7 +13,7 @@
             "value":""
         },
         "CHAT_ID":{
-            "description":"Id of the telegram channel (or chat) to be indexed.",
+            "description":"Id of the telegram channel (or chat) to be indexed. Separate id's with space if you want to index more than one channel.",
             "value":""
         },
         "SESSION_STRING":{

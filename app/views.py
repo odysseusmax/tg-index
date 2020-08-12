@@ -7,7 +7,7 @@ from telethon.tl import types
 from telethon.tl.custom import Message
 
 from .util import get_file_name, get_human_size
-from .config import chat_id
+from .config import chat_ids
 
 
 log = logging.getLogger(__name__)
@@ -18,9 +18,25 @@ class Views:
     def __init__(self, client):
         self.client = client
     
+    
+    @aiohttp_jinja2.template('home.html')
+    async def home(self, req):
+        if len(chat_ids) == 1:
+            raise web.HTTPFound(f"{chat_ids[0]}")
+        chats = []
+        for chat_id in chat_ids:
+            chat = await self.client.get_entity(chat_id)
+            chats.append({
+                'id': chat_id,
+                'name': chat.title
+            })
+        return {'chats':chats}
+    
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
+        chat_id = int(req.rel_url.path.split('/')[1])
+        chat = await self.client.get_entity(chat_id)
         log_msg = ''
         try:
             offset_val = int(req.query.get('page', '1'))
@@ -34,14 +50,19 @@ class Views:
         log_msg += f"search query: {search_query} | "
         offset_val = 0 if offset_val <=1 else offset_val-1
         try:
+            kwargs = {
+                'entity': chat_id,
+                'limit': 20,
+                'add_offset': 20*offset_val
+            }
             if search_query:
-                messages = (await self.client.get_messages(chat_id, search=search_query, limit=20, add_offset=20*offset_val)) or []
-            else:
-                messages = (await self.client.get_messages(chat_id, limit=20, add_offset=20*offset_val)) or []
+                kwargs.update({'search': search_query})
+            messages = (await self.client.get_messages(**kwargs)) or []
+            
         except:
             log.debug("failed to get messages", exc_info=True)
             messages = []
-        log_msg += f"found {len(messages)} results"
+        log_msg += f"found {len(messages)} results | "
         log.debug(log_msg)
         results = []
         for m in messages:
@@ -52,7 +73,8 @@ class Views:
                     mime_type=m.file.mime_type,
                     insight = get_file_name(m)[:55],
                     date = m.date.isoformat(),
-                    size=get_human_size(m.file.size)
+                    size=get_human_size(m.file.size),
+                    url=req.rel_url.with_path(f"/{chat_id}/{m.id}/view")
                 )
             elif m.message:
                 entry = dict(
@@ -61,7 +83,8 @@ class Views:
                     mime_type='text/plain',
                     insight = m.raw_text[:55],
                     date = m.date.isoformat(),
-                    size=get_human_size(len(m.raw_text))
+                    size=get_human_size(len(m.raw_text)),
+                    url=req.rel_url.with_path(f"/{chat_id}/{m.id}/view")
                 )
             results.append(entry)
         prev_page = False
@@ -90,12 +113,14 @@ class Views:
             'cur_page' : offset_val+1,
             'next_page': next_page,
             'search': search_query,
+            'name' : chat.title
         }
 
 
     @aiohttp_jinja2.template('info.html')
     async def info(self, req):
         file_id = int(req.match_info["id"])
+        chat_id = int(req.rel_url.path.split('/')[1])
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
@@ -168,7 +193,7 @@ class Views:
 
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
-        
+        chat_id = int(req.rel_url.path.split('/')[1])
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
             log.info(f"no result for {file_id} in {chat_id}")
@@ -210,11 +235,10 @@ class Views:
                 }
             )
         
+        body = None
         if not head:
             body = self.client.download(media, size, offset, limit)
             log.info(f"Serving file {message.id} in {chat_id} ; Range: {offset} - {limit}")
-        else:
-            body = None
         
         headers = {
             "Content-Type": mime_type,
