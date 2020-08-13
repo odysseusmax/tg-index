@@ -9,7 +9,7 @@
                         
                         <div class="mx-auto w-full md:w-3/4 lg:w-2/5 p-2">
                             {% if media.image %}
-                                <img class="mx-auto w-2/3 md:w-3/5 lg:w-2/5 rounded" src="../{{id}}/thumbnail" alt="{{name}}">
+                                <img class="mx-auto rounded" src="../{{id}}/thumbnail" alt="{{name}}">
                             {% elif media.video %}
                                 <video id="my-video-player" class="mx-auto rounded" controls poster="../{{id}}/thumbnail">
                                     <source src="../{{id}}/download" type="{{ media.type }}" />
