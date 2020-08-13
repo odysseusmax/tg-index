@@ -21,6 +21,7 @@ except (KeyError, ValueError):
 try:
     chat_id_raw = os.environ["CHAT_ID"]
     chat_ids = [int(chat_id) for chat_id in chat_id_raw.split(' ')]
+    alias_ids = []
 except (KeyError, ValueError):
     print("Please set the CHAT_ID environment variable correctly")
     sys.exit(1)

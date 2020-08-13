@@ -7,7 +7,7 @@ from telethon.tl import types
 from telethon.tl.custom import Message
 
 from .util import get_file_name, get_human_size
-from .config import chat_ids
+from .config import chat_ids, alias_ids
 
 
 log = logging.getLogger(__name__)
@@ -22,12 +22,12 @@ class Views:
     @aiohttp_jinja2.template('home.html')
     async def home(self, req):
         if len(chat_ids) == 1:
-            raise web.HTTPFound(f"{chat_ids[0]}")
+            raise web.HTTPFound(f"{alias_ids[0]}")
         chats = []
-        for chat_id in chat_ids:
+        for chat_id, alias_id in zip(chat_ids, alias_ids):
             chat = await self.client.get_entity(chat_id)
             chats.append({
-                'id': chat_id,
+                'id': alias_id,
                 'name': chat.title
             })
         return {'chats':chats}
@@ -35,7 +35,8 @@ class Views:
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
-        chat_id = int(req.rel_url.path.split('/')[1])
+        alias_id = req.rel_url.path.split('/')[1]
+        chat_id = chat_ids[alias_ids.index(alias_id)]
         chat = await self.client.get_entity(chat_id)
         log_msg = ''
         try:
@@ -74,7 +75,7 @@ class Views:
                     insight = get_file_name(m)[:55],
                     date = m.date.isoformat(),
                     size=get_human_size(m.file.size),
-                    url=req.rel_url.with_path(f"/{chat_id}/{m.id}/view")
+                    url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
                 )
             elif m.message:
                 entry = dict(
@@ -84,7 +85,7 @@ class Views:
                     insight = m.raw_text[:55],
                     date = m.date.isoformat(),
                     size=get_human_size(len(m.raw_text)),
-                    url=req.rel_url.with_path(f"/{chat_id}/{m.id}/view")
+                    url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
                 )
             results.append(entry)
         prev_page = False
@@ -120,7 +121,8 @@ class Views:
     @aiohttp_jinja2.template('info.html')
     async def info(self, req):
         file_id = int(req.match_info["id"])
-        chat_id = int(req.rel_url.path.split('/')[1])
+        alias_id = req.rel_url.path.split('/')[1]
+        chat_id = chat_ids[alias_ids.index(alias_id)]
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
@@ -193,7 +195,8 @@ class Views:
 
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
-        chat_id = int(req.rel_url.path.split('/')[1])
+        alias_id = req.rel_url.path.split('/')[1]
+        chat_id = chat_ids[alias_ids.index(alias_id)]
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
             log.info(f"no result for {file_id} in {chat_id}")

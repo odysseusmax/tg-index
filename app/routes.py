@@ -1,6 +1,9 @@
+import random
+import string
+
 from aiohttp import web
 
-from .config import chat_ids
+from .config import chat_ids, alias_ids
 
 
 def setup_routes(app, handler):
@@ -9,7 +12,13 @@ def setup_routes(app, handler):
         web.get('/', h.home, name='home')
     ]
     for chat_id in chat_ids:
-        p = f"/{chat_id}"
+        while True:
+            alias_id = ''.join([random.choice(string.ascii_letters + string.digits) for _ in range(len(str(chat_id)))])
+            if alias_id in alias_ids:
+                continue
+            alias_ids.append(alias_id)
+            break
+        p = f"/{alias_id}"
         r = [
             web.get(p, h.index),
             web.get(p + r"/{id:\d+}/view", h.info),
