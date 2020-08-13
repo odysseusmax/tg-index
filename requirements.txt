@@ -1,4 +1,4 @@
 aiohttp
 aiohttp-jinja2
-telethon
+git+https://github.com/LonamiWebs/Telethon.git
 cryptg

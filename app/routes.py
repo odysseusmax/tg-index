@@ -21,6 +21,7 @@ def setup_routes(app, handler):
         p = f"/{alias_id}"
         r = [
             web.get(p, h.index),
+            web.get(p + r"/logo", h.logo),
             web.get(p + r"/{id:\d+}/view", h.info),
             web.get(p + r"/{id:\d+}/download", h.download_get),
             web.head(p + r"/{id:\d+}/download", h.download_head),

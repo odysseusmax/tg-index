@@ -114,7 +114,8 @@ class Views:
             'cur_page' : offset_val+1,
             'next_page': next_page,
             'search': search_query,
-            'name' : chat.title
+            'name' : chat.title,
+            'logo': req.rel_url.with_path(f"/{alias_id}/logo")
         }
 
 
@@ -191,6 +192,29 @@ class Views:
 
     async def thumbnail_head(self, req):
         return await self.handle_request(req, head=True, thumb=True)
+    
+    
+    async def logo(self, req):
+        alias_id = req.rel_url.path.split('/')[1]
+        chat_id = chat_ids[alias_ids.index(alias_id)]
+        photo = await self.client.get_profile_photos(chat_id)
+        if not photo:
+            return web.Response(status=404, text="404: Chat has no profile photo")
+        photo = photo[0]
+        size =  photo.sizes[0]
+        media = types.InputPhotoFileLocation(
+            id=photo.id,
+            access_hash=photo.access_hash,
+            file_reference=photo.file_reference,
+            thumb_size=size.type
+        )
+        body = self.client.iter_download(media)
+        r = web.Response(
+            status=200,
+            body=body,
+        )
+        r.enable_chunked_encoding()
+        return r
 
 
     async def handle_request(self, req, head=False, thumb=False):
