@@ -12,7 +12,7 @@
                                 <img class="mx-auto w-2/3 md:w-3/5 lg:w-2/5 rounded" src="../{{id}}/thumbnail" alt="{{name}}">
                             {% elif media.video %}
                                 <video id="my-video-player" class="mx-auto rounded" controls poster="../{{id}}/thumbnail">
-                                    <source src="/{{id}}/download" type="{{ media.type }}" />
+                                    <source src="../{{id}}/download" type="{{ media.type }}" />
                                 </video>
                             {% elif media.audio %}
                                 <audio class="mx-auto" controls autoplay muted src="../{{id}}/download" type="{{ media.type }}"></audio>
