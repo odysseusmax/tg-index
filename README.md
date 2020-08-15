@@ -8,6 +8,10 @@
 * If the message is a media message, you can download the file.
 * You can search for specific terms too.
 
+## Demo
+
+Hosted demo site: https://tg-index-demo.herokuapp.com/
+
 ## Deploy Guide
 
 * Clone to local machine.
