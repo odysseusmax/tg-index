@@ -18,7 +18,7 @@ class Views:
     def __init__(self, client):
         self.client = client
     
-    
+
     @aiohttp_jinja2.template('home.html')
     async def home(self, req):
         if len(chat_ids) == 1:
@@ -31,7 +31,7 @@ class Views:
                 'name': chat.title
             })
         return {'chats':chats}
-    
+
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
@@ -73,7 +73,7 @@ class Views:
                     media=True,
                     mime_type=m.file.mime_type,
                     insight = get_file_name(m)[:55],
-                    date = m.date.isoformat(),
+                    date = m.date,
                     size=get_human_size(m.file.size),
                     url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
                 )
@@ -83,7 +83,7 @@ class Views:
                     media=False,
                     mime_type='text/plain',
                     insight = m.raw_text[:55],
-                    date = m.date.isoformat(),
+                    date = m.date,
                     size=get_human_size(len(m.raw_text)),
                     url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
                 )
@@ -132,6 +132,15 @@ class Views:
                 'reason' : "Entry you are looking for cannot be retrived!",
             }
         return_val = {}
+        reply_btns = []
+        if message.reply_markup:
+            if isinstance(message.reply_markup, types.ReplyInlineMarkup):
+                for button_row in message.reply_markup.rows:
+                    btns = []
+                    for button in button_row.buttons:
+                        if isinstance(button, types.KeyboardButtonUrl):
+                            btns.append({'url': button.url, 'text': button.text})
+                    reply_btns.append(btns)
         if message.file and not isinstance(message.media, types.MessageMediaWebPage):
             file_name = get_file_name(message)
             file_size = get_human_size(message.file.size)
@@ -159,7 +168,8 @@ class Views:
                 'size': file_size,
                 'media': media,
                 'caption': caption,
-                'title': f"Download | {file_name} | {file_size}" 
+                'title': f"Download | {file_name} | {file_size}",
+                'reply_btns': reply_btns
             }
         elif message.message:
             text = Markup.escape(message.raw_text).__str__().replace('\n', '<br>')
@@ -167,33 +177,18 @@ class Views:
                 'found': True,
                 'media': False,
                 'text': text,
+                'reply_btns': reply_btns
             }
         else:
             return_val = {
                 'found':False,
                 'reason' : "Some kind of entry that I cannot display",
             }
-        
+        #return_val.update({'reply_btns': reply_btns})
         log.debug(f"data for {file_id} in {chat_id} returned as {return_val}")
         return return_val
-        
-    
-    async def download_get(self, req):
-        return await self.handle_request(req)
-    
-    
-    async def download_head(self, req):
-        return await self.handle_request(req, head=True)
-    
-    
-    async def thumbnail_get(self, req):
-        return await self.handle_request(req, thumb=True)
     
 
-    async def thumbnail_head(self, req):
-        return await self.handle_request(req, head=True, thumb=True)
-    
-    
     async def logo(self, req):
         alias_id = req.rel_url.path.split('/')[1]
         chat_id = chat_ids[alias_ids.index(alias_id)]
@@ -216,6 +211,22 @@ class Views:
         r.enable_chunked_encoding()
         return r
 
+    
+    async def download_get(self, req):
+        return await self.handle_request(req)
+    
+    
+    async def download_head(self, req):
+        return await self.handle_request(req, head=True)
+    
+    
+    async def thumbnail_get(self, req):
+        return await self.handle_request(req, thumb=True)
+    
+
+    async def thumbnail_head(self, req):
+        return await self.handle_request(req, head=True, thumb=True)
+
 
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
@@ -223,13 +234,13 @@ class Views:
         chat_id = chat_ids[alias_ids.index(alias_id)]
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
-            log.info(f"no result for {file_id} in {chat_id}")
+            log.debug(f"no result for {file_id} in {chat_id}")
             return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
         
         if thumb and message.document:
             thumbnail = message.document.thumbs
             if not thumbnail:
-                log.info(f"no thumbnail for {file_id} in {chat_id}")
+                log.debug(f"no thumbnail for {file_id} in {chat_id}")
                 return web.Response(status=404, text="404: Not Found")
             thumbnail = thumbnail[-1]
             mime_type = 'image/jpeg'
@@ -253,7 +264,6 @@ class Views:
             if (limit > size) or (offset < 0) or (limit < offset):
                 raise ValueError("range not in acceptable format")
         except ValueError:
-            log.info("Range Not Satisfiable", exc_info=True)
             return web.Response(
                 status=416,
                 text="416: Range Not Satisfiable",
@@ -262,10 +272,11 @@ class Views:
                 }
             )
         
-        body = None
         if not head:
             body = self.client.download(media, size, offset, limit)
-            log.info(f"Serving file {message.id} in {chat_id} ; Range: {offset} - {limit}")
+            log.info(f"Serving file in {message.id} (chat {chat_id}) ; Range: {offset} - {limit}")
+        else:
+            body = None
         
         headers = {
             "Content-Type": mime_type,

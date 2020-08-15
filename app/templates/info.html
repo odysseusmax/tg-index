@@ -20,8 +20,21 @@
                             
                             {% if caption %}
                             
-                                <div class="flex justify-center mt-1 text-gray-300 font-mono text-xs lg:text-sm xl:text-lg break-all">
-                                    <p class="text-left rounded p-4 bg-gray-900 w-auto inline-block shadow-lg"> {{ caption|safe }} </p>
+                                <div class="mx-auto mt-0">
+                                    <div class="flex justify-center text-gray-300 font-mono text-xs lg:text-sm xl:text-lg">
+                                        <p class="text-left w-full rounded p-4 bg-gray-900 shadow-lg"> {{ caption|safe }} </p>
+                                    </div>
+                                    {% if reply_btns %}
+                                        <div class="w-full block">
+                                            {% for row in reply_btns %}
+                                                <div class="flex justify-center">
+                                                    {% for btn in row %}
+                                                        <a class="p-4 mx-2 my-1 flex-1 border rounded bg-white border-blue-500 text-center text-blue-500 hover:bg-blue-500 hover:text-white" href="{{ btn.url }}" target="_blank"> {{btn.text}} </a>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             
                             {% endif %}
@@ -34,8 +47,21 @@
                         
                         </div>
                     {% else %}
-                        <div class="mx-auto flex justify-center w-full md:w-3/4 mt-1 text-gray-300 font-mono text-xs lg:text-sm xl:text-lg break-all">
-                            <p class="text-left rounded p-4 bg-gray-900 w-auto inline-block shadow-lg"> {{ text|safe }} </p>
+                        <div class="mx-auto flex flex-wrap justify-center w-full md:w-3/4 mt-1">
+                            <div class="flex justify-center text-gray-300 font-mono text-xs lg:text-sm xl:text-lg break-all">
+                                <p class="text-left rounded p-4 bg-gray-900 w-full shadow-lg"> {{ text|safe }} </p>
+                            </div>
+                            {% if reply_btns %}
+                                <div class="w-full block">
+                                    {% for row in reply_btns %}
+                                        <div class="flex justify-center">
+                                            {% for btn in row %}
+                                                <a class="p-4  mx-2 my-1 flex-1 border rounded bg-white border-blue-500 text-center text-blue-500 hover:bg-blue-500 hover:text-white" href="{{ btn.url }}" target="_blank"> {{btn.text}} </a>
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                     
