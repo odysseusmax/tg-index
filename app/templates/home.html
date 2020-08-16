@@ -3,10 +3,10 @@
     <h1 class=" my-2 text-2xl text-center font-bold text-green-400">
         Available Sources
     </h1>
-    <div class="mx-auto my-2 p-2 w-full break-words">
-        <div class="block md:flex flex-wrap justify-center w-full">
+    <div class="mx-auto my-2 p-2 w-full">
+        <div class="block md:flex md:flex-wrap md:justify-center md:content-center md:items-center w-full text-center break-words">
             {% for chat in chats %}
-                <li class="w-full md:w-2/5 lg:w-1/4 border border-blue-300 rounded bg-blue-100 hover:bg-blue-200 p-3 my-3 md:mx-1 shadow-md"> <a href="/{{chat.id}}" > {{chat.name}} </a> </li>
+                <div class="w-full h-full md:w-2/5 lg:w-1/4 border border-blue-300 rounded bg-blue-100 hover:bg-blue-200 p-4 my-2 md:mx-1 shadow-md transition ease-in duration-150"> <a href="/{{chat.id}}" > {{chat.name}} </a> </div>
             {% endfor %}
         </div>
     </div>

@@ -8,7 +8,7 @@
                 
                 <div class="my-2">
                     <form class="">
-                        <input class="border rounded-full px-4 py-2 border-indigo-500 placeholder-indigo-500 text-indigo-500" type="text" name="search" value="{% if search %}{{search}}{% endif %}" placeholder="search...">
+                        <input class="border rounded-full px-4 py-2 border-indigo-500 placeholder-indigo-500 text-indigo-500 outline-none" type="text" name="search" value="{% if search %}{{search}}{% endif %}" placeholder="search...">
                     </form>
                 </div>
                 
@@ -21,7 +21,7 @@
                         <tr class="border-t border-b bg-gray-200 border-gray-300 my-2 p-4">
                             <th class="my-2 p-2 hidden md:table-cell">Media</th> 
                             <th class="my-2 p-2 hidden md:table-cell">Type</th>
-                            <th class="my-2 p-2">Description</th>
+                            <th class="my-2 p-2">Item description</th>
                             <th class="my-2 p-2 hidden md:table-cell">DateTime</th>
                             <th class="my-2 p-2 hidden md:table-cell">Size</th>
                         </tr>
@@ -30,7 +30,7 @@
                     <tbody>
 
                         {% for item in item_list %}
-                            <tr class="border-t border-b border-gray-300 my-4 p-4 rounded hover:bg-blue-100">
+                            <tr id="{{item.file_id}}" class="border-t border-b border-gray-300 my-4 p-4 rounded hover:bg-blue-100">
                                 <td class="my-2 p-2 hidden md:table-cell">{{item.media}}</td> 
                                 <td class="my-2 p-2 hidden md:table-cell">{{item.mime_type}}</td>
                                 <td class="my-2 p-2 rounded hover:text-blue-600 break-all"><a title="{{item.insight}}" href="{{item.url}}">{{item.insight}}</a></td>
