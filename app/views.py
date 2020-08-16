@@ -210,7 +210,7 @@ class Views:
         )
         r.enable_chunked_encoding()
         return r
-
+    
     
     async def download_get(self, req):
         return await self.handle_request(req)
@@ -244,7 +244,7 @@ class Views:
                 return web.Response(status=404, text="404: Not Found")
             thumbnail = thumbnail[-1]
             mime_type = 'image/jpeg'
-            size = thumbnail.size
+            size = thumbnail.size if hasattr(thumbnail, 'size') else len(thumbnail.bytes)
             file_name = f"{file_id}_thumbnail.jpg"
             media = types.InputDocumentFileLocation(
                 id=message.document.id,
