@@ -7,7 +7,7 @@ from telethon.tl import types
 from telethon.tl.custom import Message
 
 from .util import get_file_name, get_human_size
-from .config import chat_ids, alias_ids
+from .config import index_settings, chat_ids
 
 
 log = logging.getLogger(__name__)
@@ -22,13 +22,12 @@ class Views:
     @aiohttp_jinja2.template('home.html')
     async def home(self, req):
         if len(chat_ids) == 1:
-            raise web.HTTPFound(f"{alias_ids[0]}")
+            raise web.HTTPFound(f"{chat_ids[0]['alias_id']}")
         chats = []
-        for chat_id, alias_id in zip(chat_ids, alias_ids):
-            chat = await self.client.get_entity(chat_id)
+        for chat in chat_ids:
             chats.append({
-                'id': alias_id,
-                'name': chat.title
+                'id': chat['alias_id'],
+                'name': chat['title']
             })
         return {'chats':chats}
 
@@ -36,8 +35,8 @@ class Views:
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
         alias_id = req.rel_url.path.split('/')[1]
-        chat_id = chat_ids[alias_ids.index(alias_id)]
-        chat = await self.client.get_entity(chat_id)
+        chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
+        chat_id = chat['chat_id']
         log_msg = ''
         try:
             offset_val = int(req.query.get('page', '1'))
@@ -67,6 +66,7 @@ class Views:
         log.debug(log_msg)
         results = []
         for m in messages:
+            entry = None
             if m.file and not isinstance(m.media, types.MessageMediaWebPage):
                 entry = dict(
                     file_id=m.id,
@@ -87,7 +87,8 @@ class Views:
                     size=get_human_size(len(m.raw_text)),
                     url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
                 )
-            results.append(entry)
+            if entry:
+                results.append(entry)
         prev_page = False
         next_page = False
         if offset_val:
@@ -114,7 +115,7 @@ class Views:
             'cur_page' : offset_val+1,
             'next_page': next_page,
             'search': search_query,
-            'name' : chat.title,
+            'name' : chat['title'],
             'logo': req.rel_url.with_path(f"/{alias_id}/logo")
         }
 
@@ -123,7 +124,8 @@ class Views:
     async def info(self, req):
         file_id = int(req.match_info["id"])
         alias_id = req.rel_url.path.split('/')[1]
-        chat_id = chat_ids[alias_ids.index(alias_id)]
+        chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
+        chat_id = chat['chat_id']
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
@@ -191,7 +193,8 @@ class Views:
 
     async def logo(self, req):
         alias_id = req.rel_url.path.split('/')[1]
-        chat_id = chat_ids[alias_ids.index(alias_id)]
+        chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
+        chat_id = chat['chat_id']
         photo = await self.client.get_profile_photos(chat_id)
         if not photo:
             return web.Response(status=404, text="404: Chat has no profile photo")
@@ -231,7 +234,8 @@ class Views:
     async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
         alias_id = req.rel_url.path.split('/')[1]
-        chat_id = chat_ids[alias_ids.index(alias_id)]
+        chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
+        chat_id = chat['chat_id']
         message = await self.client.get_messages(entity=chat_id, ids=file_id)
         if not message or not message.file:
             log.debug(f"no result for {file_id} in {chat_id}")

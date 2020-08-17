@@ -38,7 +38,7 @@ async def stop(app):
 async def init():
     server = web.Application()
     await start()
-    setup_routes(server, Views(client))
+    await setup_routes(server, Views(client))
     setup_jinja(server)
     server.on_cleanup.append(stop)
     return server

@@ -12,9 +12,9 @@
             "description":"Telegram api_hash obtained from https://my.telegram.org/apps.",
             "value":""
         },
-        "CHAT_ID":{
-            "description":"Id of the telegram channel (or chat) to be indexed. Separate id's with space if you want to index more than one channel.",
-            "value":""
+        "INDEX_SETTINGS":{
+            "description":"Refer project docs for info.",
+            "value": ""
         },
         "SESSION_STRING":{
             "description":"Your session string.",

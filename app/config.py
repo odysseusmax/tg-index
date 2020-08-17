@@ -1,4 +1,5 @@
 import traceback
+import json
 import sys
 import os
 
@@ -19,14 +20,17 @@ except (KeyError, ValueError):
     print("\n\nPlease set the API_ID and API_HASH environment variables correctly")
     print("You can get your own API keys at https://my.telegram.org/apps")
     sys.exit(1)
-
+    
 try:
-    chat_id_raw = os.environ["CHAT_ID"].strip()
-    chat_ids = [int(chat_id.strip()) for chat_id in chat_id_raw.split(' ')]
-    alias_ids = []
-except (KeyError, ValueError):
+    index_settings_str = os.environ["INDEX_SETTINGS"].strip()
+    index_settings = json.loads(index_settings_str)
+    '''
+    {"index_all": true, "index_private":false, "index_group": false, "index_channel": true, "include_chats": [], "exclude_chats": []}
+    
+    '''
+except:
     traceback.print_exc()
-    print("\n\nPlease set the CHAT_ID environment variable correctly")
+    print("\n\nPlease set the INDEX_SETTINGS environment variable correctly")
     sys.exit(1)
 
 try:
@@ -38,3 +42,5 @@ except (KeyError, ValueError):
 
 host = os.environ.get("HOST", "0.0.0.0")
 debug = bool(os.environ.get("DEBUG"))
+chat_ids = []
+alias_ids = []
