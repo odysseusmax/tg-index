@@ -57,7 +57,7 @@ This is the general format, change the values for corresponding fields as your r
     "index_private":false,
     "index_group": false,
     "index_channel": true,
-    "exclude_chats": []
+    "exclude_chats": [],
     "include_chats": [],
 }
 ```
