@@ -126,7 +126,11 @@ class Views:
         alias_id = req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
-        message = await self.client.get_messages(entity=chat_id, ids=file_id)
+        try:
+            message = await self.client.get_messages(entity=chat_id, ids=file_id)
+        except:
+            log.debug(f"Error in getting message {file_id} in {chat_id}", exc_info=True)
+            message = None
         if not message or not isinstance(message, Message):
             log.debug(f"no valid entry for {file_id} in {chat_id}")
             return {
@@ -195,7 +199,11 @@ class Views:
         alias_id = req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
-        photo = await self.client.get_profile_photos(chat_id)
+        try:
+            photo = await self.client.get_profile_photos(chat_id)
+        except:
+            log.debug(f"Error in getting profile picture in {chat_id}", exc_info=True)
+            photo = None
         if not photo:
             return web.Response(status=404, text="404: Chat has no profile photo")
         photo = photo[0]
@@ -236,7 +244,11 @@ class Views:
         alias_id = req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
-        message = await self.client.get_messages(entity=chat_id, ids=file_id)
+        try:
+            message = await self.client.get_messages(entity=chat_id, ids=file_id)
+        except:
+            log.debug(f"Error in getting message {file_id} in {chat_id}", exc_info=True)
+            message = None
         if not message or not message.file:
             log.debug(f"no result for {file_id} in {chat_id}")
             return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
