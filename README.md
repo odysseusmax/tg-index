@@ -1,6 +1,8 @@
 # Telegram Index
 
 > Python Web App which indexes a telegram channel(or a chat) and serves its files for download.
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/odysseusmax)  
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 
 ## Overview
 
