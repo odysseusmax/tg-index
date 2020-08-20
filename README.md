@@ -1,18 +1,19 @@
 # Telegram Index
 
 > Python Web App which indexes a telegram channel(or a chat) and serves its files for download.
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/odysseusmax)  
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 
-## Overview
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](.)  [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-* This app indexes all the available messages.
-* If the message is a media message, you can download the file.
-* You can search for specific terms too.
+## Highlights
+
+* Index one or more telegram channels/chats.
+* View messages and media files on the browser.
+* Search through the channel/chat.
+* Download media files through browser/download managers.
 
 ## Demo
 
-Hosted demo site: https://tg-index-demo.herokuapp.com/
+Hosted demo site: https://tg-index-demo.herokuapp.com
 
 ## Deploy Guide
 
@@ -51,7 +52,7 @@ $ pip3 install -U -r requirements.txt
 
 * **Setting value for `INDEX_SETTINGS`**
 
-This is the general format, change the values for corresponding fields as your requirements.
+This is the general format, change the values of corresponding fields as your requirements.
 
 ```
 {
@@ -63,12 +64,12 @@ This is the general format, change the values for corresponding fields as your r
     "include_chats": [],
 }
 ```
-* `index_all` - Whether to consider all the chats associated with the telegram account. Value should either be `true` or `false`.
-* `index_private` - Whether to index private chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
-* `index_group` - Whether to index group chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
-* `index_channel` - Whether to index channels. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
-* `exclude_chats` - An array/list of chat id's that should be ignored for indexing. Only considered if `index_all` is set to `true`. 
-* `include_chats` - An array/list of chat id's to index. Only considered if `index_all` is set to `false`. 
+> * `index_all` - Whether to consider all the chats associated with the telegram account. Value should either be `true` or `false`.
+> * `index_private` - Whether to index private chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
+> * `index_group` - Whether to index group chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
+> * `index_channel` - Whether to index channels. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
+> * `exclude_chats` - An array/list of chat id's that should be ignored for indexing. Only considered if `index_all` is set to `true`. 
+> * `include_chats` - An array/list of chat id's to index. Only considered if `index_all` is set to `false`. 
 
 
 * **Run app.**
@@ -77,14 +78,10 @@ This is the general format, change the values for corresponding fields as your r
 $ python3 -m app
 ```
 
-* Other quick methods.
+* **Other quick methods.**
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index/tree/master) [![Run on Repl.it](https://repl.it/badge/github/odysseusmax/tg-index)](https://repl.it/github/odysseusmax/tg-index)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index/tree/master)    [![Run on Repl.it](https://repl.it/badge/github/odysseusmax/tg-index)](https://repl.it/github/odysseusmax/tg-index)
 
-
-## Video Tutorial
-
-Here's a YouTube tutorial video for deploying to [Heroku](https://heroku.com/ "Heroku"). [Video Link](https://youtu.be/V8MKM6yzydw "Tutorial video for deploying to Heroku")
 
 ## Contributions
 
