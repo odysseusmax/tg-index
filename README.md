@@ -52,7 +52,7 @@ $ pip3 install -U -r requirements.txt
 
 * **Setting value for `INDEX_SETTINGS`**
 
-This is the general format, change the values of corresponding fields as your requirements.
+This is the general format, change the values of corresponding fields as your requirements. Remember to remove spaces.
 
 ```
 {
@@ -61,7 +61,7 @@ This is the general format, change the values of corresponding fields as your re
     "index_group": false,
     "index_channel": true,
     "exclude_chats": [],
-    "include_chats": [],
+    "include_chats": []
 }
 ```
 > * `index_all` - Whether to consider all the chats associated with the telegram account. Value should either be `true` or `false`.
