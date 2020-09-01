@@ -65,7 +65,6 @@ async def setup_routes(app, handler):
                 web.get(p + r"/{id:\d+}/download", h.download_get),
                 web.head(p + r"/{id:\d+}/download", h.download_head),
                 web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
-                web.head(p + r"/{id:\d+}/thumbnail", h.thumbnail_head),
             ]
             routes += r
             log.debug(f"Index added for {chat.id} :: {chat.title} at /{alias_id}")
@@ -81,7 +80,6 @@ async def setup_routes(app, handler):
                 web.get(p + r"/{id:\d+}/download", h.download_get),
                 web.head(p + r"/{id:\d+}/download", h.download_head),
                 web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
-                web.head(p + r"/{id:\d+}/thumbnail", h.thumbnail_head),
             ]
             routes += r
             log.debug(f"Index added for {chat.id} :: {chat.title} at /{alias_id}")

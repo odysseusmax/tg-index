@@ -232,14 +232,6 @@ class Views:
     
     
     async def thumbnail_get(self, req):
-        return await self.handle_request(req, thumb=True)
-    
-
-    async def thumbnail_head(self, req):
-        return await self.handle_request(req, head=True, thumb=True)
-
-
-    async def handle_request(self, req, head=False, thumb=False):
         file_id = int(req.match_info["id"])
         alias_id = req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
@@ -249,30 +241,69 @@ class Views:
         except:
             log.debug(f"Error in getting message {file_id} in {chat_id}", exc_info=True)
             message = None
+        
         if not message or not message.file:
             log.debug(f"no result for {file_id} in {chat_id}")
             return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
         
-        if thumb and message.document:
-            thumbnail = message.document.thumbs
-            if not thumbnail:
-                log.debug(f"no thumbnail for {file_id} in {chat_id}")
-                return web.Response(status=404, text="404: Not Found")
-            thumbnail = thumbnail[-1]
-            mime_type = 'image/jpeg'
-            size = thumbnail.size if hasattr(thumbnail, 'size') else len(thumbnail.bytes)
-            file_name = f"{file_id}_thumbnail.jpg"
-            media = types.InputDocumentFileLocation(
-                id=message.document.id,
-                access_hash=message.document.access_hash,
-                file_reference=message.document.file_reference,
+        if message.document:
+            media = message.document
+            thumbnails = media.thumbs
+            location = types.InputDocumentFileLocation
+        else:
+            media = message.photo
+            thumbnails = media.sizes
+            location = types.InputPhotoFileLocation
+        
+        if not thumbnails:
+            log.debug(f"no thumbnail for {file_id} in {chat_id}")
+            return web.Response(status=404, text="404: Not Found")
+        
+        thumb_pos = int(max(0, len(thumbnails)/2))
+        thumbnail = self.client._get_thumb(thumbnails, thumb_pos)
+        if not thumbnail or isinstance(thumbnail, types.PhotoSizeEmpty):
+            return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
+        
+        if isinstance(thumbnail, (types.PhotoCachedSize, types.PhotoStrippedSize)):
+            body = self.client._download_cached_photo_size(thumbnail, bytes)
+        else:
+            actual_file = location(
+                id=media.id,
+                access_hash=media.access_hash,
+                file_reference=media.file_reference,
                 thumb_size=thumbnail.type
             )
-        else:
-            media = message.media
-            size = message.file.size
-            file_name = get_file_name(message)
-            mime_type = message.file.mime_type
+        
+            body = self.client.iter_download(actual_file)
+        
+        r = web.Response(
+            status=200,
+            body=body,
+        )
+        r.enable_chunked_encoding()
+        return r
+    
+
+    async def handle_request(self, req, head=False):
+        file_id = int(req.match_info["id"])
+        alias_id = req.rel_url.path.split('/')[1]
+        chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
+        chat_id = chat['chat_id']
+        
+        try:
+            message = await self.client.get_messages(entity=chat_id, ids=file_id)
+        except:
+            log.debug(f"Error in getting message {file_id} in {chat_id}", exc_info=True)
+            message = None
+        
+        if not message or not message.file:
+            log.debug(f"no result for {file_id} in {chat_id}")
+            return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
+        
+        media = message.media
+        size = message.file.size
+        file_name = get_file_name(message)
+        mime_type = message.file.mime_type
         
         try:
             offset = req.http_range.start or 0

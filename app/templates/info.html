@@ -3,7 +3,7 @@
             <div class="p-4 space-y-8">
                 {% if found %}
                     {% if media %}
-                        <h1 class="text-blue-500 text-center text-lg md:text-xl lg:text-2xl xl:text-3xl w-full break-all">
+                        <h1 class="text-blue-500 text-center text-lg lg:text-xl xl:text-3xl w-full break-all">
                             Download {{name}}
                         </h1>
                         
@@ -15,9 +15,11 @@
                                     <p> Video {{name}} could not be played!</p>
                                 </div>
                                 
-                                <video id="my-video-player" class="mx-auto rounded" controls poster="../{{id}}/thumbnail">
-                                    <source src="../{{id}}/download" type="video/mp4" />
-                                </video>
+                                <div id="my-video-wrapper"> 
+                                    <video id="my-video-player" class="mx-auto rounded" controls poster="../{{id}}/thumbnail">
+                                        <source src="../{{id}}/download" type="video/mp4" />
+                                    </video>
+                                </div>
                                 
                                 <script>
                                     var video = document.querySelector("video");
@@ -25,7 +27,7 @@
 
                                     src.addEventListener('error', function(evt) {
                                         console.log(evt);
-                                        document.getElementById('my-video-player').style.display = 'none';
+                                        document.getElementById('my-video-wrapper').style.display = 'none';
                                         document.getElementById('video-warning').style.display = 'block';
                                     }); 
                                     var myFP = fluidPlayer(
@@ -49,16 +51,18 @@
                                     <p> Audio {{name}} could not be played!</p>
                                 </div>
                                 
-                                <audio id="my-audio" class="mx-auto" controls muted>
-                                    <source src="../{{id}}/download" type="audio/mpeg" />
-                                </audio>
+                                <div id="my-audio-wrapper">
+                                    <audio class="mx-auto" controls muted>
+                                        <source src="../{{id}}/download" type="audio/mpeg" />
+                                    </audio>
+                                </div>
                                 <script>
                                     var audio = document.querySelector("audio");
                                     var src = audio.firstElementChild
 
                                     src.addEventListener('error', function(evt) {
                                         console.log(evt);
-                                        document.getElementById('my-audio').style.display = 'none';
+                                        document.getElementById('my-audio-wrapper').style.display = 'none';
                                         document.getElementById('audio-warning').style.display = 'block';
                                     });
                                 </script>
@@ -87,7 +91,7 @@
                             
                         </div>
                         
-                        <div class="text-center text-white text-sm md:text-base xl:text-2xl">
+                        <div class="text-center text-white text-sm xl:text-2xl">
                     
                             <a class="rounded p-3 bg-indigo-500 hover:bg-indigo-700 shadow-lg" href="../{{id}}/download">Download Now! ({{ size }})</a>
                         
