@@ -1,4 +1,7 @@
 import logging
+from PIL import Image, ImageDraw, ImageFont
+import random
+import io
 
 from aiohttp import web
 import aiohttp_jinja2
@@ -37,6 +40,7 @@ class Views:
         alias_id = req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
+        chat_name = chat['title']
         log_msg = ''
         try:
             offset_val = int(req.query.get('page', '1'))
@@ -71,8 +75,9 @@ class Views:
                 entry = dict(
                     file_id=m.id,
                     media=True,
+                    thumbnail=req.rel_url.with_path(f"/{alias_id}/{m.id}/thumbnail"),
                     mime_type=m.file.mime_type,
-                    insight = get_file_name(m)[:55],
+                    insight = get_file_name(m)[:100],
                     date = m.date,
                     size=get_human_size(m.file.size),
                     url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
@@ -82,7 +87,7 @@ class Views:
                     file_id=m.id,
                     media=False,
                     mime_type='text/plain',
-                    insight = m.raw_text[:55],
+                    insight = m.raw_text[:100],
                     date = m.date,
                     size=get_human_size(len(m.raw_text)),
                     url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
@@ -116,7 +121,8 @@ class Views:
             'next_page': next_page,
             'search': search_query,
             'name' : chat['title'],
-            'logo': req.rel_url.with_path(f"/{alias_id}/logo")
+            'logo': req.rel_url.with_path(f"/{alias_id}/logo"),
+            'title' : "Index of " + chat_name
         }
 
 
@@ -199,27 +205,43 @@ class Views:
         alias_id = req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
+        chat_name = "Image not available"
         try:
             photo = await self.client.get_profile_photos(chat_id)
         except:
             log.debug(f"Error in getting profile picture in {chat_id}", exc_info=True)
             photo = None
         if not photo:
-            return web.Response(status=404, text="404: Chat has no profile photo")
-        photo = photo[0]
-        size =  photo.sizes[0]
-        media = types.InputPhotoFileLocation(
-            id=photo.id,
-            access_hash=photo.access_hash,
-            file_reference=photo.file_reference,
-            thumb_size=size.type
-        )
-        body = self.client.iter_download(media)
+            W, H = (160, 160) if req.query.get('big', None) else (80, 80)
+            c = lambda : random.randint(0, 255)
+            color = tuple([c() for i in range(3)])
+            im = Image.new("RGB", (W,H), color)
+            draw = ImageDraw.Draw(im)
+            w, h = draw.textsize(chat_name)
+            draw.text(((W-w)/2,(H-h)/2), chat_name, fill="white")
+            temp = io.BytesIO()
+            im.save(temp, "PNG")
+            body = temp.getvalue()
+        else:
+            photo = photo[0]
+            pos = -1 if req.query.get('big', None) else int(len(photo.sizes)/2)
+            size = self.client._get_thumb(photo.sizes, pos)
+            if isinstance(size, (types.PhotoCachedSize, types.PhotoStrippedSize)):
+                body = self.client._download_cached_photo_size(size, bytes)
+            else:
+                media = types.InputPhotoFileLocation(
+                    id=photo.id,
+                    access_hash=photo.access_hash,
+                    file_reference=photo.file_reference,
+                    thumb_size=size.type
+                )
+                body = self.client.iter_download(media)
+        
         r = web.Response(
             status=200,
             body=body,
         )
-        r.enable_chunked_encoding()
+        #r.enable_chunked_encoding()
         return r
     
     
@@ -256,25 +278,29 @@ class Views:
             location = types.InputPhotoFileLocation
         
         if not thumbnails:
-            log.debug(f"no thumbnail for {file_id} in {chat_id}")
-            return web.Response(status=404, text="404: Not Found")
-        
-        thumb_pos = int(max(0, len(thumbnails)/2))
-        thumbnail = self.client._get_thumb(thumbnails, thumb_pos)
-        if not thumbnail or isinstance(thumbnail, types.PhotoSizeEmpty):
-            return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
-        
-        if isinstance(thumbnail, (types.PhotoCachedSize, types.PhotoStrippedSize)):
-            body = self.client._download_cached_photo_size(thumbnail, bytes)
+            c = lambda : random.randint(0, 255)
+            color = tuple([c() for i in range(3)])
+            im = Image.new("RGB", (100, 100), color)
+            temp = io.BytesIO()
+            im.save(temp, "PNG")
+            body = temp.getvalue()
         else:
-            actual_file = location(
-                id=media.id,
-                access_hash=media.access_hash,
-                file_reference=media.file_reference,
-                thumb_size=thumbnail.type
-            )
-        
-            body = self.client.iter_download(actual_file)
+            thumb_pos = int(len(thumbnails)/2)
+            thumbnail = self.client._get_thumb(thumbnails, thumb_pos)
+            if not thumbnail or isinstance(thumbnail, types.PhotoSizeEmpty):
+                return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
+            
+            if isinstance(thumbnail, (types.PhotoCachedSize, types.PhotoStrippedSize)):
+                body = self.client._download_cached_photo_size(thumbnail, bytes)
+            else:
+                actual_file = location(
+                    id=media.id,
+                    access_hash=media.access_hash,
+                    file_reference=media.file_reference,
+                    thumb_size=thumbnail.type
+                )
+            
+                body = self.client.iter_download(actual_file)
         
         r = web.Response(
             status=200,

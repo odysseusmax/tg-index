@@ -4,9 +4,14 @@
         Available Sources
     </h1>
     <div class="mx-auto my-2 p-2 w-full">
-        <div class="block md:flex md:flex-wrap md:justify-center md:content-center md:items-center w-full text-center break-words">
+        <div class="block p-4 md:flex md:flex-wrap md:justify-center w-full text-center break-words">
             {% for chat in chats %}
-                <div class="w-full h-full md:w-2/5 lg:w-1/4 border border-blue-300 rounded bg-blue-100 hover:bg-blue-200 p-4 my-2 md:mx-1 shadow-md transition ease-in duration-150"> <a href="/{{chat.id}}" > {{chat.name}} </a> </div>
+                <a title="{{chat.name}}" href="/{{chat.id}}" class="flex flex-col justify-around w-full min-h-full md:w-2/5 lg:w-1/4 rounded my-2 md:mx-1 shadow-md hover:shadow-lg hover:border-blue-300 hover:bg-blue-100">
+                
+                    <img src="/{{chat.id}}/logo?big=1" class="w-full rounded-full ">
+                    <div class="p-4 rounded">{{chat.name}}</div>
+                
+                </a>
             {% endfor %}
         </div>
     </div>

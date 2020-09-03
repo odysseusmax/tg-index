@@ -52,6 +52,7 @@
                                 </div>
                                 
                                 <div id="my-audio-wrapper">
+                                    <img class="mx-auto rounded w-full" src="../{{id}}/thumbnail" alt="{{name}}">
                                     <audio class="mx-auto" controls muted>
                                         <source src="../{{id}}/download" type="audio/mpeg" />
                                     </audio>
@@ -71,7 +72,7 @@
                             {% if caption %}
                             
                                 <div class="mx-auto mt-1">
-                                    <div class="flex justify-center text-gray-300 font-mono text-xs lg:text-sm xl:text-lg">
+                                    <div class="flex justify-center text-gray-300 font-mono">
                                         <p class="text-left w-full rounded p-4 bg-gray-900 shadow-lg"> {{ caption|safe }} </p>
                                     </div>
                                     {% if reply_btns %}
@@ -91,14 +92,14 @@
                             
                         </div>
                         
-                        <div class="text-center text-white text-sm xl:text-2xl">
+                        <div class="text-center text-white">
                     
                             <a class="rounded p-3 bg-indigo-500 hover:bg-indigo-700 shadow-lg" href="../{{id}}/download">Download Now! ({{ size }})</a>
                         
                         </div>
                     {% else %}
                         <div class="mx-auto flex flex-wrap justify-center w-full md:w-3/4 mt-1">
-                            <div class="flex justify-center text-gray-300 font-mono text-xs lg:text-sm xl:text-lg break-all">
+                            <div class="flex justify-center text-gray-300 font-mono">
                                 <p class="text-left rounded p-4 bg-gray-900 w-full shadow-lg"> {{ text|safe }} </p>
                             </div>
                             {% if reply_btns %}
