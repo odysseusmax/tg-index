@@ -26,7 +26,7 @@ class Views:
         chats = []
         for chat in chat_ids:
             chats.append({
-                'id': chat['alias_id'],
+                'page_id': chat['alias_id'],
                 'name': chat['title'],
                 'url': req.rel_url.path + f"/{chat['alias_id']}"
             })
@@ -99,7 +99,8 @@ class Views:
                     mime_type=m.file.mime_type,
                     insight = get_file_name(m)[:100],
                     date = str(m.date),
-                    size=get_human_size(m.file.size),
+                    size=m.file.size,
+                    human_size=get_human_size(m.file.size),
                     url=req.rel_url.path + f"/{m.id}/view"
                 )
             elif m.message:
@@ -109,7 +110,8 @@ class Views:
                     mime_type='text/plain',
                     insight = m.raw_text[:100],
                     date = str(m.date),
-                    size=get_human_size(len(m.raw_text)),
+                    size=len(m.raw_text),
+                    human_size=get_human_size(len(m.raw_text)),
                     url=req.rel_url.path + f"/{m.id}/view"
                 )
             if entry:
@@ -188,7 +190,8 @@ class Views:
                     reply_btns.append(btns)
         if message.file and not isinstance(message.media, types.MessageMediaWebPage):
             file_name = get_file_name(message)
-            file_size = get_human_size(message.file.size)
+            file_size = message.file.size
+            human_file_size = get_human_size(file_size)
             media = {
                 'type':message.file.mime_type
             }
@@ -209,12 +212,13 @@ class Views:
             return_val = {
                 'found': True,
                 'name': file_name,
-                'id': file_id,
+                'file_id': file_id,
                 'size': file_size,
+                'human_size': human_file_size,
                 'media': media,
                 'caption_html': caption_html,
                 'caption': caption,
-                'title': f"Download | {file_name} | {file_size}",
+                'title': f"Download | {file_name} | {human_file_size}",
                 'reply_btns': reply_btns,
                 'thumbnail': f"/{alias_id}/{file_id}/thumbnail",
                 'download_url': f"/{alias_id}/{file_id}/download",

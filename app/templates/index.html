@@ -19,7 +19,7 @@
                 <div class="mx-auto my-2 w-full px-4">
                     <div class="block md:flex md:flex-wrap md:justify-center text-center break-all">
                     {% for item in item_list %}
-                        <a title="{% if item.media %} {{item.mime_type}} | {{item.size}} {% else %} Text message {% endif %}" href="{{item.url}}" class="flex flex-col items-center justify-center w-full min-h-full md:w-1/5 lg:w-1/6 rounded my-4 md:mx-1 shadow-md hover:shadow-lg hover:bg-blue-100 hover:border hover:border-blue-200">
+                        <a title="{% if item.media %} {{item.mime_type}} | {{item.human_size}} {% else %} Text message {% endif %}" href="{{item.url}}" class="flex flex-col items-center justify-center w-full min-h-full md:w-1/5 lg:w-1/6 rounded my-4 md:mx-1 shadow-md hover:shadow-lg hover:bg-blue-100 hover:border hover:border-blue-200">
                     
                             {% if item.media %}
                                 <img src="{{item.thumbnail}}" class="w-full rounded">
@@ -48,15 +48,6 @@
                     {% endif %}
                 </div>
                 
-                <script>
-                    const date_elements = document.getElementsByName('date');
-                    date_elements.forEach((item) => {
-                        let dataDate = item.getAttribute("data-date");
-                        let date = new Date(dataDate);
-                        item.innerHTML = date.toLocaleString()
-                    });
-                </script>
-            
             {% else %}
                 
                 <p class="my-4 text-center text-2xl md:text-3xl lg:text-4xl xl:text-5xl">

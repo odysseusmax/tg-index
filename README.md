@@ -83,6 +83,10 @@ $ python3 -m app
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index/tree/master)    [![Run on Repl.it](https://repl.it/badge/github/odysseusmax/tg-index)](https://repl.it/github/odysseusmax/tg-index)
 
 
+## API
+
+Here's the api description. [API](https://github.com/odysseusmax/tg-index/wiki/API)
+
 ## Contributions
 
 Contributions are welcome.

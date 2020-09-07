@@ -6,9 +6,9 @@
     <div class="mx-auto my-2 p-2 w-full">
         <div class="block p-4 md:flex md:flex-wrap md:justify-center w-full text-center break-words">
             {% for chat in chats %}
-                <a title="{{chat.name}}" href="/{{chat.id}}" class="flex flex-col justify-around w-full min-h-full md:w-2/5 lg:w-1/5 rounded my-2 md:mx-1 shadow-md hover:shadow-lg hover:border hover:border-blue-300 hover:bg-blue-100">
+                <a title="{{chat.name}}" href="/{{chat.page_id}}" class="flex flex-col justify-around w-full min-h-full md:w-2/5 lg:w-1/5 rounded my-2 md:mx-1 shadow-md hover:shadow-lg hover:border hover:border-blue-300 hover:bg-blue-100">
                 
-                    <img src="/{{chat.id}}/logo?big=1" class="w-full rounded-full ">
+                    <img src="/{{chat.page_id}}/logo?big=1" class="w-full rounded-full ">
                     <div class="p-4 rounded">{{chat.name}}</div>
                 
                 </a>
