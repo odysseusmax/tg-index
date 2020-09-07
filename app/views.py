@@ -21,23 +21,43 @@ class Views:
     def __init__(self, client):
         self.client = client
     
+    
+    async def _home(self, req):
+        chats = []
+        for chat in chat_ids:
+            chats.append({
+                'id': chat['alias_id'],
+                'name': chat['title'],
+                'url': req.rel_url.path + f"/{chat['alias_id']}"
+            })
+        return {'chats':chats}
+    
 
     @aiohttp_jinja2.template('home.html')
     async def home(self, req):
         if len(chat_ids) == 1:
             raise web.HTTPFound(f"{chat_ids[0]['alias_id']}")
-        chats = []
-        for chat in chat_ids:
-            chats.append({
-                'id': chat['alias_id'],
-                'name': chat['title']
-            })
-        return {'chats':chats}
+        return await self._home(req)
+    
+    
+    async def api_home(self, req):
+        data = await self._home(req)
+        return web.json_response(data)
 
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, req):
-        alias_id = req.rel_url.path.split('/')[1]
+        return await self._index(req)
+    
+    
+    async def api_index(self, req):
+        data = await self._index(req, True)
+        return web.json_response(data)
+    
+    
+    async def _index(self, req, api=False):
+        alias_pos = 2 if api else 1
+        alias_id = req.rel_url.path.split('/')[alias_pos]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         chat_name = chat['title']
@@ -75,12 +95,12 @@ class Views:
                 entry = dict(
                     file_id=m.id,
                     media=True,
-                    thumbnail=req.rel_url.with_path(f"/{alias_id}/{m.id}/thumbnail"),
+                    thumbnail=f"/{alias_id}/{m.id}/thumbnail",
                     mime_type=m.file.mime_type,
                     insight = get_file_name(m)[:100],
-                    date = m.date,
+                    date = str(m.date),
                     size=get_human_size(m.file.size),
-                    url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
+                    url=req.rel_url.path + f"/{m.id}/view"
                 )
             elif m.message:
                 entry = dict(
@@ -88,9 +108,9 @@ class Views:
                     media=False,
                     mime_type='text/plain',
                     insight = m.raw_text[:100],
-                    date = m.date,
+                    date = str(m.date),
                     size=get_human_size(len(m.raw_text)),
-                    url=req.rel_url.with_path(f"/{alias_id}/{m.id}/view")
+                    url=req.rel_url.path + f"/{m.id}/view"
                 )
             if entry:
                 results.append(entry)
@@ -101,7 +121,7 @@ class Views:
             if search_query:
                 query.update({'search':search_query})
             prev_page =  {
-                'url': req.rel_url.with_query(query),
+                'url': str(req.rel_url.with_query(query)),
                 'no': offset_val
             }
         
@@ -110,7 +130,7 @@ class Views:
             if search_query:
                 query.update({'search':search_query})
             next_page =  {
-                'url': req.rel_url.with_query(query),
+                'url': str(req.rel_url.with_query(query)),
                 'no': offset_val+2
             }
 
@@ -121,15 +141,28 @@ class Views:
             'next_page': next_page,
             'search': search_query,
             'name' : chat['title'],
-            'logo': req.rel_url.with_path(f"/{alias_id}/logo"),
+            'logo': f"/{alias_id}/logo",
             'title' : "Index of " + chat_name
         }
 
 
     @aiohttp_jinja2.template('info.html')
     async def info(self, req):
+        return await self._info(req)
+    
+    
+    async def api_info(self, req):
+        data = await self._info(req, True)
+        if not data['found']:
+            return web.Response(status=404, text="404: Not Found")
+        
+        return web.json_response(data)
+        
+        
+    async def _info(self, req, api=False):
         file_id = int(req.match_info["id"])
-        alias_id = req.rel_url.path.split('/')[1]
+        alias_pos = 2 if api else 1
+        alias_id = req.rel_url.path.split('/')[alias_pos]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         try:
@@ -169,34 +202,40 @@ class Views:
                 media['image'] = True
                 
             if message.text:
-                caption = Markup.escape(message.raw_text).__str__().replace('\n', '<br>')
-                
+                caption = message.raw_text
             else:
-                caption = False
+                caption = ''
+            caption_html = Markup.escape(caption).__str__().replace('\n', '<br>')
             return_val = {
                 'found': True,
                 'name': file_name,
                 'id': file_id,
                 'size': file_size,
                 'media': media,
+                'caption_html': caption_html,
                 'caption': caption,
                 'title': f"Download | {file_name} | {file_size}",
-                'reply_btns': reply_btns
+                'reply_btns': reply_btns,
+                'thumbnail': f"/{alias_id}/{file_id}/thumbnail",
+                'download_url': f"/{alias_id}/{file_id}/download",
+                'page_id': alias_id
             }
         elif message.message:
-            text = Markup.escape(message.raw_text).__str__().replace('\n', '<br>')
+            text = message.raw_text
+            text_html = Markup.escape(text).__str__().replace('\n', '<br>')
             return_val = {
                 'found': True,
                 'media': False,
                 'text': text,
-                'reply_btns': reply_btns
+                'text_html': text_html,
+                'reply_btns': reply_btns,
+                'page_id': alias_id
             }
         else:
             return_val = {
                 'found':False,
                 'reason' : "Some kind of entry that I cannot display",
             }
-        #return_val.update({'reply_btns': reply_btns})
         log.debug(f"data for {file_id} in {chat_id} returned as {return_val}")
         return return_val
     
@@ -212,7 +251,7 @@ class Views:
             log.debug(f"Error in getting profile picture in {chat_id}", exc_info=True)
             photo = None
         if not photo:
-            W, H = (160, 160) if req.query.get('big', None) else (80, 80)
+            W, H = (160, 160)
             c = lambda : random.randint(0, 255)
             color = tuple([c() for i in range(3)])
             im = Image.new("RGB", (W,H), color)

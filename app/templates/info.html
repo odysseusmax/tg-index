@@ -69,11 +69,11 @@
                                 </script>
                             {% endif %}
                             
-                            {% if caption %}
+                            {% if caption_html %}
                             
                                 <div class="mx-auto mt-1">
                                     <div class="flex justify-center text-gray-300 font-mono">
-                                        <p class="text-left w-full rounded p-4 bg-gray-900 shadow-lg"> {{ caption|safe }} </p>
+                                        <p class="text-left w-full rounded p-4 bg-gray-900 shadow-lg"> {{ caption_html|safe }} </p>
                                     </div>
                                     {% if reply_btns %}
                                         <div class="w-full block">
@@ -100,7 +100,7 @@
                     {% else %}
                         <div class="mx-auto flex flex-wrap justify-center w-full md:w-3/4 mt-1">
                             <div class="flex justify-center text-gray-300 font-mono">
-                                <p class="text-left rounded p-4 bg-gray-900 w-full shadow-lg"> {{ text|safe }} </p>
+                                <p class="text-left rounded p-4 bg-gray-900 w-full shadow-lg"> {{ text_html|safe }} </p>
                             </div>
                             {% if reply_btns %}
                                 <div class="w-full block">
