@@ -32,6 +32,10 @@ class Views:
             })
         return {'chats':chats}
     
+    
+    async def wildcard(self, req):
+        raise web.HTTPFound('/')
+    
 
     @aiohttp_jinja2.template('home.html')
     async def home(self, req):
@@ -57,7 +61,7 @@ class Views:
     
     async def _index(self, req, api=False):
         alias_pos = 2 if api else 1
-        alias_id = req.rel_url.path.split('/')[alias_pos]
+        alias_id = req.match_info['chat'] #req.rel_url.path.split('/')[alias_pos]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         chat_name = chat['title']
@@ -164,7 +168,7 @@ class Views:
     async def _info(self, req, api=False):
         file_id = int(req.match_info["id"])
         alias_pos = 2 if api else 1
-        alias_id = req.rel_url.path.split('/')[alias_pos]
+        alias_id = req.match_info['chat'] #req.rel_url.path.split('/')[alias_pos]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         try:
@@ -245,7 +249,7 @@ class Views:
     
 
     async def logo(self, req):
-        alias_id = req.rel_url.path.split('/')[1]
+        alias_id = req.match_info['chat'] # req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         chat_name = "Image not available"
@@ -298,7 +302,7 @@ class Views:
     
     async def thumbnail_get(self, req):
         file_id = int(req.match_info["id"])
-        alias_id = req.rel_url.path.split('/')[1]
+        alias_id = req.match_info['chat'] #req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         try:
@@ -355,7 +359,7 @@ class Views:
 
     async def handle_request(self, req, head=False):
         file_id = int(req.match_info["id"])
-        alias_id = req.rel_url.path.split('/')[1]
+        alias_id = req.match_info['chat'] # req.rel_url.path.split('/')[1]
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         

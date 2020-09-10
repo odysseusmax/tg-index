@@ -58,7 +58,7 @@ async def setup_routes(app, handler):
             if not alias_id:
                 continue
             
-            p = f"/{alias_id}"
+            p = r"/{chat:" + alias_id + "}"
             p_api = '/api' + p
             r = [
                 web.get(p, h.index),
@@ -76,7 +76,7 @@ async def setup_routes(app, handler):
         for chat_id in include_chats:
             chat = await client.get_entity(chat_id)
             alias_id = generate_alias_id(chat)
-            p = f"/{alias_id}"
+            p = r"/{chat:" + alias_id + "}"
             p_api = '/api' + p
             r = [
                 web.get(p, h.index),
@@ -90,4 +90,5 @@ async def setup_routes(app, handler):
             ]
             routes += r
             log.debug(f"Index added for {chat.id} :: {chat.title} at /{alias_id}")
+    routes.append(web.view(r'/{wildcard:.*}', h.wildcard))
     app.add_routes(routes)
