@@ -68,8 +68,8 @@ This is the general format, change the values of corresponding fields as your re
 > * `index_private` - Whether to index private chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
 > * `index_group` - Whether to index group chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
 > * `index_channel` - Whether to index channels. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
-> * `exclude_chats` - An array/list of chat id's that should be ignored for indexing. Only considered if `index_all` is set to `true`. 
-> * `include_chats` - An array/list of chat id's to index. Only considered if `index_all` is set to `false`. 
+> * `exclude_chats` - An array/list of chat id's that should be ignored for indexing. Only considered if `index_all` is set to `true`.
+> * `include_chats` - An array/list of chat id's to index. Only considered if `index_all` is set to `false`.
 
 
 * **Run app.**
@@ -77,10 +77,6 @@ This is the general format, change the values of corresponding fields as your re
 ```bash
 $ python3 -m app
 ```
-
-* **Other quick methods.**
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/odysseusmax/tg-index/tree/master)    [![Run on Repl.it](https://repl.it/badge/github/odysseusmax/tg-index)](https://repl.it/github/odysseusmax/tg-index)
 
 
 ## API

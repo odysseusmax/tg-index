@@ -5,6 +5,7 @@ import logging
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
+from aiohttp_basicauth import BasicAuthMiddleware
 
 from .telegram import Client
 from .routes import setup_routes

@@ -60,8 +60,7 @@ class Views:
     
     
     async def _index(self, req, api=False):
-        alias_pos = 2 if api else 1
-        alias_id = req.match_info['chat'] #req.rel_url.path.split('/')[alias_pos]
+        alias_id = req.match_info['chat']
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         chat_name = chat['title']
@@ -101,7 +100,7 @@ class Views:
                     media=True,
                     thumbnail=f"/{alias_id}/{m.id}/thumbnail",
                     mime_type=m.file.mime_type,
-                    insight = get_file_name(m)[:100],
+                    insight = get_file_name(m),
                     date = str(m.date),
                     size=m.file.size,
                     human_size=get_human_size(m.file.size),
@@ -158,17 +157,16 @@ class Views:
     
     
     async def api_info(self, req):
-        data = await self._info(req, True)
+        data = await self._info(req)
         if not data['found']:
             return web.Response(status=404, text="404: Not Found")
         
         return web.json_response(data)
         
         
-    async def _info(self, req, api=False):
+    async def _info(self, req):
         file_id = int(req.match_info["id"])
-        alias_pos = 2 if api else 1
-        alias_id = req.match_info['chat'] #req.rel_url.path.split('/')[alias_pos]
+        alias_id = req.match_info['chat']
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         try:
@@ -249,7 +247,7 @@ class Views:
     
 
     async def logo(self, req):
-        alias_id = req.match_info['chat'] # req.rel_url.path.split('/')[1]
+        alias_id = req.match_info['chat']
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         chat_name = "Image not available"
@@ -287,6 +285,10 @@ class Views:
         r = web.Response(
             status=200,
             body=body,
+            headers={
+                "Content-Type": "image/jpeg",
+                "Content-Disposition": 'inline; filename="logo.jpg"'
+            }
         )
         #r.enable_chunked_encoding()
         return r
@@ -302,7 +304,7 @@ class Views:
     
     async def thumbnail_get(self, req):
         file_id = int(req.match_info["id"])
-        alias_id = req.match_info['chat'] #req.rel_url.path.split('/')[1]
+        alias_id = req.match_info['chat']
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         try:
@@ -352,14 +354,18 @@ class Views:
         r = web.Response(
             status=200,
             body=body,
+            headers={
+                "Content-Type": "image/jpeg",
+                "Content-Disposition": 'inline; filename="thumbnail.jpg"'
+            }
         )
-        r.enable_chunked_encoding()
+        #r.enable_chunked_encoding()
         return r
     
 
     async def handle_request(self, req, head=False):
         file_id = int(req.match_info["id"])
-        alias_id = req.match_info['chat'] # req.rel_url.path.split('/')[1]
+        alias_id = req.match_info['chat']
         chat = [i for i in chat_ids if i['alias_id'] == alias_id][0]
         chat_id = chat['chat_id']
         
