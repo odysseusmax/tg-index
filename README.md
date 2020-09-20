@@ -61,7 +61,13 @@ This is the general format, change the values of corresponding fields as your re
     "index_group": false,
     "index_channel": true,
     "exclude_chats": [],
-    "include_chats": []
+    "include_chats": [],
+    "otg": {
+        "enable": false,
+        "include_private": false,
+        "include_group": true,
+        "include_channel": true
+    }
 }
 ```
 > * `index_all` - Whether to consider all the chats associated with the telegram account. Value should either be `true` or `false`.
@@ -70,6 +76,7 @@ This is the general format, change the values of corresponding fields as your re
 > * `index_channel` - Whether to index channels. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
 > * `exclude_chats` - An array/list of chat id's that should be ignored for indexing. Only considered if `index_all` is set to `true`.
 > * `include_chats` - An array/list of chat id's to index. Only considered if `index_all` is set to `false`.
+> * `otg` - On-The-Go Indexing settings. Whether to allow indexing channels/chats other than the specified chats dynamically on the go.
 
 
 * **Run app.**

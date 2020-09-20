@@ -20,14 +20,12 @@ except (KeyError, ValueError):
     print("\n\nPlease set the API_ID and API_HASH environment variables correctly")
     print("You can get your own API keys at https://my.telegram.org/apps")
     sys.exit(1)
-    
+
 try:
     index_settings_str = os.environ["INDEX_SETTINGS"].strip()
     index_settings = json.loads(index_settings_str)
-    '''
-    {"index_all": true, "index_private":false, "index_group": false, "index_channel": true, "include_chats": [], "exclude_chats": []}
-    
-    '''
+    otg_settings = index_settings['otg']
+    enable_otg = otg_settings['enable']
 except:
     traceback.print_exc()
     print("\n\nPlease set the INDEX_SETTINGS environment variable correctly")
