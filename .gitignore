@@ -4,3 +4,5 @@ __pycache__/
 venv/
 *.sh
 logo/
+app.json
+Procfile
