@@ -1,26 +1,26 @@
 {% include 'header.html' %}
-            
+
             <div class="p-4 space-y-8">
                 {% if found %}
                     {% if media %}
                         <h1 class="text-blue-500 text-center text-lg lg:text-xl xl:text-3xl w-full break-all">
                             Download {{name}}
                         </h1>
-                        
-                        <div class="mx-auto w-full md:w-3/4 lg:w-2/5 p-2">
+
+                        <div class="mx-auto w-full p-2 md:w-3/4 lg:w-2/5 p-2">
                             {% if media.image %}
-                                <img class="mx-auto rounded" src="../{{file_id}}/thumbnail" alt="{{name}}">
+                                <img class="mx-auto rounded" src="{{thumbnail}}" alt="{{name}}">
                             {% elif media.video %}
                                 <div id="video-warning" class="mx-auto p-4 bg-gray-600 text-gray-300 rounded border text-center hidden break-words">
                                     <p> Video {{name}} could not be played!</p>
                                 </div>
-                                
-                                <div id="my-video-wrapper"> 
-                                    <video id="my-video-player" class="mx-auto rounded" controls poster="../{{file_id}}/thumbnail">
-                                        <source src="../{{file_id}}/download" type="video/mp4" />
+
+                                <div id="my-video-wrapper">
+                                    <video id="my-video-player" class="mx-auto rounded" controls poster="{{thumbnail}}">
+                                        <source src="{{download_url}}" type="video/mp4" />
                                     </video>
                                 </div>
-                                
+
                                 <script>
                                     var video = document.querySelector("video");
                                     var src = video.firstElementChild
@@ -29,7 +29,7 @@
                                         console.log(evt);
                                         document.getElementById('my-video-wrapper').style.display = 'none';
                                         document.getElementById('video-warning').style.display = 'block';
-                                    }); 
+                                    });
                                     var myFP = fluidPlayer(
                                         'my-video-player',{
                                             "layoutControls": {
@@ -50,11 +50,11 @@
                                  <div id="audio-warning" class="mx-auto p-4 bg-gray-600 text-gray-300 rounded border text-center hidden break-words">
                                     <p> Audio {{name}} could not be played!</p>
                                 </div>
-                                
+
                                 <div id="my-audio-wrapper">
-                                    <img class="mx-auto rounded w-full" src="../{{file_id}}/thumbnail" alt="{{name}}">
+                                    <img class="mx-auto rounded w-full" src="{{thumbnail}}" alt="{{name}}">
                                     <audio class="mx-auto" controls muted>
-                                        <source src="../{{file_id}}/download" type="audio/mpeg" />
+                                        <source src="{{download_url}}" type="audio/mpeg" />
                                     </audio>
                                 </div>
                                 <script>
@@ -68,9 +68,9 @@
                                     });
                                 </script>
                             {% endif %}
-                            
+
                             {% if caption_html %}
-                            
+
                                 <div class="mx-auto mt-1">
                                     <div class="flex justify-center text-gray-300 font-mono">
                                         <p class="text-left w-full rounded p-4 bg-gray-900 shadow-lg"> {{ caption_html|safe }} </p>
@@ -87,15 +87,15 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                            
+
                             {% endif %}
-                            
+
                         </div>
                         
                         <div class="text-center text-white">
-                    
-                            <a class="rounded p-3 bg-indigo-500 hover:bg-indigo-700 shadow-lg" href="../{{file_id}}/download">Download Now! ({{ human_size }})</a>
-                        
+
+                            <a class="rounded p-3 bg-indigo-500 hover:bg-indigo-700 shadow-lg{% if block_downloads %} cursor-not-allowed disabled{% endif %}" download="{{name}}" href="{{download_url}}">Download Now! ({{ human_size }})</a>
+
                         </div>
                     {% else %}
                         <div class="mx-auto flex flex-wrap justify-center w-full md:w-3/4 mt-1">
@@ -115,15 +115,15 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    
+
                 {% else %}
                     <h1 class="text-blue-500 text-center text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Ooops...</h1>
-                
+
                     <p class="text-center text-sm md:text-base lg:text-xl xl:text-2xl font-semibold">
                         {{ reason }}
                     </p>
                 {% endif %}
-                
+
             </div>
-            
+
 {% include 'footer.html' %}

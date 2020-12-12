@@ -1,3 +1,4 @@
+from pathlib import Path
 import traceback
 import json
 import sys
@@ -24,8 +25,6 @@ except (KeyError, ValueError):
 try:
     index_settings_str = os.environ["INDEX_SETTINGS"].strip()
     index_settings = json.loads(index_settings_str)
-    otg_settings = index_settings['otg']
-    enable_otg = otg_settings['enable']
 except:
     traceback.print_exc()
     print("\n\nPlease set the INDEX_SETTINGS environment variable correctly")
@@ -40,5 +39,7 @@ except (KeyError, ValueError):
 
 host = os.environ.get("HOST", "0.0.0.0")
 debug = bool(os.environ.get("DEBUG"))
-chat_ids = []
-alias_ids = []
+block_downloads = bool(os.environ.get("BLOCK_DOWNLOADS"))
+results_per_page = int(os.environ.get("RESULTS_PER_PAGE", "20"))
+logo_folder = Path('logo/')
+logo_folder.mkdir(exist_ok=True)
