@@ -21,7 +21,7 @@ class Download:
 
     async def handle_request(self, req, head=False):
         if block_downloads:
-            return web.Response(status=403, text="403: Forbiden")
+            return web.Response(status=403, text="403: Forbiden" if not head else None)
 
         file_id = int(req.match_info["id"])
         alias_id = req.match_info['chat']
@@ -36,7 +36,7 @@ class Download:
 
         if not message or not message.file:
             log.debug(f"no result for {file_id} in {chat_id}")
-            return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!")
+            return web.Response(status=410, text="410: Gone. Access to the target resource is no longer available!" if not head else None)
 
         media = message.media
         size = message.file.size
@@ -51,7 +51,7 @@ class Download:
         except ValueError:
             return web.Response(
                 status=416,
-                text="416: Range Not Satisfiable",
+                text="416: Range Not Satisfiable" if not head else None,
                 headers = {
                     "Content-Range": f"bytes */{size}"
                 }

@@ -6,6 +6,7 @@ from telethon.tl.custom import Message
 from jinja2 import Markup
 
 from app.util import get_file_name, get_human_size
+from app.config import block_downloads
 
 
 log = logging.getLogger(__name__)
@@ -47,7 +48,7 @@ class InfoView:
                 'type':message.file.mime_type
             }
             if 'video/' in message.file.mime_type:
-                media['video'] : True
+                media['video'] = True
             elif 'audio/' in message.file.mime_type:
                 media['audio'] = True
             elif 'image/' in message.file.mime_type:
@@ -68,8 +69,9 @@ class InfoView:
                 'title': f"Download | {file_name} | {human_file_size}",
                 'reply_btns': reply_btns,
                 'thumbnail': f"/{alias_id}/{file_id}/thumbnail",
-                'download_url': f"/{alias_id}/{file_id}/download",
-                'page_id': alias_id
+                'download_url': '#' if block_downloads else f"/{alias_id}/{file_id}/download",
+                'page_id': alias_id,
+                'block_downloads': block_downloads
             }
         elif message.message:
             text = message.raw_text
