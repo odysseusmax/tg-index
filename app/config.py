@@ -1,4 +1,5 @@
 from pathlib import Path
+import platform
 import traceback
 import json
 import sys
@@ -10,7 +11,9 @@ try:
 except ValueError:
     port = -1
 if not 1 <= port <= 65535:
-    print("Please make sure the PORT environment variable is an integer between 1 and 65535")
+    print(
+        "Please make sure the PORT environment variable is an integer between 1 and 65535"
+    )
     sys.exit(1)
 
 try:
@@ -41,5 +44,7 @@ host = os.environ.get("HOST", "0.0.0.0")
 debug = bool(os.environ.get("DEBUG"))
 block_downloads = bool(os.environ.get("BLOCK_DOWNLOADS"))
 results_per_page = int(os.environ.get("RESULTS_PER_PAGE", "20"))
-logo_folder = Path('logo/')
+logo_folder = Path(
+    "/Temp/logo/" if platform.system() == 'Windows' else '/tmp/logo'
+)
 logo_folder.mkdir(exist_ok=True)

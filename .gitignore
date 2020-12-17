@@ -6,3 +6,4 @@ venv/
 logo/
 app.json
 Procfile
+.vscode
