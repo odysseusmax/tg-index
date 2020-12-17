@@ -11,9 +11,9 @@
 * Search through the channel/chat.
 * Download media files through browser/download managers.
 
-<!-- <!-- ## Demo -->
+## Demo
 
-Hosted demo site: <https://christyroys007-tg-index.zeet.app> -->
+Hosted demo site: <https://tg-index-demo.herokuapp.com>
 
 ## Deploy Guide
 
