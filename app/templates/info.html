@@ -94,7 +94,7 @@
                         
                         <div class="text-center text-white">
 
-                            <a class="rounded p-3 bg-indigo-500 hover:bg-indigo-700 shadow-lg{% if block_downloads %} cursor-not-allowed disabled{% endif %}" download="{{name}}" href="{{download_url}}">Download Now! ({{ human_size }})</a>
+                            <a class="rounded p-3 bg-indigo-500 hover:bg-indigo-700 shadow-lg{% if block_downloads %} cursor-not-allowed disabled{% else %}" download="{{name}}{% endif %}" href="{{download_url}}">Download Now! ({{ human_size }})</a>
 
                         </div>
                     {% else %}
@@ -107,7 +107,7 @@
                                     {% for row in reply_btns %}
                                         <div class="flex justify-center">
                                             {% for btn in row %}
-                                                <a class="p-2  m-1 flex-1 border rounded bg-white border-blue-500 text-center text-blue-500 hover:bg-blue-500 hover:text-white transition ease-in duration-150" href="{{ btn.url }}" target="_blank"> {{btn.text}} </a>
+                                                <a class="p-2  m-1 flex-1 border rounded bg-white border-blue-500 text-center text-blue-500 hover:bg-blue-500 hover:text-white transition ease-in duration-150" href="{{btn.url}}" target="_blank"> {{btn.text}} </a>
                                             {% endfor %}
                                         </div>
                                     {% endfor %}
