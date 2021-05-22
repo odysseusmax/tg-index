@@ -2,6 +2,7 @@
 .env
 __pycache__/
 venv/
+tests/
 *.sh
 logo/
 app.json
