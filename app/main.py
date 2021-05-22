@@ -26,17 +26,6 @@ from .config import (
 log = logging.getLogger(__name__)
 
 
-def inspect_rep():
-    @web.middleware
-    async def factory(request, handler):
-        print("Incoming Cookies", request.cookies)
-        response = await handler(request)
-        print("Outgoing Cookies", response.cookies)
-        return response
-
-    return factory
-
-
 class Indexer:
 
     TEMPLATES_ROOT = pathlib.Path(__file__).parent / "templates"
@@ -44,7 +33,6 @@ class Indexer:
     def __init__(self):
         self.server = web.Application(
             middlewares=[
-                inspect_rep(),
                 middleware_factory(),
             ]
         )
