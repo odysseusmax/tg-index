@@ -1,20 +1,26 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-        <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>
-            {% if title %} {{title}} {% else %} Telegram Index {% endif %}
-        </title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 
-    </head>
-    <body>
+    <title>
+        {% if title %} {{title}} {% else %} Telegram Index {% endif %}
+    </title>
 
-        <div class="m-auto w-full xl:max-w-screen-xl min-h-screen">
+</head>
 
-            <header class="flex justify-between bg-red-600 text-white mb-2 p-4 w-full sticky top-0 shadow">
-                <a href="/" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram Index </a>
-            </header>
+<body>
+
+    <header class="bg-red-600 text-white mb-2 p-4 w-full shadow">
+        <div class="mx-auto flex justify-between content-center max-w-screen-xl">
+            <a href="/" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram Index </a>
+            {% if authenticated %} <a href="/logout" class="text-right"> Logout </a> {% else %} {%
+            endif %}
+        </div>
+
+    </header>
+    <div class="m-auto w-full min-h-screen max-w-screen-xl">

@@ -18,7 +18,12 @@ async def setup_routes(app, handler):
     index_channel = index_settings["index_channel"]
     exclude_chats = index_settings["exclude_chats"]
     include_chats = index_settings["include_chats"]
-    routes = [web.get("/", h.home)]
+    routes = [
+        web.get("/", h.home, name="home"),
+        web.get("/login", h.login_get, name="login_page"),
+        web.post("/login", h.login_post, name="login_handle"),
+        web.get("/logout", h.logout_get, name="logout"),
+    ]
     if index_all:
         # print(await client.get_dialogs())
         # dialogs = await client.get_dialogs()

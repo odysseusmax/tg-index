@@ -44,7 +44,18 @@ host = os.environ.get("HOST", "0.0.0.0")
 debug = bool(os.environ.get("DEBUG"))
 block_downloads = bool(os.environ.get("BLOCK_DOWNLOADS"))
 results_per_page = int(os.environ.get("RESULTS_PER_PAGE", "20"))
-logo_folder = Path(
-    "/Temp/logo/" if platform.system() == 'Windows' else '/tmp/logo'
-)
+logo_folder = Path("/Temp/logo/" if platform.system() == "Windows" else "/tmp/logo")
 logo_folder.mkdir(exist_ok=True)
+username = os.environ.get("USERNAME", "")
+password = os.environ.get("PASSWORD", "")
+authenticated = username and password
+SESSION_COOKIE_LIFETIME = int(os.environ.get("SESSION_COOKIE_LIFETIME") or "60")
+try:
+    SECRET_KEY = os.environ["SECRET_KEY"]
+except (KeyError, ValueError):
+    if authenticated:
+        traceback.print_exc()
+        print("\n\nPlease set the SECRET_KEY environment variable correctly")
+        sys.exit(1)
+    else:
+        SECRET_KEY = ""

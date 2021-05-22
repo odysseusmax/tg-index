@@ -48,9 +48,13 @@ pip3 install -U -r requirements.txt
 | `SESSION_STRING` (required) | String obtained by running `$ python3 app/generate_session_string.py`. (Login with the telegram account which is a participant of the given channel (or chat).
 | `PORT` (optional) | Port on which app should listen to, defaults to 8080.
 | `HOST` (optional) | Host name on which app should listen to, defaults to 0.0.0.0.
-| `DEBUG` (optional) | Give some value to set logging level to debug, info by default.
-| `BLOCK_DOWNLOADS` (optional) | Enable downloads or not. If provided, downloads will be disabled.
+| `DEBUG` (optional) | Give `true` to set logging level to debug, info by default.
+| `BLOCK_DOWNLOADS` (optional) | Enable downloads or not. If any value is provided, downloads will be disabled.
 | `RESULTS_PER_PAGE` (optional) | Number of results to be returned per page defaults to 20.
+| `USERNAME` (optional) | Username for authentication, defaults to `''`.
+| `PASSWORD` (optional) | Username for authentication, defaults to `''`.
+| `SESSION_COOKIE_LIFETIME` (optional) | Number of minutes, for which authenticated session is valid for, after which user has to login again. defaults to 60.
+| `SECRET_KEY` (optional) | Long string for signing the session cookies, required if authentication is enabled.
 
 * **Setting value for `INDEX_SETTINGS`**
 
