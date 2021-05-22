@@ -11,10 +11,6 @@
 * Search through the channel/chat.
 * Download media files through browser/download managers.
 
-## Demo
-
-Hosted demo site: <https://christyroys007-tg-index.zeet.app>
-
 ## Deploy Guide
 
 * **Clone to local machine.**
