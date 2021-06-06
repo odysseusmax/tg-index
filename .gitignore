@@ -8,3 +8,4 @@ logo/
 app.json
 Procfile
 .vscode
+.gitignore
