@@ -49,7 +49,7 @@ if not logo_folder.exists():
     logo_folder.mkdir(parents=True)
 username = os.environ.get("TGINDEX_USERNAME", "")
 password = os.environ.get("PASSWORD", "")
-SHORT_URL_LEN = 3
+SHORT_URL_LEN = int(os.environ.get("SHORT_URL_LEN", 3))
 authenticated = username and password
 SESSION_COOKIE_LIFETIME = int(os.environ.get("SESSION_COOKIE_LIFETIME") or "60")
 try:
