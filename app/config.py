@@ -44,10 +44,12 @@ host = os.environ.get("HOST", "0.0.0.0")
 debug = bool(os.environ.get("DEBUG"))
 block_downloads = bool(os.environ.get("BLOCK_DOWNLOADS"))
 results_per_page = int(os.environ.get("RESULTS_PER_PAGE", "20"))
-logo_folder = Path("/Temp/logo/" if platform.system() == "Windows" else "/tmp/logo")
-logo_folder.mkdir(exist_ok=True)
-username = os.environ.get("USERNAME", "")
+logo_folder = Path("./Temp/logo/" if platform.system() == "Windows" else "/tmp/logo")
+if not logo_folder.exists():
+    logo_folder.mkdir(parents=True)
+username = os.environ.get("TGINDEX_USERNAME", "")
 password = os.environ.get("PASSWORD", "")
+SHORT_URL_LEN = int(os.environ.get("SHORT_URL_LEN", 3))
 authenticated = username and password
 SESSION_COOKIE_LIFETIME = int(os.environ.get("SESSION_COOKIE_LIFETIME") or "60")
 try:

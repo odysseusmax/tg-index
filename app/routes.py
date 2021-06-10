@@ -5,9 +5,7 @@ from telethon.tl.types import Channel, Chat, User
 
 from .config import index_settings
 
-
 log = logging.getLogger(__name__)
-
 
 async def setup_routes(app, handler):
     h = handler
@@ -24,6 +22,15 @@ async def setup_routes(app, handler):
         web.post("/login", h.login_post, name="login_handle"),
         web.get("/logout", h.logout_get, name="logout"),
     ]
+    def get_common_routes(p):
+        return [
+                    web.get(p, h.index),
+                    web.get(p + r"/logo", h.logo),
+                    web.get(p + r"/{id:\d+}/view", h.info),
+                    web.get(p + r"/{id:\d+}/download", h.download_get),
+                    web.head(p + r"/{id:\d+}/download", h.download_head),
+                    web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
+                ]
     if index_all:
         # print(await client.get_dialogs())
         # dialogs = await client.get_dialogs()
@@ -48,14 +55,7 @@ async def setup_routes(app, handler):
             alias_id = h.generate_alias_id(chat)
             p = "/{chat:" + alias_id + "}"
             routes.extend(
-                [
-                    web.get(p, h.index),
-                    web.get(p + r"/logo", h.logo),
-                    web.get(p + r"/{id:\d+}/view", h.info),
-                    web.get(p + r"/{id:\d+}/download", h.download_get),
-                    web.head(p + r"/{id:\d+}/download", h.download_head),
-                    web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
-                ]
+               get_common_routes(p)
             )
             log.debug(f"Index added for {chat.id} at /{alias_id}")
 
@@ -65,14 +65,7 @@ async def setup_routes(app, handler):
             alias_id = h.generate_alias_id(chat)
             p = "/{chat:" + alias_id + "}"
             routes.extend(
-                [
-                    web.get(p, h.index),
-                    web.get(p + r"/logo", h.logo),
-                    web.get(p + r"/{id:\d+}/view", h.info),
-                    web.get(p + r"/{id:\d+}/download", h.download_get),
-                    web.head(p + r"/{id:\d+}/download", h.download_head),
-                    web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
-                ]
+                get_common_routes(p) # returns list() of common routes 
             )
             log.debug(f"Index added for {chat.id} at /{alias_id}")
     routes.append(web.view(r"/{wildcard:.*}", h.wildcard))
