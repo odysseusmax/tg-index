@@ -48,7 +48,7 @@ pip3 install -U -r requirements.txt
 | `BLOCK_DOWNLOADS` (optional) | Enable downloads or not. If any value is provided, downloads will be disabled.
 | `RESULTS_PER_PAGE` (optional) | Number of results to be returned per page defaults to 20.
 | `TGINDEX_USERNAME` (optional) | Username for authentication, defaults to `''`.
-| `PASSWORD` (optional) | Username for authentication, defaults to `''`.
+| `PASSWORD` (optional) | Password for authentication, defaults to `''`.
 | `SHORT_URL_LEN` (optional) | Url length for aliases
 | `SESSION_COOKIE_LIFETIME` (optional) | Number of minutes, for which authenticated session is valid for, after which user has to login again. defaults to 60.
 | `SECRET_KEY` (optional) | Long string for signing the session cookies, required if authentication is enabled.
