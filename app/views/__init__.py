@@ -31,24 +31,21 @@ class Views(
 ):
     def __init__(self, client):
         self.client = client
-
+        self.url_len = SHORT_URL_LEN
         self.chat_ids = {}
 
     def generate_alias_id(self, chat):
         chat_id = chat.id
         title = chat.title
         while True:
-            # alias_id = "".join(
-            #     [
-            #         random.choice(string.ascii_letters + string.digits)
-            #         for _ in range(len(str(chat_id)))
-            #     ]
-            # )
             orig_id = f"{title}{chat_id}" # the original id
-            alias_id = base64.urlsafe_b64encode(hashlib.md5(orig_id.encode()).digest())[:SHORT_URL_LEN].decode()
-
+            alias_id = base64.urlsafe_b64encode(hashlib.md5(orig_id.encode()).digest())[:self.url_len].decode()
+            
             if alias_id in self.chat_ids:
+                self.url_len += 1 # increment url_len just incase the hash is  already used.
                 continue
+            elif (self.url_len > SHORT_URL_LEN): # reset url_len to initial if hash was unique.
+                self.url_len = SHORT_URL_LEN
 
             self.chat_ids[alias_id] = {
                 "chat_id": chat_id,
