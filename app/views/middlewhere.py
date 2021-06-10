@@ -18,6 +18,9 @@ def middleware_factory():
         ]:
             cookies = request.cookies
             url = request.app.router["login_page"].url_for()
+            if str(request.rel_url) != "/":
+                url = url.with_query(redirect_to=str(request.rel_url))
+
             if any(x not in cookies for x in ("_tgindex_session", "_tgindex_secret")):
                 raise HTTPFound(url)
 

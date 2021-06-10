@@ -13,25 +13,27 @@ class LoginView:
 
     async def login_post(self, req):
         post_data = await req.post()
+        redirect_to = post_data.get("redirect_to") or "/"
         location = req.app.router["login_page"].url_for()
+        if redirect_to != "/":
+            location = location.update_query({"redirect_to": redirect_to})
+
         if "username" not in post_data:
-            loc = location.with_query({"error": "Username missing"})
+            loc = location.update_query({"error": "Username missing"})
             raise web.HTTPFound(location=loc)
 
         if "password" not in post_data:
-            loc = location.with_query({"error": "Password missing"})
+            loc = location.update_query({"error": "Password missing"})
             raise web.HTTPFound(location=loc)
 
         authenticated = (post_data["username"] == req.app["username"]) and (
             post_data["password"] == req.app["password"]
         )
         if not authenticated:
-            loc = location.with_query({"error": "Wrong Username or Passowrd"})
+            loc = location.update_query({"error": "Wrong Username or Passowrd"})
             raise web.HTTPFound(location=loc)
 
-        resp = web.Response(
-            status=302, headers={"Location": str(req.app.router["home"].url_for())}
-        )
+        resp = web.Response(status=302, headers={"Location": redirect_to})
         now = time.time()
         resp.set_cookie(
             name="_tgindex_session",
