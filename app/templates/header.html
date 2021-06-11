@@ -15,7 +15,13 @@
     </style>
 
     <script>
-        var host_url = document.location.host 
+        
+        window.onload = () => {
+            // set title as host url
+            const titleA = document.getElementById("title-a")
+            titleA.innerHTML = document.location.host
+        }
+         
     </script>
 
 
@@ -29,7 +35,7 @@
 
     <header class="bg-blue-300 text-white mb-2 p-4 w-full shadow">
         <div class="mx-auto flex justify-between content-center max-w-screen-xl">
-            <a href="/" class="text-left text-xl lg:text-2xl xl:text-3xl"> tgindex </a>
+            <a href="/" id="title-a" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
             {% if authenticated %} <a href="/logout" class="text-right"> Logout </a> {% else %} {%
             endif %}
         </div>
