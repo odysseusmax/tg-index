@@ -5,8 +5,10 @@ import aiohttp_jinja2
 class HomeView:
     @aiohttp_jinja2.template("home.html")
     async def home(self, req):
+        print(self.chat_ids)
         if len(self.chat_ids) == 1:
-            raise web.HTTPFound(f"{self.chat_ids[0]['alias_id']}")
+            (chat,) = self.chat_ids.values()
+            return web.HTTPFound(f"{chat['alias_id']}")
 
         return {
             "chats": [

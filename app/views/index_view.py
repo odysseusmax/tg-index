@@ -4,7 +4,7 @@ import aiohttp_jinja2
 
 from telethon.tl import types
 
-from app.config import results_per_page
+from app.config import results_per_page, block_downloads
 from app.util import get_file_name, get_human_size
 
 
@@ -51,16 +51,18 @@ class IndexView:
         for m in messages:
             entry = None
             if m.file and not isinstance(m.media, types.MessageMediaWebPage):
+                filename = get_file_name(m)
+                insight = m.text[:60] if m.text else filename
                 entry = dict(
                     file_id=m.id,
                     media=True,
                     thumbnail=f"/{alias_id}/{m.id}/thumbnail",
                     mime_type=m.file.mime_type,
-                    insight=get_file_name(m),
+                    filename=filename,
+                    insight=insight,
                     human_size=get_human_size(m.file.size),
                     url=f"/{alias_id}/{m.id}/view",
-                    download=f"{alias_id}/{m.id}/download",
-                    vlc = f"{alias_id}/{m.id}/v.mp4",
+                    download=f"{alias_id}/{m.id}/{filename}",
                 )
             elif m.message:
                 entry = dict(
@@ -100,4 +102,8 @@ class IndexView:
             "logo": f"/{alias_id}/logo",
             "title": "Index of " + chat["title"],
             "authenticated": req.app["is_authenticated"],
+            "block_downloads": block_downloads,
+            "m3u_option": ""
+            if not req.app["is_authenticated"]
+            else f"{req.app['is_authenticated']}:{req.app['is_authenticated']}@",
         }

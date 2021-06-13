@@ -1,9 +1,8 @@
 import time
-import hmac
-import hashlib
 
 from aiohttp import web
 import aiohttp_jinja2
+from aiohttp_session import new_session
 
 
 class LoginView:
@@ -20,32 +19,21 @@ class LoginView:
 
         if "username" not in post_data:
             loc = location.update_query({"error": "Username missing"})
-            raise web.HTTPFound(location=loc)
+            return web.HTTPFound(location=loc)
 
         if "password" not in post_data:
             loc = location.update_query({"error": "Password missing"})
-            raise web.HTTPFound(location=loc)
+            return web.HTTPFound(location=loc)
 
         authenticated = (post_data["username"] == req.app["username"]) and (
             post_data["password"] == req.app["password"]
         )
         if not authenticated:
             loc = location.update_query({"error": "Wrong Username or Passowrd"})
-            raise web.HTTPFound(location=loc)
+            return web.HTTPFound(location=loc)
 
-        resp = web.Response(status=302, headers={"Location": redirect_to})
-        now = time.time()
-        resp.set_cookie(
-            name="_tgindex_session",
-            value=str(now),
-            max_age=60 * req.app["SESSION_COOKIE_LIFETIME"],
-        )
-        digest = hmac.new(
-            req.app["SECRET_KEY"].encode(), str(now).encode(), hashlib.sha256
-        ).hexdigest()
-        resp.set_cookie(
-            name="_tgindex_secret",
-            value=digest,
-            max_age=60 * req.app["SESSION_COOKIE_LIFETIME"],
-        )
-        return resp
+        session = await new_session(req)
+        print(session)
+        session["logged_in"] = True
+        session["logged_in_at"] = time.time()
+        return web.HTTPFound(location=redirect_to)

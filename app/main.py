@@ -5,6 +5,8 @@ import logging
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
+from aiohttp_session import session_middleware
+from aiohttp_session.cookie_storage import EncryptedCookieStorage
 
 from .telegram import Client
 from .routes import setup_routes
@@ -33,6 +35,13 @@ class Indexer:
     def __init__(self):
         self.server = web.Application(
             middlewares=[
+                session_middleware(
+                    EncryptedCookieStorage(
+                        secret_key=SECRET_KEY.encode(),
+                        max_age=60 * SESSION_COOKIE_LIFETIME,
+                        cookie_name="TG_INDEX_SESSION"
+                    )
+                ),
                 middleware_factory(),
             ]
         )
@@ -42,8 +51,6 @@ class Indexer:
         self.server["is_authenticated"] = authenticated
         self.server["username"] = username
         self.server["password"] = password
-        self.server["SESSION_COOKIE_LIFETIME"] = SESSION_COOKIE_LIFETIME
-        self.server["SECRET_KEY"] = SECRET_KEY
 
     async def startup(self):
         await self.tg_client.start()

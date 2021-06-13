@@ -78,7 +78,7 @@ class InfoView:
                     "thumbnail": f"/{alias_id}/{file_id}/thumbnail",
                     "download_url": "#"
                     if block_downloads
-                    else f"/{alias_id}/{file_id}/download",
+                    else f"/{alias_id}/{file_id}/{file_name}",
                     "page_id": alias_id,
                     "block_downloads": block_downloads,
                 }
