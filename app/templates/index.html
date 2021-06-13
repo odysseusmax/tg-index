@@ -12,7 +12,7 @@
     <div
         class="m-2 block md:flex items-center justify-center md:justify-start text-2xl md:text-right font-bold text-blue-500">
         <img class="mx-auto md:ml-0 md:mr-1 my-2 w-16 h-16 rounded-full bg-black outline-none" src="{{logo}}">
-        <h1> {{name}} </h1>
+        <a href="javascript:window.location.href=window.location.href"> {{name}} </a>
     </div>
 
     <div class="m-2">
@@ -52,57 +52,59 @@
             href="{{item.url}}"
             class="text-sm flex flex-col items-center justify-center w-full min-h-full md:w-1/5 lg:w-1/6 rounded my-4 md:mx-1 shadow hover:shadow-md border-solid ">
 
-            <div class="bg-blue-500 rounded text-white my-1 py-0 px-1">{{item.file_id}}</div>
-
             {% if item.media %}
 
-            <a href="{{item.url}}"><img src="{{item.thumbnail}}" class="w-full rounded shadow-inner"></a>
+                <a href="{{item.url}}"><img src="{{item.thumbnail}}" class="w-full rounded shadow-inner"></a>
+                
+                <!-- Buttons container -->
+                <span class="item-buttons my-1 rounded shadow-inner">
 
+                    <div class="p-4 text-dark py-0 px-2 my-1 ">{{item.insight}}</div>
+                    
+                    {% if not block_downloads %}
+                        <!-- Direct file download button -->
+                        <a href="{{item.download}}"
+                            class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                            </svg>
+                        </a>
 
-            <!-- Buttons container -->
-            <span class="item-buttons my-1 rounded shadow-inner">
+                        {% if 'video' in item.mime_type %}
+                            <!--  Kodi/media player supported url ending with v.mp4 -->
+                            <a title="v.mp4" href="{{item.download}}"
+                                class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </a>
 
-                <div class="p-4 text-dark py-0 px-2 my-1 ">{{item.insight}}</div>
+                            <!-- One click single item playlist Download -->
+                            <button title="{{item.filename}}.m3u" onclick="singleItemPlaylist('{{item.download}}','{{item.filename}}', '{{m3u_option}}');"
+                                class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                </svg>
+                            </button>
+                        {% endif %}
+                    {% endif %}
 
-                <!-- Direct file download button -->
-                <a href="{{item.download}}"
-                    class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
-                    </svg>
-                </a>
-
-                <!--  Kodi/media player supported url ending with v.mp4 -->
-                <a title="v.mp4" href="{{item.vlc}}"
-                    class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </a>
-
-                <!-- One click single item playlist Download -->
-                <button title="{{item.insight}}.m3u" onclick='singleItemPlaylist("{{item.vlc}}","{{item.insight}}")'
-                    class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
-                    </svg>
-                </button>
-
-            </span>
+                </span>
 
             {% else %}
             <a href={{item.url}}>
                 <div class="p-4 rounded shadow-inner rounded text-dark py-0 px-2">{{item.insight}}</div>
             </a>
             {% endif %}
+            <div class="bg-blue-500 rounded text-white my-1 py-0 px-1">{{item.file_id}}</div>
 
         </div>
 

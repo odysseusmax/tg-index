@@ -1,12 +1,40 @@
 import time
-import hmac
-import hashlib
 import logging
 
 from aiohttp.web import middleware, HTTPFound
+from aiohttp import BasicAuth, hdrs
+from aiohttp_session import get_session
 
 
 log = logging.getLogger(__name__)
+
+
+def _do_basic_auth_check(request):
+    auth_header = request.headers.get(hdrs.AUTHORIZATION)
+    if not auth_header:
+        return
+
+    try:
+        auth = BasicAuth.decode(auth_header=auth_header)
+    except ValueError:
+        auth = None
+
+    if not auth:
+        return
+
+    if auth.login is None or auth.password is None:
+        return
+
+    return True
+
+
+async def _do_cookies_auth_check(request):
+    session = await get_session(request)
+    if not session.get("logged_in", False):
+        return
+
+    session["last_at"] = time.time()
+    return True
 
 
 def middleware_factory():
@@ -16,36 +44,21 @@ def middleware_factory():
             "/login",
             "/logout",
         ]:
-            cookies = request.cookies
             url = request.app.router["login_page"].url_for()
             if str(request.rel_url) != "/":
                 url = url.with_query(redirect_to=str(request.rel_url))
 
-            if any(x not in cookies for x in ("_tgindex_session", "_tgindex_secret")):
-                raise HTTPFound(url)
+            basic_auth_check_resp = _do_basic_auth_check(request)
 
-            tgindex_session = cookies["_tgindex_session"]
-            tgindex_secret = cookies["_tgindex_secret"]
-            calculated_digest = hmac.new(
-                request.app["SECRET_KEY"].encode(),
-                str(tgindex_session).encode(),
-                hashlib.sha256,
-            ).hexdigest()
-            if tgindex_secret != calculated_digest:
-                raise HTTPFound(url)
+            if basic_auth_check_resp is not None:
+                return await handler(request)
 
-            try:
-                created_at = (
-                    float(tgindex_session) + request.app["SESSION_COOKIE_LIFETIME"]
-                )
-                if (
-                    time.time()
-                    > created_at + 60 * request.app["SESSION_COOKIE_LIFETIME"]
-                ):
-                    raise HTTPFound(url)
-            except Exception as e:
-                log.error(e, exc_info=True)
-                raise HTTPFound(url)
+            cookies_auth_check_resp = await _do_cookies_auth_check(request)
+
+            if cookies_auth_check_resp is not None:
+                return await handler(request)
+
+            return HTTPFound(url)
 
         return await handler(request)
 

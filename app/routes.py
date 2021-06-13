@@ -7,6 +7,7 @@ from .config import index_settings
 
 log = logging.getLogger(__name__)
 
+
 async def setup_routes(app, handler):
     h = handler
     client = h.client
@@ -22,17 +23,17 @@ async def setup_routes(app, handler):
         web.post("/login", h.login_post, name="login_handle"),
         web.get("/logout", h.logout_get, name="logout"),
     ]
+
     def get_common_routes(p):
         return [
-                    web.get(p, h.index),
-                    web.get(p + r"/logo", h.logo),
-                    web.get(p + r"/{id:\d+}/view", h.info),
-                    web.get(p + r"/{id:\d+}/download", h.download_get),
-                    web.head(p + r"/{id:\d+}/download", h.download_head),
-                    web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
-                    web.get(p + r"/{id:\d+}/v.mp4", h.download_get),
-                    web.head(p + r"/{id:\d+}/v.mp4", h.download_head),
-                ]
+            web.get(p, h.index),
+            web.get(p + r"/logo", h.logo),
+            web.get(p + r"/{id:\d+}/view", h.info),
+            web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
+            web.get(p + r"/{id:\d+}/{filename}", h.download_get),
+            web.head(p + r"/{id:\d+}/{filename}", h.download_head),
+        ]
+
     if index_all:
         # print(await client.get_dialogs())
         # dialogs = await client.get_dialogs()
@@ -56,9 +57,7 @@ async def setup_routes(app, handler):
 
             alias_id = h.generate_alias_id(chat)
             p = "/{chat:" + alias_id + "}"
-            routes.extend(
-               get_common_routes(p)
-            )
+            routes.extend(get_common_routes(p))
             log.debug(f"Index added for {chat.id} at /{alias_id}")
 
     else:
@@ -66,9 +65,7 @@ async def setup_routes(app, handler):
             chat = await client.get_entity(chat_id)
             alias_id = h.generate_alias_id(chat)
             p = "/{chat:" + alias_id + "}"
-            routes.extend(
-                get_common_routes(p) # returns list() of common routes 
-            )
+            routes.extend(get_common_routes(p))  # returns list() of common routes
             log.debug(f"Index added for {chat.id} at /{alias_id}")
     routes.append(web.view(r"/{wildcard:.*}", h.wildcard))
     app.add_routes(routes)

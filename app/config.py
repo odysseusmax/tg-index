@@ -55,6 +55,8 @@ authenticated = username and password
 SESSION_COOKIE_LIFETIME = int(os.environ.get("SESSION_COOKIE_LIFETIME") or "60")
 try:
     SECRET_KEY = os.environ["SECRET_KEY"]
+    if len(SECRET_KEY) != 32:
+        raise ValueError("SECRET_KEY should be exactly 32 charaters long")
 except (KeyError, ValueError):
     if authenticated:
         traceback.print_exc()
