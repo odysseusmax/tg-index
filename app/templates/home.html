@@ -8,7 +8,7 @@
     <div class="block p-4 md:flex md:flex-wrap md:justify-items-center w-full text-center break-words">
         {% for chat in chats %}
         <a title="{{chat.name}}" href="/{{chat.page_id}}"
-            class="mx-auto flex flex-col justify-items-center w-2/3 min-h-full md:w-2/5 lg:w-1/6 rounded my-2 p-2 shadow-md hover:shadow-lg hover:border hover:border-blue-300 hover:bg-blue-100">
+            class="mx-auto flex flex-col justify-items-center w-2/3 min-h-full md:w-2/5 lg:w-1/6 rounded my-2 p-2 shadow hover:shadow-md hover:border hover:border-blue-300 hover:bg-blue-100">
 
             <img src="/{{chat.page_id}}/logo?big=1" class="w-full rounded-full ">
             <div class="p-4 rounded">{{chat.name}}</div>

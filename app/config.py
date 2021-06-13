@@ -8,7 +8,8 @@ import os
 
 try:
     port = int(os.environ.get("PORT", "8080"))
-except ValueError:
+except Exception as e:
+    print(e)
     port = -1
 if not 1 <= port <= 65535:
     print(

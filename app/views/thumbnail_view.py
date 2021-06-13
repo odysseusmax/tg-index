@@ -46,7 +46,12 @@ class ThumbnailView:
             body = temp.getvalue()
         else:
             thumb_pos = int(len(thumbnails) / 2)
-            thumbnail = self.client._get_thumb(thumbnails, thumb_pos)
+            try:
+                thumbnail = self.client._get_thumb(thumbnails, thumb_pos)
+            except Exception as e:
+                logging.debug(e)
+                thumbnail = None
+                
             if not thumbnail or isinstance(thumbnail, types.PhotoSizeEmpty):
                 return web.Response(
                     status=410,

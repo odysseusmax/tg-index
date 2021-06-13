@@ -7,6 +7,24 @@
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+        * {
+            font-family: 'PT Sans';
+        }
+    </style>
+
+    <script>
+        
+        window.onload = () => {
+            // set title as host url
+            const titleA = document.getElementById("title-a")
+            titleA.innerHTML = document.location.host
+        }
+         
+    </script>
+
+
     <title>
         {% if title %} {{title}} {% else %} Telegram Index {% endif %}
     </title>
@@ -15,9 +33,9 @@
 
 <body>
 
-    <header class="bg-red-600 text-white mb-2 p-4 w-full shadow">
+    <header class="bg-blue-300 text-white mb-2 p-4 w-full shadow">
         <div class="mx-auto flex justify-between content-center max-w-screen-xl">
-            <a href="/" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram Index </a>
+            <a href="/" id="title-a" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
             {% if authenticated %} <a href="/logout" class="text-right"> Logout </a> {% else %} {%
             endif %}
         </div>

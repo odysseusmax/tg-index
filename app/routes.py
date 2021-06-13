@@ -30,6 +30,8 @@ async def setup_routes(app, handler):
                     web.get(p + r"/{id:\d+}/download", h.download_get),
                     web.head(p + r"/{id:\d+}/download", h.download_head),
                     web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
+                    web.get(p + r"/{id:\d+}/v.mp4", h.download_get),
+                    web.head(p + r"/{id:\d+}/v.mp4", h.download_head),
                 ]
     if index_all:
         # print(await client.get_dialogs())

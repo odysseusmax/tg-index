@@ -59,6 +59,8 @@ class IndexView:
                     insight=get_file_name(m),
                     human_size=get_human_size(m.file.size),
                     url=f"/{alias_id}/{m.id}/view",
+                    download=f"{alias_id}/{m.id}/download",
+                    vlc = f"{alias_id}/{m.id}/v.mp4",
                 )
             elif m.message:
                 entry = dict(
