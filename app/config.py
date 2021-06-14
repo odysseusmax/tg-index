@@ -51,7 +51,7 @@ if not logo_folder.exists():
 username = os.environ.get("TGINDEX_USERNAME", "")
 password = os.environ.get("PASSWORD", "")
 SHORT_URL_LEN = int(os.environ.get("SHORT_URL_LEN", 3))
-authenticated = username and password
+authenticated = bool(username and password)
 SESSION_COOKIE_LIFETIME = int(os.environ.get("SESSION_COOKIE_LIFETIME") or "60")
 try:
     SECRET_KEY = os.environ["SECRET_KEY"]
