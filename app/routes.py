@@ -77,7 +77,9 @@ async def setup_routes(app, handler):
         for chat_id in include_chats:
             chat = await client.get_entity(chat_id)
             alias_id = h.generate_alias_id(chat)
-            routes.extend(get_common_routes(alias_id))  # returns list() of common routes
+            routes.extend(
+                get_common_routes(alias_id)
+            )  # returns list() of common routes
             log.debug(f"Index added for {chat.id} at /{alias_id}")
-    routes.append(web.view(r"/{wildcard:.*}", h.wildcard))
+    routes.append(web.view(r"/{wildcard:.*}", h.wildcard, name="wildcard"))
     app.add_routes(routes)
