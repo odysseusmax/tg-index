@@ -33,18 +33,20 @@ class Indexer:
     TEMPLATES_ROOT = pathlib.Path(__file__).parent / "templates"
 
     def __init__(self):
-        self.server = web.Application(
-            middlewares=[
+        middlewares = []
+        if authenticated:
+            middlewares.append(
                 session_middleware(
                     EncryptedCookieStorage(
                         secret_key=SECRET_KEY.encode(),
                         max_age=60 * SESSION_COOKIE_LIFETIME,
-                        cookie_name="TG_INDEX_SESSION"
+                        cookie_name="TG_INDEX_SESSION",
                     )
-                ),
-                middleware_factory(),
-            ]
-        )
+                )
+            )
+
+        middlewares.append(middleware_factory())
+        self.server = web.Application(middlewares=middlewares)
         self.loop = asyncio.get_event_loop()
         self.tg_client = Client(session_string, api_id, api_hash)
 

@@ -1,5 +1,4 @@
 import logging
-import math
 from PIL import Image, ImageDraw, ImageFont
 import random
 

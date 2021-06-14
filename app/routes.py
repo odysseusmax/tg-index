@@ -22,16 +22,30 @@ async def setup_routes(app, handler):
         web.get("/login", h.login_get, name="login_page"),
         web.post("/login", h.login_post, name="login_handle"),
         web.get("/logout", h.logout_get, name="logout"),
+        web.get("/favicon.ico", h.faviconicon, name="favicon"),
     ]
 
-    def get_common_routes(p):
+    def get_common_routes(alias_id):
+        p = "/{chat:" + alias_id + "}"
         return [
-            web.get(p, h.index),
-            web.get(p + r"/logo", h.logo),
-            web.get(p + r"/{id:\d+}/view", h.info),
-            web.get(p + r"/{id:\d+}/thumbnail", h.thumbnail_get),
-            web.get(p + r"/{id:\d+}/{filename}", h.download_get),
-            web.head(p + r"/{id:\d+}/{filename}", h.download_head),
+            web.get(p, h.index, name=f"index_{alias_id}"),
+            web.get(p + r"/logo", h.logo, name=f"logo_{alias_id}"),
+            web.get(p + r"/{id:\d+}/view", h.info, name=f"info_{alias_id}"),
+            web.get(
+                p + r"/{id:\d+}/thumbnail",
+                h.thumbnail_get,
+                name=f"thumbnail_get_{alias_id}",
+            ),
+            web.get(
+                p + r"/{id:\d+}/{filename}",
+                h.download_get,
+                name=f"download_get_{alias_id}",
+            ),
+            web.head(
+                p + r"/{id:\d+}/{filename}",
+                h.download_head,
+                name=f"download_head_{alias_id}",
+            ),
         ]
 
     if index_all:
@@ -56,16 +70,14 @@ async def setup_routes(app, handler):
                 continue
 
             alias_id = h.generate_alias_id(chat)
-            p = "/{chat:" + alias_id + "}"
-            routes.extend(get_common_routes(p))
+            routes.extend(get_common_routes(alias_id))
             log.debug(f"Index added for {chat.id} at /{alias_id}")
 
     else:
         for chat_id in include_chats:
             chat = await client.get_entity(chat_id)
             alias_id = h.generate_alias_id(chat)
-            p = "/{chat:" + alias_id + "}"
-            routes.extend(get_common_routes(p))  # returns list() of common routes
+            routes.extend(get_common_routes(alias_id))  # returns list() of common routes
             log.debug(f"Index added for {chat.id} at /{alias_id}")
     routes.append(web.view(r"/{wildcard:.*}", h.wildcard))
     app.add_routes(routes)

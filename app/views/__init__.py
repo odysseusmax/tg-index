@@ -12,6 +12,7 @@ from .logo_view import LogoView
 from .thumbnail_view import ThumbnailView
 from .login_view import LoginView
 from .logout_view import LogoutView
+from .faviconicon_view import FaviconIconView
 from .middlewhere import middleware_factory
 
 
@@ -25,6 +26,7 @@ class Views(
     WildcardView,
     LoginView,
     LogoutView,
+    FaviconIconView,
 ):
     def __init__(self, client):
         self.client = client
@@ -38,7 +40,7 @@ class Views(
         while True:
             orig_id = f"{chat_id}"  # the original id
             unique_hash = hashlib.md5(orig_id.encode()).digest()
-            alias_id = base64.urlsafe_b64encode(unique_hash).decode()[: self.url_len]
+            alias_id = base64.b64encode(unique_hash, b"__").decode()[: self.url_len]
 
             if alias_id in self.chat_ids:
                 self.url_len += (
