@@ -5,12 +5,11 @@ import asyncio
 from telethon import TelegramClient, utils
 from telethon.sessions import StringSession
 
-class Client(TelegramClient):
 
+class Client(TelegramClient):
     def __init__(self, session_string, *args, **kwargs):
         super().__init__(StringSession(session_string), *args, **kwargs)
         self.log = logging.getLogger(__name__)
-
 
     async def download(self, file, file_size, offset, limit):
         part_size_kb = utils.get_appropriated_part_size(file_size)
@@ -22,10 +21,12 @@ class Client(TelegramClient):
         part_count = math.ceil(file_size / part_size)
         part = first_part
         try:
-            async for chunk in self.iter_download(file, offset=first_part * part_size, request_size=part_size):
+            async for chunk in self.iter_download(
+                file, offset=first_part * part_size, request_size=part_size
+            ):
                 if part == first_part:
                     yield chunk[first_part_cut:]
-                elif part == last_part-1:
+                elif part == last_part - 1:
                     yield chunk[:last_part_cut]
                 else:
                     yield chunk

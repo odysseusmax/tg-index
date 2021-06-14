@@ -1,5 +1,6 @@
 import logging
-from PIL import Image, ImageDraw
+import math
+from PIL import Image, ImageDraw, ImageFont
 import random
 
 from aiohttp import web
@@ -16,11 +17,11 @@ class LogoView:
         alias_id = req.match_info["chat"]
         chat = self.chat_ids[alias_id]
         chat_id = chat["chat_id"]
-        chat_name = "Image not available"
+        chat_name = " ".join(map(lambda x: x[0].upper(), chat["title"].split(" ")))
         logo_path = logo_folder.joinpath(f"{alias_id}.jpg")
         if not logo_path.exists():
             try:
-                photo = await self.client.get_profile_photos(chat_id)
+                (photo,) = await self.client.get_profile_photos(chat_id, limit=1)
             except Exception:
                 log.debug(
                     f"Error in getting profile picture in {chat_id}", exc_info=True
@@ -28,15 +29,17 @@ class LogoView:
                 photo = None
 
             if not photo:
-                W, H = (160, 160)
-                color = tuple([random.randint(0, 255) for i in range(3)])
+                W, H = (360, 360)
+                color = tuple((random.randint(0, 255) for _ in range(3)))
                 im = Image.new("RGB", (W, H), color)
                 draw = ImageDraw.Draw(im)
-                w, h = draw.textsize(chat_name)
-                draw.text(((W - w) / 2, (H - h) / 2), chat_name, fill="white")
+                font = ImageFont.truetype("arial.ttf", 50)
+                w, h = draw.textsize(chat_name, font=font)
+                draw.text(
+                    ((W - w) / 2, (H - h) / 2), chat_name, fill="white", font=font
+                )
                 im.save(logo_path)
             else:
-                photo = photo[0]
                 pos = -1 if req.query.get("big", None) else int(len(photo.sizes) / 2)
                 size = self.client._get_thumb(photo.sizes, pos)
                 if isinstance(size, (types.PhotoCachedSize, types.PhotoStrippedSize)):
