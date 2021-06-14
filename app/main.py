@@ -24,7 +24,6 @@ from .config import (
     SECRET_KEY,
 )
 
-
 log = logging.getLogger(__name__)
 
 
@@ -33,18 +32,17 @@ class Indexer:
     TEMPLATES_ROOT = pathlib.Path(__file__).parent / "templates"
 
     def __init__(self):
-        self.server = web.Application(
-            middlewares=[
+        if SECRET_KEY != "":
+            self.server = web.Application(middlewares=[
                 session_middleware(
-                    EncryptedCookieStorage(
-                        secret_key=SECRET_KEY.encode(),
-                        max_age=60 * SESSION_COOKIE_LIFETIME,
-                        cookie_name="TG_INDEX_SESSION"
-                    )
-                ),
-                middleware_factory(),
-            ]
-        )
+                    EncryptedCookieStorage(secret_key=SECRET_KEY.encode(),
+                                           max_age=60 *
+                                           SESSION_COOKIE_LIFETIME,
+                                           cookie_name="TG_INDEX_SESSION")),
+                middleware_factory()
+            ])
+        else:
+            self.server = web.Application(middlewares=[middleware_factory()])
         self.loop = asyncio.get_event_loop()
         self.tg_client = Client(session_string, api_id, api_hash)
 
