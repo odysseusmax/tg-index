@@ -12,7 +12,10 @@ log = logging.getLogger(__name__)
 def _do_basic_auth_check(request):
     auth_header = request.headers.get(hdrs.AUTHORIZATION)
     if not auth_header:
-        if "download_" in request.match_info.route.name:
+        if (
+            request.match_info is not None
+            and "download_" in request.match_info.route.name
+        ):
             return Response(
                 body=b"",
                 status=401,
