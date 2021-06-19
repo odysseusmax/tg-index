@@ -10,28 +10,30 @@ log = logging.getLogger(__name__)
 
 
 def _do_basic_auth_check(request):
-    auth_header = request.headers.get(hdrs.AUTHORIZATION)
-    if not auth_header:
-        if "download_" in request.match_info.route.name:
-            return Response(
-                body=b"",
-                status=401,
-                reason="UNAUTHORIZED",
-                headers={
-                    hdrs.WWW_AUTHENTICATE: 'Basic realm=""',
-                    hdrs.CONTENT_TYPE: "text/html; charset=utf-8",
-                    hdrs.CONNECTION: "keep-alive",
-                },
-            )
+    if "download_" not in request.match_info.route.name:
         return
 
-    try:
-        auth = BasicAuth.decode(auth_header=auth_header)
-    except ValueError:
-        auth = None
+    auth = None
+    auth_header = request.headers.get(hdrs.AUTHORIZATION)
+    if auth_header is not None:
+        try:
+            auth = BasicAuth.decode(auth_header=auth_header)
+        except ValueError:
+            pass
+
+    if auth is None:
+        try:
+            auth = BasicAuth.from_url(request.url)
+        except ValueError:
+            pass
 
     if not auth:
-        return
+        return Response(
+            body=b"",
+            status=401,
+            reason="UNAUTHORIZED",
+            headers={hdrs.WWW_AUTHENTICATE: 'Basic realm=""'},
+        )
 
     if auth.login is None or auth.password is None:
         return
