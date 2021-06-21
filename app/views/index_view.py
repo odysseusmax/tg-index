@@ -105,5 +105,5 @@ class IndexView:
             "block_downloads": block_downloads,
             "m3u_option": ""
             if not req.app["is_authenticated"]
-            else f"{req.app['is_authenticated']}:{req.app['is_authenticated']}@",
+            else f"{req.app['username']}:{req.app['password']}@",
         }

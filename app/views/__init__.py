@@ -1,7 +1,5 @@
 import base64
 import hashlib
-import random
-import string
 
 from ..config import SHORT_URL_LEN
 
@@ -14,8 +12,8 @@ from .logo_view import LogoView
 from .thumbnail_view import ThumbnailView
 from .login_view import LoginView
 from .logout_view import LogoutView
+from .faviconicon_view import FaviconIconView
 from .middlewhere import middleware_factory
-
 
 
 class Views(
@@ -28,6 +26,7 @@ class Views(
     WildcardView,
     LoginView,
     LogoutView,
+    FaviconIconView,
 ):
     def __init__(self, client):
         self.client = client
@@ -39,14 +38,18 @@ class Views(
         title = chat.title
 
         while True:
-            orig_id = f"{chat_id}" # the original id
+            orig_id = f"{chat_id}"  # the original id
             unique_hash = hashlib.md5(orig_id.encode()).digest()
-            alias_id = base64.urlsafe_b64encode(unique_hash).decode()[:self.url_len]
-            
+            alias_id = base64.b64encode(unique_hash, b"__").decode()[: self.url_len]
+
             if alias_id in self.chat_ids:
-                self.url_len += 1 # increment url_len just incase the hash is already used.
+                self.url_len += (
+                    1  # increment url_len just incase the hash is already used.
+                )
                 continue
-            elif (self.url_len > SHORT_URL_LEN): # reset url_len to initial if hash was unique.
+            elif (
+                self.url_len > SHORT_URL_LEN
+            ):  # reset url_len to initial if hash was unique.
                 self.url_len = SHORT_URL_LEN
 
             self.chat_ids[alias_id] = {

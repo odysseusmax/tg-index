@@ -51,7 +51,7 @@ class ThumbnailView:
             except Exception as e:
                 logging.debug(e)
                 thumbnail = None
-                
+
             if not thumbnail or isinstance(thumbnail, types.PhotoSizeEmpty):
                 return web.Response(
                     status=410,

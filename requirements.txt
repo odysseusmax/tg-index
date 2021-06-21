@@ -4,3 +4,4 @@ telethon>=1.16.4
 cryptg
 pillow
 aiohttp_session[secure]
+dotenv

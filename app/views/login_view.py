@@ -33,7 +33,6 @@ class LoginView:
             return web.HTTPFound(location=loc)
 
         session = await new_session(req)
-        print(session)
         session["logged_in"] = True
         session["logged_in_at"] = time.time()
         return web.HTTPFound(location=redirect_to)
