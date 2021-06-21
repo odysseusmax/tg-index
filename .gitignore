@@ -9,3 +9,5 @@ app.json
 Procfile
 .vscode/
 .gitignore
+poetry.lock
+pyproject.toml

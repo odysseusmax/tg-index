@@ -1,44 +1,48 @@
 <!doctype html>
-<html lang="en">
+<html class="light" lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind-dark.min.css" rel="stylesheet">
+	<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
-        * {
-            font-family: 'PT Sans';
-        }
-    </style>
+	</script>
+	<script>
+		if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.className = 'dark';
+    } else {
+      document.documentElement.className = 'light';
+      }
+	</script>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+		* {
+			font-family: 'Roboto', sans-serif;
+		}
+	</style>
 
-    <script>
-        
-        window.onload = () => {
+	<script>
+		window.onload = () => {
             // set title as host url
             const titleA = document.getElementById("title-a")
             titleA.innerHTML = document.location.host
         }
-         
-    </script>
+	</script>
 
-
-    <title>
-        {% if title %} {{title}} {% else %} Telegram Index {% endif %}
-    </title>
+	<title>
+		{% if title %} {{title}} {% else %} Telegram Index {% endif %}
+	</title>
 
 </head>
 
-<body>
+<body class="dark:bg-black dark:text-white">
 
-    <header class="bg-blue-300 text-white mb-2 p-4 w-full shadow">
-        <div class="mx-auto flex justify-between content-center max-w-screen-xl">
-            <a href="/" id="title-a" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
-            {% if authenticated %} <a href="/logout" class="text-right"> Logout </a> {% else %} {%
-            endif %}
-        </div>
+	<header class="bg-blue-300 dark:bg-red-700 text-white mb-2 p-4 w-full shadow">
+		<div class="mx-auto flex justify-between content-center max-w-screen-xl">
+			<a href="/" id="title-a" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
+			{% if authenticated %} <a href="/logout" class="text-right"> Logout </a> {% else %} {% endif %}
+		</div>
 
-    </header>
-    <div class="m-auto w-full min-h-screen max-w-screen-xl">
+	</header>
+	<div class="m-auto w-full min-h-screen max-w-screen-xl">
