@@ -52,16 +52,13 @@
             {% if item.media %}
 
                 <a href="{{item.url}}"><img src="{{item.thumbnail}}" class="w-full rounded shadow-inner"></a>
-                
+                <div class="p-2">{{item.insight}}</div>
                 <!-- Buttons container -->
-                <span class="item-buttons my-1 rounded shadow-inner">
-
-                    <div class="p-2">{{item.insight}}</div>
-                    
+                <span class="inline-flex mb-1 rounded shadow-inner dark:bg-green-500">                    
                     {% if not block_downloads %}
                         <!-- Direct file download button -->
                         <a href="{{item.download}}"
-                            class="hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
+                            class="flex-1 hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -72,7 +69,7 @@
                         {% if 'video' in item.mime_type %}
                             <!--  Kodi/media player supported url ending with v.mp4 -->
                             <a title="v.mp4" href="{{item.download}}"
-                                class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
+                                class="flex-1 hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,7 +81,7 @@
 
                             <!-- One click single item playlist Download -->
                             <button title="{{item.filename}}.m3u" onclick="singleItemPlaylist('{{item.download}}','{{item.filename}}', '{{m3u_option}}');"
-                                class=" hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded inline-flex items-center">
+                                class="flex-1 hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
