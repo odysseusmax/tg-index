@@ -22,32 +22,27 @@
 		}
 	</style>
 
-	<script>
-		window.onload = () => {
-            // set title as host url
-            const titleA = document.getElementById("title-a")
-            titleA.innerHTML = document.location.host
-        }
-	</script>
-
 	<title>
 		{% if title %} {{title}} {% else %} Telegram Index {% endif %}
 	</title>
 
 </head>
 
-<body class="dark:bg-black dark:text-white">
+<body class="bg-white text-black dark:bg-black dark:text-white">
 
-	<header class="bg-blue-300 dark:bg-red-500 text-white mb-2 p-4 w-full shadow">
-		<div class="flex mx-auto justify-between content-center max-w-screen-xl">
-			<a href="/" id="title-a" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
-      <div class="flex flex-row space-x-2 p-2 rounded">
-        <button onclick="toggleTheme()">
-        <img src="https://s3.imgcdn.dev/nW9YV.png" class="rounded-full bg-white shadow hover:shadow-lg h-8" alt="Theme">
+	<header class="bg-blue-300 dark:bg-red-500 text-white mb-2 p-2 w-full shadow">
+		<div class="flex mx-auto justify-between items-center max-w-screen-xl">
+			<a href="/" id="title-a" class="text-left font-bold text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
+			<div class="space-x-1">
+				<button onclick="toggleTheme()" class="rounded-full bg-white">
+        <img src="https://s3.imgcdn.dev/nW9YV.png" class="h-8" alt="Theme">
       </button>
-			{% if authenticated %} <a href="/logout">
-      <img src="https://s3.imgcdn.dev/ndsjh.png" class="rounded-full bg-white shadow hover:shadow-lg h-8" alt="Logout">
-      </a> {% else %} {% endif %}
+			{% if authenticated %}
+      <button class="rounded-full bg-white"><a href="/logout">
+      <img src="https://s3.imgcdn.dev/ndsjh.png" class="h-8" alt="Logout">
+      </a>
+      </button>
+      {% else %} {% endif %}
       </div>
 		</div>
 
