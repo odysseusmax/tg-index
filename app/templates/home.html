@@ -5,11 +5,10 @@
 </h1>
 
 <div class="mx-auto my-1 p-1 w-full">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 place-items-stretch text-center break-words">
+    <div class="p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 place-items-stretch text-center break-words">
         {% for chat in chats %}
         <a title="{{chat.name}}" href="/{{chat.page_id}}"
-            class="p-2 rounded shadow hover:shadow-md hover:border hover:border-blue-300 hover:bg-blue-100 dark:bg-red-700 dark:hover:bg-red-500">
-
+            class="p-2 rounded shadow hover:shadow-md hover:border hover:border-blue-300 hover:bg-blue-100 dark:bg-red-500 dark:hover:bg-red-700">
             <img id="chatimg" src="/{{chat.page_id}}/logo?big=1" onerror="chatImgAlt()" class="w-full rounded-full">
             <div class="p-2 rounded">{{chat.name}}</div>
 

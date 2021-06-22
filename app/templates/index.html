@@ -19,8 +19,8 @@
         <form class="">
 
             <div class="p-0">
-                <div class=" flex items-center rounded-full shadow">
-                    <input class=" rounded-l-full w-full py-1 px-6 text-gray-700 leading-tight focus:outline-none"
+                <div class="bg-white flex items-center rounded-full shadow">
+                    <input class="rounded-l-full w-full py-1 px-6 text-gray-700 dark:text-black leading-tight focus:outline-none"
                         name="search" id="search" value="{% if search %}{{search}}{% endif %}" type="text"
                         placeholder="Search">
                     <div class="p-1">
@@ -44,13 +44,13 @@
 {% if item_list %}
 
 <div class="mx-auto my-2 w-full px-4 ">
-    <div class="block  md:flex md:flex-wrap md:justify-center text-center break-all ">
+    <div class="block md:flex md:flex-wrap md:justify-center text-center break-all ">
         {% for item in item_list %}
 
         <!-- Card  -->
         <div title="{% if item.media %} {{item.mime_type}} | {{item.human_size}} {% else %} Text message {% endif %}"
             href="{{item.url}}"
-            class="text-sm flex flex-col items-center justify-center w-full min-h-full md:w-1/5 lg:w-1/6 rounded my-4 md:mx-1 shadow hover:shadow-md border-solid ">
+            class="text-sm flex flex-col items-center justify-center w-full min-h-full md:w-1/5 lg:w-1/6 rounded my-4 md:mx-1 shadow hover:shadow-md border-solid dark:bg-red-500">
 
             {% if item.media %}
 

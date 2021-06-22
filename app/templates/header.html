@@ -38,10 +38,17 @@
 
 <body class="dark:bg-black dark:text-white">
 
-	<header class="bg-blue-300 dark:bg-red-700 text-white mb-2 p-4 w-full shadow">
-		<div class="mx-auto flex justify-between content-center max-w-screen-xl">
+	<header class="bg-blue-300 dark:bg-red-500 text-white mb-2 p-4 w-full shadow">
+		<div class="flex mx-auto justify-between content-center max-w-screen-xl">
 			<a href="/" id="title-a" class="text-left text-xl lg:text-2xl xl:text-3xl"> Telegram index </a>
-			{% if authenticated %} <a href="/logout" class="text-right"> Logout </a> {% else %} {% endif %}
+      <div class="flex flex-row space-x-2 p-2 rounded">
+        <button onclick="toggleTheme()">
+        <img src="https://s3.imgcdn.dev/nW9YV.png" class="rounded-full bg-white shadow hover:shadow-lg h-8" alt="Theme">
+      </button>
+			{% if authenticated %} <a href="/logout">
+      <img src="https://s3.imgcdn.dev/ndsjh.png" class="rounded-full bg-white shadow hover:shadow-lg h-8" alt="Logout">
+      </a> {% else %} {% endif %}
+      </div>
 		</div>
 
 	</header>
