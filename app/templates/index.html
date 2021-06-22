@@ -1,17 +1,14 @@
-{% include 'header.html' %}
-
-
-{% block javascript %}
+{% include 'header.html' %} {% block javascript %}
 <script type="text/javascript">
-    {% include "./js/filesaver.min.js" %}
+	{% include "./js/filesaver.min.js" %}
     {% include "./js/playlist.js" %}
+
 </script>
 {% endblock %}
 
 <div class="block md:flex justify-between items-center px-4 text-center border-b-2">
-    <div
-        class="m-2 block md:flex items-center justify-center md:justify-start text-2xl md:text-right font-bold text-blue-500">
-        <img class="mx-auto md:ml-0 md:mr-1 my-4 md:my-2 w-16 h-16 rounded-full bg-black outline-none" src="{{logo}}">
+	<div class="m-2 block md:flex items-center justify-center md:justify-start text-2xl md:text-right font-bold text-blue-500">
+		<img class="mx-auto md:ml-0 md:mr-1 my-4 md:my-2 w-16 h-16 rounded-full bg-black outline-none" src="{{logo}}">
         <a href="javascript:window.location.href=window.location.href"> {{name}} </a>
     </div>
 
