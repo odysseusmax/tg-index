@@ -8,10 +8,10 @@
     <div class="px-2 sm:px-4 md:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 text-center break-words">
         {% for chat in chats %}
         <a title="{{chat.name}}" href="/{{chat.page_id}}"
-            class="p-4 rounded shadow hover:shadow-md hover:border hover:border-blue-300 hover:bg-blue-100 dark:bg-red-500 dark:hover:bg-red-700">
+            class="p-4 rounded shadow hover:shadow-md hover:border hover:border-blue-300 hover:bg-blue-100 dark:bg-red-700 dark:hover:bg-red-500">
 
             <img src="/{{chat.page_id}}/logo?big=1" class="w-full rounded-full ">
-            <div class="p-2 rounded">{{chat.name}}</div>
+            <div class="p-2 mt-2 rounded text-white bg-blue-500 dark:bg-yellow-500">{{chat.name}}</div>
 
         </a>
         {% endfor %}
