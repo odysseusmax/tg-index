@@ -15,9 +15,15 @@ def runSetup():
             f"\nCopy your {missing} and save it into Secrets(Environment variables) Sidebar!\n"
         )
 
-    api_id = os.getenv("API_ID")
-    if api_id is None:
-        alert()
+    req_env_vars = ["API_ID", "API_HASH", "INDEX_SETTINGS"]
+    misssing_envs = False
+    for env_var in req_env_vars:
+        env_value = os.getenv(env_var )
+        if env_value is None:
+             misssing_envs = True
+             alert(env_var)
+    
+    if misssing_envs:
         return
 
     session_string = os.getenv("SESSION_STRING")
