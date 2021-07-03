@@ -9,3 +9,4 @@ app.json
 Procfile
 .vscode/
 .gitignore
+pyproject.toml
