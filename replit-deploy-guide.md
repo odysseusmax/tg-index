@@ -18,16 +18,16 @@ Go to https://replit.com/signup and create a free Replit account.
 
 ## [3] CONNECT YOUR GITHUB ACCOUNT WITH YOUR REPLIT ACCOUNT
 
-Click on the 'New repl' button on upper left side of the dashboard. Then on the little window that pops up, **Import from GitHub** >> **Authorize GitHub to import your repos**.
+* Click on the 'New repl' button on upper left side of the dashboard. Then on the little window that pops up, **Import from GitHub** >> **Authorize GitHub to import your repos**.
 
 ![image](https://user-images.githubusercontent.com/63403140/124388284-1e20b600-dd04-11eb-8470-394abf0217a6.png)
 ![image](https://user-images.githubusercontent.com/63403140/124388291-2aa50e80-dd04-11eb-8df2-49a9defae22a.png)
 
-Then select the fork of the tg-index repo that you made earlier.
+* Then select the fork of the tg-index repo that you made earlier.
 
 ![image](https://user-images.githubusercontent.com/63403140/124388476-eb2af200-dd04-11eb-8dd3-d6290738b032.png)
 
-After, Replit will automatically clone the repo from your GitHub fork and detect its language. It may take a few seconds to finish this initialization process and after which, your Replit window should look similar to this ~
+* After, Replit will automatically clone the repo from your GitHub fork and detect its language. It may take a few seconds to finish this initialization process and after which, your Replit window should look similar to this ~
 
 ![image](https://user-images.githubusercontent.com/63403140/124388490-00a01c00-dd05-11eb-9161-e31076ac0416.png)
 
@@ -35,12 +35,12 @@ After, Replit will automatically clone the repo from your GitHub fork and detect
 
 ## [4] SET THE REQUIRED ENVIRONMENT VARIABLES
 
-Open the 'Secrets (Environment variables)' tab from the left sidebar, here you'll be able to add all the environment variables needed for your app.
+* Open the 'Secrets (Environment variables)' tab from the left sidebar, here you'll be able to add all the environment variables needed for your app.
 
 ![image](https://user-images.githubusercontent.com/63403140/124388916-cb94c900-dd06-11eb-85ba-ca42067a5ba1.png)
 ![image](https://user-images.githubusercontent.com/63403140/124389983-6db6b000-dd0b-11eb-8dc9-53fe29de24b8.png)
 
-Now add the required environment variables that your app needs to run one by one. The required environment varibles are ~
+* Now add the required environment variables that your app needs to run one by one. The required environment varibles are ~
 
 > NOTE : ANY VARIABLE MENTIONED IN THIS GUIDE WHICH IS MARKED AS `required` IS A REQUIRED VARIABLE THAT IS ABSOLUTELY NEEDED FOR TG-INDEX TO RUN AT MINIMAL.
 
@@ -52,11 +52,11 @@ Now add the required environment variables that your app needs to run one by one
 
 ![CYBERZENO_2021_July_04__205132](https://user-images.githubusercontent.com/63403140/124389589-ace40180-dd09-11eb-8af0-27471a2c098d.gif)
 
-There are actually 4 required variables for tg-index, the fourth one is a session string of your account which we will generate inside our app. So after setting the `API_ID`, `API_HASH` and `INDEX_SETTINGS` variable properly, click on the 'Run' button.
+* There are actually 4 required variables for tg-index, the fourth one is a session string of your account which we will generate inside our app. So after setting the `API_ID`, `API_HASH` and `INDEX_SETTINGS` variable properly, click on the 'Run' button.
 
 ![image](https://user-images.githubusercontent.com/63403140/124390056-c2f2c180-dd0b-11eb-9058-8a029b69c79f.png)
 
-When running the repl for the first time, Replit will download and install all the third party packages (dependencies) needed for your app to work, so it may take a while for the process to complete. After that, a script that checks if all the required variables are present will run and when it finds that we didn't set the `SESSION_STRING` variable, it will trigger another built-in script that will ask you to type your phone number or bot API token. **TG-INDEX DOES NOT SUPPORT INDEXING CHANNELS/GROUPS USING BOTS YET** so you must type your phone number **with country code** and hit enter.
+* When running the repl for the first time, Replit will download and install all the third party packages (dependencies) needed for your app to work, so it may take a while for the process to complete. After that, a script that checks if all the required variables are present will run and when it finds that we didn't set the `SESSION_STRING` variable, it will trigger another built-in script that will ask you to type your phone number or bot API token. **TG-INDEX DOES NOT SUPPORT INDEXING CHANNELS/GROUPS USING BOTS YET** so you must type your phone number **with country code** and hit enter.
 
 > NOTE : IT DOES NOT HAVE TO BE THE SAME PHONE NUMBER YOU USED TO GET THE `API_ID` AND `API_HASH` VALUES, IT IS THE PHONE NUMBER OF THE ACCOUNT OF WHICH YOU WANT TO FETCH THE CHANNELS AND GROUPS FROM. SO IT GOES WITHOUT SAYING THAT, IF YOU WANT TO INDEX A SPECIFIC CHANNEL/GROUP, THE ACCOUNT LINKED WITH THE PHONE NUMBER YOU ARE TYPING HERE NEEDS TO BE A SUBSCRIBER/MEMBER OF THAT CHANNEL/GROUP.
 
@@ -64,19 +64,19 @@ When running the repl for the first time, Replit will download and install all t
 
 ![CYBERZENO_2021_July_04__214603](https://user-images.githubusercontent.com/63403140/124391193-4367f100-dd11-11eb-831d-e030f29455d8.gif)
 
-After that, you'll get a private message from Telegram containing an OTP, type that OTP on the console and hit enter. If the OTP is correct, a long piece of random letters and symbols will appear on your console. COPY THAT and set it as an environment varible named `SESSION_STRING` like the other three.
+* After that, you'll get a private message from Telegram containing an OTP, type that OTP on the console and hit enter. If the OTP is correct, a long piece of random letters and symbols will appear on your console. COPY THAT and set it as an environment varible named `SESSION_STRING` like the other three.
 
-THEN, RUN THE REPL AGAIN.
+* THEN, RUN THE REPL AGAIN.
 
-If you did everything up to this point correctly, a preview window similar to this should appear above your console ~
+* If you did everything up to this point correctly, a preview window similar to this should appear above your console ~
 
 ![image](https://user-images.githubusercontent.com/63403140/124391976-0b62ad00-dd15-11eb-8eb6-f302ade699b4.png)
 
-(please don't mind my sense of privacy)
+*(please don't mind my sense of privacy)*
 
 ## [5] CUSTOMIZE WHAT TO INDEX
 
-Open the "Secrets (Environment variables)" sidebar again and edit the `INDEX_SETTINGS` variable to your need. The general format is ~
+* Open the "Secrets (Environment variables)" sidebar again and edit the `INDEX_SETTINGS` variable to your need. The general format is ~
 
 > NOTE : EVERY TIME YOU ADD A NEW VARIABLE OR EDIT AN EXISTING VARIABLE, YOU MUST STOP AND RESTART YOUR REPL IF IT'S ALREADY RUNNING.
 
@@ -106,7 +106,7 @@ Open the "Secrets (Environment variables)" sidebar again and edit the `INDEX_SET
 
 ### SOME `INDEX_SETTINGS` EXAMPLES
 
-Suppose, you want to only index the channel with the channel ID `-123456789`, then the value of your `INDEX_SETTINGS` variable should be ~
+* If you want to only index the channel with the channel ID `-123456789`, then the value of your `INDEX_SETTINGS` variable should be ~
 
 ```json
 {
@@ -119,7 +119,7 @@ Suppose, you want to only index the channel with the channel ID `-123456789`, th
 }
 ```
 
-Again, if you want to index every public/private channel on your account except a channel with the channel ID `-123456789`, the value of your `INDEX_SETTINGS` variable should be ~
+* If you want to index every public/private channel on your account except a channel with the channel ID `-123456789`, the value of your `INDEX_SETTINGS` variable should be ~
 
 ```json
 {
@@ -132,7 +132,7 @@ Again, if you want to index every public/private channel on your account except 
 }
 ```
 
-Lastly, if you want to index every single chat, channel and group on your Telegram account, the value of your `INDEX_SETTINGS` variable should be ~
+* if you want to index every single chat, channel and group on your Telegram account, the value of your `INDEX_SETTINGS` variable should be ~
 
 **WARNING!! IT IS NOT RECOMMENDED TO SET `INDEX_SETTINGS` VARIABLE TO INDEX EVERYTHING INCLUDING YOUR PRIVATE CHATS AS THEY WILL BE OPENLY AVAILABLE FOR EVERYONE TO SEE ON THE INTERNET. EVEN IF YOU WANT TO INDEX EVERYTHING, IT IS HIGHLY RECOMMENDED THAT YOU SET USERNAME & PASSWORD FOR YOUR INDEX. LEARN HOW TO DO THIS IN THE NEXT STEP.**
 
@@ -149,7 +149,7 @@ Lastly, if you want to index every single chat, channel and group on your Telegr
 
 ## [6] SET USERNAME & PASSWORD FOR YOUR INDEX (Optional)
 
-Just add these three environment variables in the "Secrets (Environment variables)" sidebar ~
+* Just add these three environment variables in the "Secrets (Environment variables)" sidebar ~
 
 | Variable Name | Description
 | ------------- | -----------
@@ -157,12 +157,40 @@ Just add these three environment variables in the "Secrets (Environment variable
 | `PASSWORD` | Password for authentication, defaults to `''`.
 | `SECRET_KEY` | 32 characters long string for signing the session cookies, required if authentication is enabled. You can use [LastPass Password Generator](https://www.lastpass.com/password-generator) or any other password generator to generate a secure key.
 
-Some optional variables for additional security to set while setting the login credentials are ~
+* Some optional variables for additional security to set while setting the login credentials are ~
 
 | Variable Name | Description
 | ------------- | -----------
 | `SESSION_COOKIE_LIFETIME` | Number of minutes, for which authenticated session is valid for, after which user has to login again. defaults to 60.
 | `BLOCK_DOWNLOADS` | Enable downloads or not. If any value is provided, download feature will be disabled.
+
+## [7] HOW TO KEEP YOUR REPL ONLINE
+
+So the biggest disadvantage of free repls is that they go offline after a few minutes (~5 minitues) of inactivity so what we need for your repl to keep active is a service that will keep sending a timely ping so that the repl doesn't fall asleep. UptimeRobot offers a free service that can do exactly that. Basically, it's a monitoring service that sends an HTTP request to your repl every 5 minutes to check whether your site is down and this checking process does the trick, so your repl stays online.
+
+* Go to https://uptimerobot.com/signUp and create an account. Verify your email and login to your account.
+
+> NOTE : IT IS RECOMMENDED THAT YOU USE AN EMAIL ADDRESS THAT YOU HAD SET UP ON YOUR MOBILE PHONE AS THE SERVICE WILL SEND YOU AN EMAIL TO THIS ADDRESS IF YOUR REPL GOES OFFLINE FOR SOME REASON.
+
+* Your dashboard after login should look something similar to this ~
+
+![image](https://user-images.githubusercontent.com/63403140/124481894-9782dc00-ddca-11eb-9301-c0c23786c694.png)
+
+* Click on "Add New Monitor", and then from the "Monitor type" dropdown menu, select 'HTTP(s)'.
+
+![image](https://user-images.githubusercontent.com/63403140/124482201-dc0e7780-ddca-11eb-81a2-911aa968efd4.png)
+![image](https://user-images.githubusercontent.com/63403140/124482663-56d79280-ddcb-11eb-98d2-10e310b1d4f2.png)
+
+* Give this monitor a friendly name, copy your app URL from the box above the preview window of Replit and paste it in the "URL (or IP)" field of the monitor.
+
+![image](https://user-images.githubusercontent.com/63403140/124488177-5e019f00-ddd1-11eb-8764-83dcba9146cb.png)
+![image](https://user-images.githubusercontent.com/63403140/124488212-65c14380-ddd1-11eb-8373-ec72ef486a50.png)
+
+* Scroll down and click on "Create Monitor", and you're done setting up the monitoring service.
+
+![image](https://user-images.githubusercontent.com/63403140/124488978-4bd43080-ddd2-11eb-8f0b-d587f263a7c9.png)
+
+Again, thank you @rayanfer32 for introducing this amazing method, this is actually the biggest reason i made this guide.
 
 THAT IS ALL!
 
