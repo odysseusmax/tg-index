@@ -134,7 +134,7 @@ Again, if you want to index every public/private channel on your account except 
 
 Lastly, if you want to index every single chat, channel and group on your Telegram account, the value of your `INDEX_SETTINGS` variable should be ~
 
-**WARNING!! IT IS NOT RECOMMENDED TO SET `INDEX_SETTINGS` VARIABLE TO INDEX EVERYTHING INCLUDING YOUR PRIVATE CHATS AS THEY WILL BE OPENLY AVAILABLE FOR EVERYONE TO SEE ON THE INTERNET. EVEN IF YOU WANT TO INDEX EVERYTHING, IT IS HIGHLY RECOMMENDED THAT YOU [SET USERNAME & PASSWORD FOR YOUR INDEX](#setlogin).**
+**WARNING!! IT IS NOT RECOMMENDED TO SET `INDEX_SETTINGS` VARIABLE TO INDEX EVERYTHING INCLUDING YOUR PRIVATE CHATS AS THEY WILL BE OPENLY AVAILABLE FOR EVERYONE TO SEE ON THE INTERNET. EVEN IF YOU WANT TO INDEX EVERYTHING, IT IS HIGHLY RECOMMENDED THAT YOU SET USERNAME & PASSWORD FOR YOUR INDEX. LEARN HOW TO DO THIS IN THE NEXT STEP**
 
 ```json
 {
@@ -147,7 +147,7 @@ Lastly, if you want to index every single chat, channel and group on your Telegr
 }
 ```
 
-## [6] SET USERNAME & PASSWORD FOR YOUR INDEX (Optional) {#setlogin}
+## [6] SET USERNAME & PASSWORD FOR YOUR INDEX (Optional)
 
 Just add these three environment variables in the "Secrets (Environment variables)" sidebar ~
 
