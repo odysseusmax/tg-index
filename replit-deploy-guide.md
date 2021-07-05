@@ -179,7 +179,7 @@ So the biggest disadvantage of free repls is that they go offline after a few mi
 * Click on "Add New Monitor", and then from the "Monitor type" dropdown menu, select 'HTTP(s)'.
 
 ![image](https://user-images.githubusercontent.com/63403140/124482201-dc0e7780-ddca-11eb-81a2-911aa968efd4.png)
-![image](https://user-images.githubusercontent.com/63403140/124482663-56d79280-ddcb-11eb-98d2-10e310b1d4f2.png)
+![image](https://user-images.githubusercontent.com/63403140/124490567-12042980-ddd4-11eb-8d7d-163cb9fd9eaa.png)
 
 * Give this monitor a friendly name, copy your app URL from the box above the preview window of Replit and paste it in the "URL (or IP)" field of the monitor.
 
@@ -190,7 +190,7 @@ So the biggest disadvantage of free repls is that they go offline after a few mi
 
 ![image](https://user-images.githubusercontent.com/63403140/124488978-4bd43080-ddd2-11eb-8f0b-d587f263a7c9.png)
 
-Again, thank you @rayanfer32 for introducing this amazing method, this is actually the biggest reason i made this guide.
+Again, thank you @rayanfer32 for introducing this amazing method, this is the biggest reason for making this guide.
 
 THAT IS ALL!
 
