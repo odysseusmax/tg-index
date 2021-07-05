@@ -2,7 +2,7 @@
 
 Replit is a good place if you want to host your small sized projects and code in real-time. This guide will walk you through the process of deploying tg-index on Replit, a Python web app to index telegram channels and serve their files to download.
 
-**NOTE : THIS GUIDE IS MADE FOR COMPLETE BEGINNERS LIKE PEOPLE WHO KNOW VERY LITTLE ABOUT GITHUB, REPLIT OR ANYTHING RELATED TO THIS PROJECT.**
+**NOTE : THIS GUIDE IS MADE FOR BEGINNERS LIKE PEOPLE WHO KNOW VERY LITTLE ABOUT GITHUB, REPLIT OR ANYTHING RELATED TO THIS PROJECT.**
 
 >There's a limitation with the free version of Replit that free repls stop running automatically after a few minutes of inactivity (no traffic), it is very frustrating since web apps need to stay online 24/7 or they're useless. GOOD NEWS! for those who can't purchase or don't want to purchase the paid version, i'll introduce you to a method by which you can stop the repl from falling asleep and keep your web app online as long as possible. THANK YOU rayanfer32 on GitHub for introducing this method.
 
@@ -11,6 +11,10 @@ NOW LET'S GET INTO BUSINESS ~
 ## [1] FORK THE REPOSITORY ON GITHUB
 
 It is always a good practice to make a fork of the project repo before you do anything else or instead of deploying directly from the parent repo, since any update on the parent repository will also affect your app, so this might break its stability so making a repository beforehand will save you the pain of losing the version of code that was used to deploy your app. Also, anything might happen to the parent repo or the repo owner account, so you want to ensure that the source code of your app remains intact and secure.
+
+* So click on the 'Fork' button on the upper right corner of the tg-index repository page. This will make a copy of the current state of the source code on your GitHub account, any update on the main reposiory will not affect your forked version unless you manually choose to merge them.
+
+![image](https://user-images.githubusercontent.com/63403140/124494232-67423a00-ddd8-11eb-9b80-5c2bed010f94.png)
 
 ## [2] CREATE A REPLIT ACCOUNT
 
