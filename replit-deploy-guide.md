@@ -6,15 +6,17 @@ Replit is a good place if you want to host your small sized projects and code in
 
 NOW LET'S GET INTO BUSINESS ~
 
-### [1] FORK THE REPOSITORY ON GITHUB
+## [1] FORK THE REPOSITORY ON GITHUB
 
 It is always a good practice to make a fork of the project repo before you do anything else or instead of deploying directly from the parent repo, since any update on the parent repository will also affect your app, so this might break its stability so making a repository beforehand will save you the pain of losing the version of code that was used to deploy your app. Also, anything might happen to the parent repo or the repo owner account, so you want to ensure that the source code of your app remains intact and secure.
 
-### [2] CREATE A REPLIT ACCOUNT
+## [2] CREATE A REPLIT ACCOUNT
 
-Go to https://replit.com/signup and create a free Replit account. One thing to note is that the username you use while creating a Replit account will later be used as your subdomain alias on all of your web apps, say you put `elon_musk` as your username, then the domain of your web apps will be like https://appname.elon_musk.repl.co.
+Go to https://replit.com/signup and create a free Replit account.
 
-### [3] CONNECT YOUR GITHUB ACCOUNT WITH YOUR REPLIT ACCOUNT
+> One thing to note is that the username you use while creating a Replit account will later be used as your subdomain alias on all of your web apps, say you put `elon_musk` as your username, then the domain of your web apps will be like https://appname.elon_musk.repl.co.
+
+## [3] CONNECT YOUR GITHUB ACCOUNT WITH YOUR REPLIT ACCOUNT
 
 Click on the 'New repl' button on upper left side of the dashboard. Then on the little window that pops up, **Import from GitHub** >> **Authorize GitHub to import your repos**.
 
@@ -29,9 +31,9 @@ After, Replit will automatically clone the repo from your GitHub fork and detect
 
 ![image](https://user-images.githubusercontent.com/63403140/124388490-00a01c00-dd05-11eb-9161-e31076ac0416.png)
 
-**NOTE : IF YOU ALREADY HAVE A REPLIT ACCOUNT AND WANT TO DEPLOY DIRECTLY FROM THE PARENT REPO, [CLICK HERE](https://repl.it/github/odysseusmax/tg-index). IT WILL CLONE THE REPOSITORY DIRECTLY FROM THE PARENT REPO.**
+> NOTE : IF YOU ALREADY HAVE A REPLIT ACCOUNT AND WANT TO DEPLOY DIRECTLY FROM THE PARENT REPO, [CLICK HERE](https://repl.it/github/odysseusmax/tg-index). IT WILL CLONE THE REPOSITORY DIRECTLY FROM THE PARENT REPO.
 
-### [4] SET THE REQUIRED ENVIRONMENT VARIABLES
+## [4] SET THE REQUIRED ENVIRONMENT VARIABLES
 
 Open the 'Secrets (Environment variables)' tab from the left sidebar and then click on 'Open raw editor'.
 
@@ -40,11 +42,13 @@ Open the 'Secrets (Environment variables)' tab from the left sidebar and then cl
 
 Now add the required environment variables that your app needs to run one by one. The required environment varibles are ~
 
+> NOTE : ANY VARIABLE MENTIONED IN THIS GUIDE WHICH IS MARKED AS `required` IS A REQUIRED VARIABLE THAT IS ABSOLUTELY NEEDED FOR TG-INDEX TO RUN AT MINIMAL.
+
 | Variable Name | Description
 | ------------- | -----------
-| `API_ID` | Telegram API ID obtained from https://my.telegram.org/apps.
-| `API_HASH` | Telegram API hash obtained from https://my.telegram.org/apps.
-| `INDEX_SETTINGS` | For now, just copy paste `{"index_all": true, "index_private": false, "index_group": false, "index_channel": true, "exclude_chats": [], "include_chats": []}`, we will learn how this variable works later.
+| `API_ID` (required) | Telegram API ID obtained from https://my.telegram.org/apps.
+| `API_HASH` (required) | Telegram API hash obtained from https://my.telegram.org/apps.
+| `INDEX_SETTINGS` (required) | For now, just copy paste `{"index_all": true, "index_private": false, "index_group": false, "index_channel": true, "exclude_chats": [], "include_chats": []}`, we will learn how this variable works later.
 
 ![CYBERZENO_2021_July_04__205132](https://user-images.githubusercontent.com/63403140/124389589-ace40180-dd09-11eb-8af0-27471a2c098d.gif)
 
@@ -54,9 +58,9 @@ There are actually 4 required variables for tg-index, the fourth one is a sessio
 
 When running the repl for the first time, Replit will download and install all the third party packages (dependencies) needed for your app to work, so it may take a while for the process to complete. After that, a script that checks if all the required variables are present will run and when it finds that we didn't set the `SESSION_STRING` variable, it will trigger another built-in script that will ask you to type your phone number or bot API token. **TG-INDEX DOES NOT SUPPORT INDEXING CHANNELS/GROUPS USING BOTS YET** so you must type your phone number **with country code** and hit enter.
 
-> NOTE THAT IT DOES NOT HAVE TO BE THE SAME PHONE NUMBER YOU USED TO GET THE `API_ID` AND `API_HASH` VALUES, IT IS THE PHONE NUMBER OF THE ACCOUNT OF WHICH YOU WANT TO FETCH THE CHANNELS AND GROUPS FROM. SO IT GOES WITHOUT SAYING THAT, IF YOU WANT TO INDEX A SPECIFIC CHANNEL/GROUP, THE ACCOUNT LINKED WITH THE PHONE NUMBER YOU ARE TYPING HERE NEEDS TO BE A SUBSCRIBER/MEMBER OF THAT CHANNEL/GROUP.
+> NOTE : IT DOES NOT HAVE TO BE THE SAME PHONE NUMBER YOU USED TO GET THE `API_ID` AND `API_HASH` VALUES, IT IS THE PHONE NUMBER OF THE ACCOUNT OF WHICH YOU WANT TO FETCH THE CHANNELS AND GROUPS FROM. SO IT GOES WITHOUT SAYING THAT, IF YOU WANT TO INDEX A SPECIFIC CHANNEL/GROUP, THE ACCOUNT LINKED WITH THE PHONE NUMBER YOU ARE TYPING HERE NEEDS TO BE A SUBSCRIBER/MEMBER OF THAT CHANNEL/GROUP.
 
-> NOTE THAT THE CHECKER SCRIPT WILL TRIGGER THE SESSION STRING GENERATOR SCRIPT ONLY IF YOU SET THE PREVIOUS THREE VARIABLES PROPERLY OR ELSE IT WILL ASK YOU TO SET THE MISSING VARIABLES INSTEAD.
+> NOTE : THE CHECKER SCRIPT WILL TRIGGER THE SESSION STRING GENERATOR SCRIPT ONLY IF YOU SET THE PREVIOUS THREE VARIABLES PROPERLY OR ELSE IT WILL ASK YOU TO SET THE MISSING VARIABLES INSTEAD.
 
 ![CYBERZENO_2021_July_04__214603](https://user-images.githubusercontent.com/63403140/124391193-4367f100-dd11-11eb-831d-e030f29455d8.gif)
 
@@ -69,3 +73,97 @@ If you did everything up to this point correctly, a preview window similar to th
 ![image](https://user-images.githubusercontent.com/63403140/124391976-0b62ad00-dd15-11eb-8eb6-f302ade699b4.png)
 
 (please don't mind my sense of privacy)
+
+## [5] CUSTOMIZE WHAT TO INDEX
+
+Open the "Secrets (Environment variables)" sidebar again and edit the `INDEX_SETTINGS` variable to your need. The general format is ~
+
+> NOTE : EVERY TIME YOU ADD A NEW VARIABLE OR EDIT AN EXISTING VARIABLE, YOU MUST STOP AND RESTART YOUR REPL IF IT'S ALREADY RUNNING.
+
+> NOTE : USING THESE EXACT SAME SETTINGS WILL ALLOW YOUR APP TO FETCH ALL OF YOUR PUBLIC AND PRIVATE CHANNELS. IT WON'T INDEX YOUR PUBLIC/PRIVATE GROUPS AND PRIVATE CHATS WITH PEOPLES/BOTS
+
+```json
+{
+    "index_all": true,
+    "index_private": false,
+    "index_group": false,
+    "index_channel": true,
+    "exclude_chats": [],
+    "include_chats": []
+}
+```
+
+> NOTE : `INDEX_SETTINGS` IS A REQUIRED VARIABLE SO, ALL THE SUB-VARIABLES OF `INDEX_SETTINGS` MENTIONED BELOW ARE ALSO REQUIRED VARIABLES.
+
+| Variable Name | Description
+| ------------- | -----------
+| `index_all` | Whether to consider all the chats associated with the Telegram account. Value should either be `true` or `false`.
+| `index_private` | Whether to index private chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
+| `index_group` | Whether to index group chats. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
+| `index_channel` | Whether to index channels. Only considered if `index_all` is set to `true`. Value should either be `true` or `false`.
+| `exclude_chats` | An array/list of chat id's that should be ignored for indexing. Only considered if `index_all` is set to `true`. Example : `"exclude_chats": [-123456789, -987654321, -147258369]`
+| `include_chats` | An array/list of chat id's to index. Only considered if `index_all` is set to `false`. Example : `"include_chats": [-123456789, -987654321, 147258369]`
+
+### SOME `INDEX_SETTINGS` EXAMPLES
+
+Suppose, you want to only index the channel with the channel ID `-123456789`, then the value of your `INDEX_SETTINGS` variable should be ~
+
+```json
+{
+    "index_all": false,
+    "index_private": false,
+    "index_group": false,
+    "index_channel": true,
+    "exclude_chats": [],
+    "include_chats": [-123456789]
+}
+```
+
+Again, if you want to index every public/private channel on your account except a channel with the channel ID `-123456789`, the value of your `INDEX_SETTINGS` variable should be ~
+
+```json
+{
+    "index_all": true,
+    "index_private": false,
+    "index_group": false,
+    "index_channel": true,
+    "exclude_chats": [-123456789],
+    "include_chats": []
+}
+```
+
+Lastly, if you want to index every single chat, channel and group on your Telegram account, the value of your `INDEX_SETTINGS` variable should be ~
+
+**WARNING!! IT IS NOT RECOMMENDED TO SET `INDEX_SETTINGS` VARIABLE TO INDEX EVERYTHING INCLUDING YOUR PRIVATE CHATS AS THEY WILL BE OPENLY AVAILABLE FOR EVERYONE TO SEE ON THE INTERNET. EVEN IF YOU WANT TO INDEX EVERYTHING, IT IS HIGHLY RECOMMENDED THAT YOU [SET USERNAME & PASSWORD FOR YOUR INDEX](#setlogin).**
+
+```json
+{
+    "index_all": true,
+    "index_private": true,
+    "index_group": true,
+    "index_channel": true,
+    "exclude_chats": [],
+    "include_chats": []
+}
+```
+
+## [6] SET USERNAME & PASSWORD FOR YOUR INDEX (Optional) {#setlogin}
+
+Just add these three environment variables in the "Secrets (Environment variables)" sidebar ~
+
+| Variable Name | Description
+| ------------- | -----------
+| `TGINDEX_USERNAME` | Username for authentication, defaults to `''`.
+| `PASSWORD` | Password for authentication, defaults to `''`.
+| `SECRET_KEY` | 32 characters long string for signing the session cookies, required if authentication is enabled. You can use [LastPass Password Generator](https://www.lastpass.com/password-generator) or any other password generator to generate a secure key.
+
+Some optional variables for additional security to set while setting the login credentials are ~
+
+| Variable Name | Description
+| ------------- | -----------
+| `SESSION_COOKIE_LIFETIME` | Number of minutes, for which authenticated session is valid for, after which user has to login again. defaults to 60.
+| `BLOCK_DOWNLOADS` | Enable downloads or not. If any value is provided, download feature will be disabled.
+
+THAT IS ALL!
+
+**If you face any issue or something out of the ordinary while following this guide, drop me a word at [Telegram](https://t.me/pseudokawaii). I'll try to help you if i'm not busy.**
