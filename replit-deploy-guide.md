@@ -1,3 +1,5 @@
+# TG-Index Deploy Guide (Repl.it)
+
 Replit is a good place if you want to host your small sized projects and code in real-time. This guide will walk you through the process of deploying tg-index on Replit, a Python web app to index telegram channels and serve their files to download.
 
 **NOTE : THIS GUIDE IS MADE FOR COMPLETE BEGINNERS LIKE PEOPLE WHO KNOW VERY LITTLE ABOUT GITHUB, REPLIT OR ANYTHING RELATED TO THIS PROJECT.**
