@@ -35,7 +35,7 @@ After, Replit will automatically clone the repo from your GitHub fork and detect
 
 ## [4] SET THE REQUIRED ENVIRONMENT VARIABLES
 
-Open the 'Secrets (Environment variables)' tab from the left sidebar and then click on 'Open raw editor'.
+Open the 'Secrets (Environment variables)' tab from the left sidebar, here you'll be able to add all the environment variables needed for your app.
 
 ![image](https://user-images.githubusercontent.com/63403140/124388916-cb94c900-dd06-11eb-85ba-ca42067a5ba1.png)
 ![image](https://user-images.githubusercontent.com/63403140/124389983-6db6b000-dd0b-11eb-8dc9-53fe29de24b8.png)
