@@ -11,6 +11,10 @@
 * Search through the channel/chat.
 * Download media files through browser/download managers.
 
+## Deploy Guide (Repl.it)
+
+A detailed and beginner friendly guide on how to deploy this project on a free instance of https://repl.it can be found [here](replit-deploy-guide.md).
+
 ## Deploy Guide
 
 * **Clone to local machine.**
