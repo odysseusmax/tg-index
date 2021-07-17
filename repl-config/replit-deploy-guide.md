@@ -48,7 +48,7 @@ Go to <https://replit.com/signup> and create a free Replit account.
 ![image](https://user-images.githubusercontent.com/63403140/124388916-cb94c900-dd06-11eb-85ba-ca42067a5ba1.png)
 ![image](https://user-images.githubusercontent.com/63403140/124389983-6db6b000-dd0b-11eb-8dc9-53fe29de24b8.png)
 
-- Now add the required environment variables that your app needs to run one by one. Environment variables can be found [here](../readme.md#deploy-guide)
+- Now add the required environment variables that your app needs to run one by one. Environment variables can be found [here](../README.md#deploy-guide)
 
 ![CYBERZENO_2021_July_04__205132](https://user-images.githubusercontent.com/63403140/124389589-ace40180-dd09-11eb-8af0-27471a2c098d.gif)
 
