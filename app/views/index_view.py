@@ -1,7 +1,7 @@
 import logging
+from urllib.parse import quote
 
 import aiohttp_jinja2
-
 from telethon.tl import types
 
 from app.config import results_per_page, block_downloads
@@ -51,7 +51,7 @@ class IndexView:
         for m in messages:
             entry = None
             if m.file and not isinstance(m.media, types.MessageMediaWebPage):
-                filename = get_file_name(m)
+                filename = get_file_name(m, quote_name=False)
                 insight = m.text[:60] if m.text else filename
                 entry = dict(
                     file_id=m.id,
@@ -62,7 +62,7 @@ class IndexView:
                     insight=insight,
                     human_size=get_human_size(m.file.size),
                     url=f"/{alias_id}/{m.id}/view",
-                    download=f"{alias_id}/{m.id}/{filename}",
+                    download=f"{alias_id}/{m.id}/{quote(filename)}",
                 )
             elif m.message:
                 entry = dict(

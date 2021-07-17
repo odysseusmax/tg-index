@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import unquote
 
 import aiohttp_jinja2
 from telethon.tl import types
@@ -68,7 +69,7 @@ class InfoView:
             return_val.update(
                 {
                     "found": True,
-                    "name": file_name,
+                    "name": unquote(file_name),
                     "file_id": file_id,
                     "human_size": human_file_size,
                     "media": media,

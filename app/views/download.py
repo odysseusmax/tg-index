@@ -42,7 +42,7 @@ class Download:
 
         media = message.media
         size = message.file.size
-        file_name = get_file_name(message)
+        file_name = get_file_name(message, quote_name=False)
         mime_type = message.file.mime_type
 
         try:

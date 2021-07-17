@@ -1,13 +1,13 @@
 from urllib.parse import quote
 
 
-def get_file_name(message):
+def get_file_name(message, quote_name=True):
     if message.file.name:
         name = message.file.name
     else:
         ext = message.file.ext or ""
         name = f"{message.date.strftime('%Y-%m-%d_%H:%M:%S')}{ext}"
-    return quote(name)
+    return quote(name) if quote_name else name
 
 
 def get_human_size(num):

@@ -62,6 +62,7 @@ def middleware_factory():
         if request.app["is_authenticated"] and str(request.rel_url.path) not in [
             "/login",
             "/logout",
+            "/favicon.ico",
         ]:
             url = request.app.router["login_page"].url_for()
             if str(request.rel_url) != "/":
