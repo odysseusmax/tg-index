@@ -3,6 +3,7 @@
 __pycache__/
 venv/
 tests/
+Temp/
 *.sh
 logo/
 app.json
