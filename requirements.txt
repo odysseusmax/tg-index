@@ -1,7 +1,9 @@
-aiohtt
+aiohttp
 aiohttp-jinja2
 telethon
 cryptg
 pillow
 aiohttp_session[secure]
 python-dotenv
+Flask
+Werkzeug
