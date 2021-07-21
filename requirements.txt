@@ -1,4 +1,4 @@
-aiohtt
+aiohttp
 aiohttp-jinja2
 telethon
 cryptg
