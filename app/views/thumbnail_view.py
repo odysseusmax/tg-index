@@ -39,7 +39,7 @@ class ThumbnailView:
             location = types.InputPhotoFileLocation
 
         if not thumbnails:
-            color = tuple([random.randint(0, 255) for i in range(3)])
+            color = tuple(random.randint(0, 255) for _ in range(3))
             im = Image.new("RGB", (100, 100), color)
             temp = io.BytesIO()
             im.save(temp, "PNG")

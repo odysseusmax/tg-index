@@ -38,16 +38,17 @@ class InfoView:
             "authenticated": req.app["is_authenticated"],
         }
         reply_btns = []
-        if message.reply_markup:
-            if isinstance(message.reply_markup, types.ReplyInlineMarkup):
-                reply_btns = [
-                    [
-                        {"url": button.url, "text": button.text}
-                        for button in button_row.buttons
-                        if isinstance(button, types.KeyboardButtonUrl)
-                    ]
-                    for button_row in message.reply_markup.rows
+        if message.reply_markup and isinstance(
+            message.reply_markup, types.ReplyInlineMarkup
+        ):
+            reply_btns = [
+                [
+                    {"url": button.url, "text": button.text}
+                    for button in button_row.buttons
+                    if isinstance(button, types.KeyboardButtonUrl)
                 ]
+                for button_row in message.reply_markup.rows
+            ]
 
         if message.file and not isinstance(message.media, types.MessageMediaWebPage):
             file_name = get_file_name(message)
@@ -60,11 +61,7 @@ class InfoView:
             elif "image/" in message.file.mime_type:
                 media["image"] = True
 
-            if message.text:
-                caption = message.raw_text
-            else:
-                caption = ""
-
+            caption = message.raw_text if message.text else ""
             caption_html = Markup.escape(caption).__str__().replace("\n", "<br>")
             return_val.update(
                 {

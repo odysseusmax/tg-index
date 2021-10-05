@@ -5,9 +5,11 @@ import json
 import sys
 import os
 
+from dotenv import load_dotenv
+load_dotenv("config.env")
 
 try:
-    port = int(os.environ.get("PORT", "8080"))
+    port = int(os.environ.get("PORT", 8080))
 except Exception as e:
     print(e)
     port = -1
@@ -27,8 +29,7 @@ except (KeyError, ValueError):
     sys.exit(1)
 
 try:
-    index_settings_str = os.environ["INDEX_SETTINGS"].strip()
-    index_settings = json.loads(index_settings_str)
+    index_settings = json.load(open("index_settings.json"))
 except Exception:
     traceback.print_exc()
     print("\n\nPlease set the INDEX_SETTINGS environment variable correctly")
