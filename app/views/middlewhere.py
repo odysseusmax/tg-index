@@ -1,7 +1,8 @@
 import time
 import logging
+from typing import Coroutine, Union
 
-from aiohttp.web import middleware, HTTPFound, Response
+from aiohttp.web import middleware, HTTPFound, Response, Request
 from aiohttp import BasicAuth, hdrs
 from aiohttp_session import get_session
 
@@ -9,7 +10,7 @@ from aiohttp_session import get_session
 log = logging.getLogger(__name__)
 
 
-def _do_basic_auth_check(request):
+def _do_basic_auth_check(request: Request) -> Union[None, bool]:
     if "download_" not in request.match_info.route.name:
         return
 
@@ -47,7 +48,7 @@ def _do_basic_auth_check(request):
     return True
 
 
-async def _do_cookies_auth_check(request):
+async def _do_cookies_auth_check(request: Request) -> Union[None, bool]:
     session = await get_session(request)
     if not session.get("logged_in", False):
         return
@@ -56,9 +57,9 @@ async def _do_cookies_auth_check(request):
     return True
 
 
-def middleware_factory():
+def middleware_factory() -> Coroutine:
     @middleware
-    async def factory(request, handler):
+    async def factory(request: Request, handler: Coroutine) -> Response:
         if request.app["is_authenticated"] and str(request.rel_url.path) not in [
             "/login",
             "/logout",

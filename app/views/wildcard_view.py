@@ -1,6 +1,8 @@
 from aiohttp import web
 
+from .base import BaseView
 
-class WildcardView:
-    async def wildcard(self, req):
+
+class WildcardView(BaseView):
+    async def wildcard(self, req: web.Request) -> web.Response:
         return web.HTTPFound("/")

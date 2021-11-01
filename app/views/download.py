@@ -1,22 +1,26 @@
 import logging
 
 from aiohttp import web
+from telethon.tl.custom import Message
 
 from app.util import get_file_name
 from app.config import block_downloads
+from .base import BaseView
 
 
 log = logging.getLogger(__name__)
 
 
-class Download:
-    async def download_get(self, req):
+class Download(BaseView):
+    async def download_get(self, req: web.Request) -> web.Response:
         return await self.handle_request(req)
 
-    async def download_head(self, req):
+    async def download_head(self, req: web.Request) -> web.Response:
         return await self.handle_request(req, head=True)
 
-    async def handle_request(self, req, head=False):
+    async def handle_request(
+        self, req: web.Request, head: bool = False
+    ) -> web.Response:
         if block_downloads:
             return web.Response(status=403, text="403: Forbiden" if not head else None)
 
@@ -26,7 +30,9 @@ class Download:
         chat_id = chat["chat_id"]
 
         try:
-            message = await self.client.get_messages(entity=chat_id, ids=file_id)
+            message: Message = await self.client.get_messages(
+                entity=chat_id, ids=file_id
+            )
         except Exception:
             log.debug(f"Error in getting message {file_id} in {chat_id}", exc_info=True)
             message = None

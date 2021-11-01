@@ -2,20 +2,22 @@ import logging
 from urllib.parse import unquote
 
 import aiohttp_jinja2
+from aiohttp import web
 from telethon.tl import types
 from telethon.tl.custom import Message
 from jinja2 import Markup
 
 from app.util import get_file_name, get_human_size
 from app.config import block_downloads
+from .base import BaseView
 
 
 log = logging.getLogger(__name__)
 
 
-class InfoView:
+class InfoView(BaseView):
     @aiohttp_jinja2.template("info.html")
-    async def info(self, req):
+    async def info(self, req: web.Request) -> web.Response:
         file_id = int(req.match_info["id"])
         alias_id = req.match_info["chat"]
         chat = self.chat_ids[alias_id]

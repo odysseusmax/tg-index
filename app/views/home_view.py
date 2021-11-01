@@ -1,11 +1,12 @@
 from aiohttp import web
 import aiohttp_jinja2
 
+from .base import BaseView
 
-class HomeView:
+
+class HomeView(BaseView):
     @aiohttp_jinja2.template("home.html")
-    async def home(self, req):
-        print(self.chat_ids)
+    async def home(self, req: web.Request) -> web.Response:
         if len(self.chat_ids) == 1:
             (chat,) = self.chat_ids.values()
             return web.HTTPFound(f"{chat['alias_id']}")

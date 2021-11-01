@@ -1,8 +1,11 @@
 import base64
 import hashlib
+from typing import Dict, Union
+
+from telethon.tl.types import Chat, User, Channel
 
 from ..config import SHORT_URL_LEN
-
+from ..telegram import Client
 from .home_view import HomeView
 from .wildcard_view import WildcardView
 from .download import Download
@@ -14,6 +17,9 @@ from .login_view import LoginView
 from .logout_view import LogoutView
 from .faviconicon_view import FaviconIconView
 from .middlewhere import middleware_factory
+
+
+TELEGRAM_CHAT = Union[Chat, User, Channel]
 
 
 class Views(
@@ -28,12 +34,12 @@ class Views(
     LogoutView,
     FaviconIconView,
 ):
-    def __init__(self, client):
+    def __init__(self, client: Client):
         self.client = client
         self.url_len = SHORT_URL_LEN
-        self.chat_ids = {}
+        self.chat_ids: Dict[str, Dict[str, str]] = {}
 
-    def generate_alias_id(self, chat):
+    def generate_alias_id(self, chat: TELEGRAM_CHAT) -> str:
         chat_id = chat.id
         title = chat.title
 

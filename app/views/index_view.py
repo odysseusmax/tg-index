@@ -1,19 +1,22 @@
 import logging
+from typing import List
 from urllib.parse import quote
 
 import aiohttp_jinja2
-from telethon.tl import types
+from aiohttp import web
+from telethon.tl import types, custom
 
 from app.config import results_per_page, block_downloads
 from app.util import get_file_name, get_human_size
+from .base import BaseView
 
 
 log = logging.getLogger(__name__)
 
 
-class IndexView:
+class IndexView(BaseView):
     @aiohttp_jinja2.template("index.html")
-    async def index(self, req):
+    async def index(self, req: web.Request) -> web.Response:
         alias_id = req.match_info["chat"]
         chat = self.chat_ids[alias_id]
         log_msg = ""
@@ -39,7 +42,9 @@ class IndexView:
             if search_query:
                 kwargs.update({"search": search_query})
 
-            messages = (await self.client.get_messages(**kwargs)) or []
+            messages: List[custom.Message] = (
+                await self.client.get_messages(**kwargs)
+            ) or []
 
         except Exception:
             log.debug("failed to get messages", exc_info=True)

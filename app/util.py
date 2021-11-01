@@ -1,7 +1,10 @@
+from typing import Union
 from urllib.parse import quote
 
+from telethon.tl.custom import Message
 
-def get_file_name(message, quote_name=True):
+
+def get_file_name(message: Message, quote_name: bool = True) -> str:
     if message.file.name:
         name = message.file.name
     else:
@@ -10,7 +13,7 @@ def get_file_name(message, quote_name=True):
     return quote(name) if quote_name else name
 
 
-def get_human_size(num):
+def get_human_size(num: Union[int, float]) -> str:
     base = 1024.0
     sufix_list = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
     for unit in sufix_list:
