@@ -1,3 +1,4 @@
+import asyncio
 import pathlib
 import logging
 
@@ -46,6 +47,8 @@ class Indexer:
             )
 
         middlewares.append(middleware_factory())
+        self.loop = asyncio.get_event_loop()
+
         self.server = web.Application(middlewares=middlewares)
 
         self.server.on_startup.append(self.startup)
@@ -71,4 +74,4 @@ class Indexer:
         log.debug("telegram client disconnected!")
 
     def run(self):
-        web.run_app(self.server, host=host, port=port)
+        web.run_app(self.server, host=host, port=port, loop=self.loop)
