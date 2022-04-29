@@ -5,7 +5,9 @@ import aiohttp_jinja2
 from aiohttp import web
 from telethon.tl import types
 from telethon.tl.custom import Message
-from jinja2 import Markup
+from jinja2.utils import markupsafe
+
+Markup = markupsafe.Markup()
 
 from app.util import get_file_name, get_human_size
 from app.config import block_downloads
