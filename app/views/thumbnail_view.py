@@ -4,20 +4,24 @@ import random
 import io
 
 from aiohttp import web
-from telethon.tl import types
+from telethon.tl import types, custom
+
+from .base import BaseView
 
 
 log = logging.getLogger(__name__)
 
 
-class ThumbnailView:
-    async def thumbnail_get(self, req):
+class ThumbnailView(BaseView):
+    async def thumbnail_get(self, req: web.Request) -> web.Response:
         file_id = int(req.match_info["id"])
         alias_id = req.match_info["chat"]
         chat = self.chat_ids[alias_id]
         chat_id = chat["chat_id"]
         try:
-            message = await self.client.get_messages(entity=chat_id, ids=file_id)
+            message: custom.Message = await self.client.get_messages(
+                entity=chat_id, ids=file_id
+            )
         except Exception:
             log.debug(f"Error in getting message {file_id} in {chat_id}", exc_info=True)
             message = None
@@ -47,7 +51,9 @@ class ThumbnailView:
         else:
             thumb_pos = int(len(thumbnails) / 2)
             try:
-                thumbnail = self.client._get_thumb(thumbnails, thumb_pos)
+                thumbnail: types.PhotoSize = self.client._get_thumb(
+                    thumbnails, thumb_pos
+                )
             except Exception as e:
                 logging.debug(e)
                 thumbnail = None

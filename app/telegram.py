@@ -7,7 +7,7 @@ from telethon.sessions import StringSession
 
 
 class Client(TelegramClient):
-    def __init__(self, session_string, *args, **kwargs):
+    def __init__(self, session_string: str, *args, **kwargs):
         super().__init__(StringSession(session_string), *args, **kwargs)
         self.log = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ class Client(TelegramClient):
               first_part = {first_part}, cut = {first_part_cut}(length={part_size-first_part_cut}),
               last_part = {last_part}, cut = {last_part_cut}(length={last_part_cut}),
               parts_count = {part_count}
-              """
+            """
         )
         try:
             async for chunk in self.iter_download(
@@ -42,7 +42,7 @@ class Client(TelegramClient):
 
                 part += 1
 
-            self.log.debug(f"serving finished")
+            self.log.debug("serving finished")
         except (GeneratorExit, StopAsyncIteration, asyncio.CancelledError):
             self.log.debug("file serve interrupted")
             raise

@@ -4,10 +4,11 @@ from PIL import Image, ImageDraw, ImageFont
 from aiohttp import web
 
 from app.config import logo_folder
+from .base import BaseView
 
 
-class FaviconIconView:
-    async def faviconicon(self, req):
+class FaviconIconView(BaseView):
+    async def faviconicon(self, req: web.Request) -> web.Response:
         favicon_path = logo_folder.joinpath("favicon.ico")
         text = "T"
         if not favicon_path.exists():
@@ -15,10 +16,10 @@ class FaviconIconView:
             color = tuple((random.randint(0, 255) for _ in range(3)))
             im = Image.new("RGB", (W, H), color)
             draw = ImageDraw.Draw(im)
-            font = ImageFont.truetype("arial.ttf", 50)
+            font = ImageFont.truetype("arial.ttf", 100)
             w, h = draw.textsize(text, font=font)
             draw.text(((W - w) / 2, (H - h) / 2), text, fill="white", font=font)
-            im.save(favicon_path)
+            im.save(favicon_path, "JPEG")
 
         with open(favicon_path, "rb") as fp:
             body = fp.read()

@@ -3,6 +3,7 @@
 __pycache__/
 venv/
 tests/
+Temp/
 *.sh
 logo/
 app.json
@@ -10,3 +11,4 @@ Procfile
 .vscode/
 .gitignore
 .venv/
+pyproject.toml

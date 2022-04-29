@@ -1,7 +1,8 @@
 import time
 import logging
+from typing import Coroutine, Union
 
-from aiohttp.web import middleware, HTTPFound, Response
+from aiohttp.web import middleware, HTTPFound, Response, Request
 from aiohttp import BasicAuth, hdrs
 from aiohttp_session import get_session
 
@@ -9,29 +10,31 @@ from aiohttp_session import get_session
 log = logging.getLogger(__name__)
 
 
-def _do_basic_auth_check(request):
-    auth_header = request.headers.get(hdrs.AUTHORIZATION)
-    if not auth_header:
-        if "download_" in request.match_info.route.name:
-            return Response(
-                body=b"",
-                status=401,
-                reason="UNAUTHORIZED",
-                headers={
-                    hdrs.WWW_AUTHENTICATE: 'Basic realm=""',
-                    hdrs.CONTENT_TYPE: "text/html; charset=utf-8",
-                    hdrs.CONNECTION: "keep-alive",
-                },
-            )
+def _do_basic_auth_check(request: Request) -> Union[None, bool]:
+    if "download_" not in request.match_info.route.name:
         return
 
-    try:
-        auth = BasicAuth.decode(auth_header=auth_header)
-    except ValueError:
-        auth = None
+    auth = None
+    auth_header = request.headers.get(hdrs.AUTHORIZATION)
+    if auth_header is not None:
+        try:
+            auth = BasicAuth.decode(auth_header=auth_header)
+        except ValueError:
+            pass
+
+    if auth is None:
+        try:
+            auth = BasicAuth.from_url(request.url)
+        except ValueError:
+            pass
 
     if not auth:
-        return
+        return Response(
+            body=b"",
+            status=401,
+            reason="UNAUTHORIZED",
+            headers={hdrs.WWW_AUTHENTICATE: 'Basic realm=""'},
+        )
 
     if auth.login is None or auth.password is None:
         return
@@ -45,7 +48,7 @@ def _do_basic_auth_check(request):
     return True
 
 
-async def _do_cookies_auth_check(request):
+async def _do_cookies_auth_check(request: Request) -> Union[None, bool]:
     session = await get_session(request)
     if not session.get("logged_in", False):
         return
@@ -54,12 +57,13 @@ async def _do_cookies_auth_check(request):
     return True
 
 
-def middleware_factory():
+def middleware_factory() -> Coroutine:
     @middleware
-    async def factory(request, handler):
+    async def factory(request: Request, handler: Coroutine) -> Response:
         if request.app["is_authenticated"] and str(request.rel_url.path) not in [
             "/login",
             "/logout",
+            "/favicon.ico",
         ]:
             url = request.app.router["login_page"].url_for()
             if str(request.rel_url) != "/":
