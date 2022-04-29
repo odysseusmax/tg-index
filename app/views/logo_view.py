@@ -5,22 +5,29 @@ import random
 from aiohttp import web
 from telethon.tl import types
 
+
 from app.config import logo_folder
+from .base import BaseView
 
 
 log = logging.getLogger(__name__)
 
 
-class LogoView:
-    async def logo(self, req):
+class LogoView(BaseView):
+    async def logo(self, req: web.Request) -> web.Response:
         alias_id = req.match_info["chat"]
         chat = self.chat_ids[alias_id]
         chat_id = chat["chat_id"]
-        chat_name = " ".join(map(lambda x: x[0].upper(), chat["title"].split(" ")))
+        chat_name = " ".join(
+            map(lambda x: x[0].upper(), (chat["title"] or "_").split(" "))
+        )
         logo_path = logo_folder.joinpath(f"{alias_id}.jpg")
         if not logo_path.exists():
             try:
-                (photo,) = await self.client.get_profile_photos(chat_id, limit=1)
+
+                photo: types.Photo = (
+                    await self.client.get_profile_photos(chat_id, limit=1)
+                )[0]
             except Exception:
                 log.debug(
                     f"Error in getting profile picture in {chat_id}", exc_info=True
@@ -40,7 +47,7 @@ class LogoView:
                 im.save(logo_path)
             else:
                 pos = -1 if req.query.get("big", None) else int(len(photo.sizes) / 2)
-                size = self.client._get_thumb(photo.sizes, pos)
+                size: types.PhotoSize = self.client._get_thumb(photo.sizes, pos)
                 if isinstance(size, (types.PhotoCachedSize, types.PhotoStrippedSize)):
                     await self.client._download_cached_photo_size(size, logo_path)
                 else:
