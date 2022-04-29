@@ -1,8 +1,6 @@
 {% include 'header.html' %} {% block javascript %}
 <script type="text/javascript">
-	{% include "./js/filesaver.min.js" %}
     {% include "./js/playlist.js" %}
-
 </script>
 {% endblock %}
 
@@ -80,7 +78,7 @@
                             </a>
 
                             <!-- One click single item playlist Download -->
-                            <button title="{{item.filename}}.m3u" onclick="singleItemPlaylist('{{item.download}}','{{item.filename}}', '{{m3u_option}}');"
+                            <button title="{{item.filename}}.m3u" onclick="singleItemPlaylist('{{item.download}}','{{item.quoted_filename}}', '{{m3u_option}}');"
                                 class="flex-1 hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
