@@ -64,6 +64,7 @@ class IndexView(BaseView):
                     thumbnail=f"/{alias_id}/{m.id}/thumbnail",
                     mime_type=m.file.mime_type,
                     filename=filename,
+                    quoted_filename=quote(filename), # for playlist filename
                     insight=insight,
                     human_size=get_human_size(m.file.size),
                     url=f"/{alias_id}/{m.id}/view",
