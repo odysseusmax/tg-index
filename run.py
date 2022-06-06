@@ -7,12 +7,17 @@ load_dotenv()
 def is_alive():
   repl_slug = os.environ.get("REPL_SLUG")
   repl_owner = os.environ.get("REPL_OWNER")
-  resp = requests.get(f"https://{repl_slug}.{repl_owner}.repl.co")
+  try:
+    resp = requests.get(f"https://{repl_slug}.{repl_owner}.repl.co", timeout=15)
+  except Exception as e:
+    print("Server response wait timed out!")
+    return False
   return resp.ok
 
 def run_safe():
   "prevent session string from expiring due to two instances running"
   if not is_alive():
+    print("Starting a new instance...")
     runpy.run_module('app')
   else:
     print("Server is already running...")
