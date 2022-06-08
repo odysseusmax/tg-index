@@ -5,22 +5,26 @@
 {% endblock %}
 
 <div class="block md:flex justify-between items-center px-4 text-center">
-	<div class="m-2 block md:flex items-center justify-center md:justify-start text-2xl md:text-right font-bold text-blue-500">
-		<img class="mx-auto md:ml-0 md:mr-1 my-4 md:my-2 w-16 h-16 rounded-full bg-black outline-none" src="{{logo}}">
-        <a href="javascript:window.location.href=window.location.href"> {{name}} </a>
+	
+    <!-- * channel logo and name -->
+    <div class="flex m-2 block bg-gray-200 dark:bg-gray-700 rounded-full shadow-inner shadow-md px-2 items-center justify-center">
+		<img class="my-1 w-12 h-12 rounded-full bg-black outline-none" src="{{logo}}">
+        <a class="mx-1" href="javascript:window.location.href=window.location.href"> 
+        {{name}}   
+        </a>
     </div>
 
-    <div class="m-2">
+    <!-- * search bar-->
+    <div class="m-1">    
         <form class="">
-
-            <div class="my-4 md:my-2">
+            <div class="my-2 md:my-1">
                 <div class="flex items-center rounded-full shadow dark:bg-gray-500">
-                    <input class="rounded-l-full w-full py-1 px-6 dark:text-white dark:bg-gray-500 leading-tight focus:outline-none dark:text-black"
+                    <input class="rounded-full w-full py-1 px-6 dark:text-white dark:bg-gray-500 leading-tight focus:outline-none dark:text-black"
                         name="search" id="search" value="{% if search %}{{search}}{% endif %}" type="text"
                         placeholder="Search">
                     <div class="p-1">
                         <button
-                            class="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center">
+                            class="bg-blue-500 text-white rounded-full p-1 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center">
                             <div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -46,17 +50,18 @@
         <div title="{% if item.media %} {{item.mime_type}} | {{item.human_size}} {% else %} Text message {% endif %}"
             href="{{item.url}}"
             class="text-sm items-center justify-center w-full min-h-full sm:w-2/5 md:w-1/4 lg:w-1/6 rounded m-2 shadow hover:shadow-lg dark:bg-gray-500">
-
+            
             {% if item.media %}
+            <div class="absolute bg-blue-600 rounded-full dark:bg-blue-600 text-white my-1 mx-6 py-0 px-1">{{item.file_id}}</div>
 
-                <a href="{{item.url}}"><img src="{{item.thumbnail}}" class="w-full rounded shadow-inner"></a>
-                <div class="p-2">{{item.insight}}</div>
+                <a href="{{item.url}}"><img src="{{item.thumbnail}}" class="w-full object-scale-down h-32 rounded shadow-inner"></a>
+                <div class="p-2 fill-blue-400">{{item.insight}}</div>
                 <!-- Buttons container -->
-                <span class="inline-flex mb-1 rounded shadow-inner dark:bg-green-400">                    
+                <span class="inline-flex mb-1 rounded shadow-inner dark:bg-blue-400">                    
                     {% if not block_downloads %}
                         <!-- Direct file download button -->
                         <a href="{{item.download}}"
-                            class="flex-1 hover:bg-blue-300 text-gray-900 font-semibold py-1 px-2 rounded items-center">
+                            class="flex-1 hover:bg-blue-500 text-gray-900 font-semibold py-1 px-2 rounded items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -92,12 +97,13 @@
                 </span>
 
             {% else %}
-            <a href={{item.url}}>
-                <div class="p-4 rounded shadow-inner rounded text-dark py-0 px-2">{{item.insight}}</div>
+            <a style="-webkit-user-select: all;-moz-user-select: all;-ms-user-select: all;user-select: all;" href={{item.url}}>
+                <div class="p-4 rounded shadow-inner text-dark py-0 px-2">{{item.insight}}</div>
             </a>
+            <div class="bg-blue-600 rounded-full dark:bg-blue-600 text-white my-1 mx-6 py-0 px-1">{{item.file_id}}</div>
             {% endif %}
-            <div class="bg-blue-400 dark:bg-green-600 text-white my-1 py-0 px-1">{{item.file_id}}</div>
 
+          
         </div>
 
 
@@ -113,15 +119,15 @@
 <div class="mx-auto my-2 text-center flex text-white content-center justify-center">
     {% if prev_page %}
     <a title="Previous page"
-        class="mx-2 p-2 border rounded bg-green-500 hover:border-green-500 hover:text-green-500 hover:bg-white"
+        class="mx-2 p-2 border rounded bg-blue-500 hover:border-blue-500 hover:text-blue-500 hover:bg-white"
         href="{{prev_page.url}}">Page {{prev_page.no}}</a>
     {% endif %}
     <p
-        class="mx-2 p-2 border rounded border-green-500 text-green-500 hover:border-green-500 hover:text-green-500 hover:bg-white">
+        class="mx-2 p-2 border rounded border-blue-500 text-blue-500 hover:border-blue-500 hover:text-blue-500 hover:bg-white">
         Page {{cur_page}}</p>
     {% if next_page %}
     <a title="Next page"
-        class="mx-2 p-2 border rounded bg-green-500 hover:border-green-500 hover:text-green-500 hover:bg-white"
+        class="mx-2 p-2 border rounded bg-blue-500 hover:border-blue-500 hover:text-blue-500 hover:bg-white"
         href="{{next_page.url}}">Page {{next_page.no}}</a>
     {% endif %}
 </div>
