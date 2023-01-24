@@ -74,4 +74,4 @@ class Indexer:
         log.debug("telegram client disconnected!")
 
     def run(self):
-        web.run_app(self.server, host=host, port=port, loop=self.loop)
+        web.run_app(self.server, host=host, port=port)

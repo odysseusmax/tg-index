@@ -1,4 +1,5 @@
 import logging
+import os
 from PIL import Image
 import random
 import io
@@ -7,7 +8,7 @@ from aiohttp import web
 from telethon.tl import types, custom
 
 from .base import BaseView
-
+from ..config import file_icon_path
 
 log = logging.getLogger(__name__)
 
@@ -43,8 +44,7 @@ class ThumbnailView(BaseView):
             location = types.InputPhotoFileLocation
 
         if not thumbnails:
-            color = tuple([random.randint(0, 255) for i in range(3)])
-            im = Image.new("RGB", (100, 100), color)
+            im = Image.open(file_icon_path)
             temp = io.BytesIO()
             im.save(temp, "PNG")
             body = temp.getvalue()

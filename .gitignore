@@ -1,5 +1,5 @@
 *.session
-.env
+*.env
 __pycache__/
 venv/
 tests/
@@ -10,4 +10,5 @@ app.json
 Procfile
 .vscode/
 .gitignore
+.venv/
 pyproject.toml
