@@ -2,8 +2,18 @@ import os
 import runpy
 import requests
 import time
+import psutil    
 from dotenv import load_dotenv
+
 load_dotenv()
+
+APP_CMD = "python3 -m app"
+
+def find_process_cmd(cmdline):
+  for proc in psutil.process_iter():
+    is_running = cmdline in proc.cmdline() 
+    if(is_running):
+      return True
 
 def is_alive():
   repl_slug = os.environ.get("REPL_SLUG")
@@ -22,19 +32,20 @@ def run_safe():
   try:
     if not is_alive():
       kill_server()
-      print("Starting a new instance...")
-      # runpy.run_module('app', run_name="tgindex")
-      os.system("python3 -m app")
+      # proc = runpy.run_module('app', alter_sys=True)
+      if(!find_process_cmd(APP_CMD)):
+        # prevent running app if it is already running  
+        print("Starting a new instance...")
+        os.system(APP_CMD)
     else:
       print("Server is already running...")
   except Exception as e:
-    print(f"Your session String has been revoked due to {e}. \n\n Please generate New one.")
     os.system("python app/generate_session_string.py") 
   
 def kill_server():
   print("Killing server just incase it is not responding...")
-  kill_server_cmd = "pkill -9 -f 'python3 -m app'"
+  kill_server_cmd = f"pkill -9 -f '{APP_CMD}'"
   os.system(kill_server_cmd)
-  time.sleep(5)
+  time.sleep(30)
     
 run_safe()
